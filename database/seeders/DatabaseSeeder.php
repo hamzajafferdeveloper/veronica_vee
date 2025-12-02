@@ -25,24 +25,24 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
         ]);
         $admin->assignRole($adminRole);
-
-        // Create a default recruiter user
-        $recruiter = User::factory()->create([
-            'first_name' => 'Recruiter',
-            'last_name' => 'User',
-            'email' => 'recruiter@example.com',
-        ]);
-        $recruiter->assignRole($recruiterRole);
-
-        // Create a default professional user
-        $professional = User::factory()->create([
-            'first_name' => 'Professional',
-            'last_name' => 'User',
-            'email' => 'professional@example.com',
-        ]);
-        $professional->assignRole($professionalRole);
-
-        // Create additional 10 random users
-        User::factory(10)->create();
+//
+//        // Create a default recruiter user
+//        $recruiter = User::factory()->create([
+//            'first_name' => 'Recruiter',
+//            'last_name' => 'User',
+//            'email' => 'recruiter@example.com',
+//        ]);
+//        $recruiter->assignRole($recruiterRole);
+//
+//        // Create a default professional user
+//        $professional = User::factory()->create([
+//            'first_name' => 'Professional',
+//            'last_name' => 'User',
+//            'email' => 'professional@example.com',
+//        ]);
+//        $professional->assignRole($professionalRole);
+//
+//        // Create additional 10 random users
+//        User::factory(10)->create();
     }
 }

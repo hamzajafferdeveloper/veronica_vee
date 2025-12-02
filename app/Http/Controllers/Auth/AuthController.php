@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -59,12 +61,49 @@ class AuthController extends Controller
         }
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
         try {
-            dd($request->all());
-        } catch (Exception $e) {
-            Log::error('Failed to Register User ' . $e->getMessage());
+
+            // Create User
+            $user = User::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'country' => $request->country,
+                'postal_code' => $request->postal_code
+            ]);
+
+            // Assign Role
+            if ($request->type === 'professional') {
+                $user->assignRole('professional');
+                $redirect = route('professional.dashboard');
+            } else if ($request->type === 'recruiter') {
+                $user->assignRole('recruiter');
+                $redirect = route('recruiter.dashboard');
+            } else {
+                $redirect = false; // fallback
+            }
+
+            // Login user
+            Auth::login($user);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Register successful.',
+                'redirect' => $redirect
+            ], 200);
+
+        } catch (\Exception $e) {
+
+            Log::error('Failed to register user: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again.',
+                'redirect' => false
+            ], 500);
         }
     }
 

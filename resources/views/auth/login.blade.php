@@ -103,12 +103,10 @@
                                     <div class="invalid-feedback"></div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label for="country" class="form-label">Country</label>
-                                    <select name="country" class="form-select" id="country">
-                                        <option value="US">United States</option>
-                                        <option value="UK">United Kingdom</option>
-                                    </select>
+                                <div class="col-md-6 d-flex flex-column">
+                                    <label for="country" class="form-label">Country*</label>
+                                    <input type="text" class="form-control" id="country" placeholder="Search Country">
+                                    <input type="hidden" name="country" id="country_code"> <!-- backend value -->
                                 </div>
 
                                 <div class="col-md-6">
@@ -165,6 +163,24 @@
 
 @push('script')
     <script>
+        $(document).ready(function () {
+            $("#country").countrySelect({
+                defaultCountry: "pk",
+                preferredCountries: ["pk", "us", "gb"],
+                responsiveDropdown: true
+            });
+
+            // Store the country name instead of ISO2 code
+            $("#country").on("change", function () {
+                let data = $("#country").countrySelect("getSelectedCountryData");
+                $("#country_code").val(data.name); // <-- Country name
+            });
+
+            // Save on page load
+            let data = $("#country").countrySelect("getSelectedCountryData");
+            $("#country_code").val(data.name);
+        });
+
         // Function to show toast for general messages
         function showToast(message, type = 'danger') {
             let toastHtml = `
@@ -186,6 +202,61 @@
         }
 
         // Handle AJAX form submission
+        // function ajaxFormSubmit(formId, url) {
+        //     let form = $(formId);
+        //     form.on('submit', function (e) {
+        //         e.preventDefault();
+        //         let btn = form.find('button[type="submit"]');
+        //         btn.prop('disabled', true);
+        //
+        //         // Clear previous field errors
+        //         form.find('.invalid-feedback').text('');
+        //         form.find('.is-invalid').removeClass('is-invalid');
+        //
+        //         $.ajax({
+        //             url: url,
+        //             method: 'POST',
+        //             data: form.serialize(),
+        //             success: function (response) {
+        //                 btn.prop('disabled', false);
+        //
+        //                 showToast(response.message || 'Success!', response.success ? 'success' : 'danger');
+        //
+        //                 if (response.success && response.redirect) {
+        //                     window.location.href = response.redirect;
+        //                 }
+        //             },
+        //             error: function (xhr) {
+        //                 btn.prop('disabled', false);
+        //                 let errors = xhr.responseJSON?.errors || {};
+        //                 let generalErrors = [];
+        //
+        //                 // Loop through errors
+        //                 for (let key in errors) {
+        //                     let field = form.find(`[name="${key}"]`);
+        //                     if (field.length) {
+        //                         // Field-specific error
+        //                         field.addClass('is-invalid');
+        //                         field.siblings('.invalid-feedback').text(errors[key][0]);
+        //                     } else {
+        //                         // General errors
+        //                         generalErrors.push(errors[key][0]);
+        //                     }
+        //                 }
+        //
+        //                 // If response has message
+        //                 if (xhr.responseJSON?.message) {
+        //                     generalErrors.unshift(xhr.responseJSON.message);
+        //                 }
+        //
+        //                 if (generalErrors.length) {
+        //                     showToast(generalErrors.join('<br>'), 'danger');
+        //                 }
+        //             }
+        //         });
+        //     });
+        // }
+
         function ajaxFormSubmit(formId, url) {
             let form = $(formId);
             form.on('submit', function (e) {
@@ -196,6 +267,32 @@
                 // Clear previous field errors
                 form.find('.invalid-feedback').text('');
                 form.find('.is-invalid').removeClass('is-invalid');
+
+                // Validate Terms & Age only for Register Form
+                if (formId === '#registerForm') {
+
+                    let terms = form.find('#terms').is(':checked');
+                    let age = form.find('#age').is(':checked');
+
+                    if (!terms || !age) {
+                        showToast("You must accept Terms & Privacy Policy and confirm you are at least 16 years old.", "danger");
+
+                        if (!terms) {
+                            form.find('#terms').addClass('is-invalid');
+                            form.find('#terms').closest('.form-check').find('.invalid-feedback')
+                                .text("You must accept the terms.");
+                        }
+
+                        if (!age) {
+                            form.find('#age').addClass('is-invalid');
+                            form.find('#age').closest('.form-check').find('.invalid-feedback')
+                                .text("You must confirm your age.");
+                        }
+
+                        btn.prop('disabled', false);
+                        return;
+                    }
+                }
 
                 $.ajax({
                     url: url,
@@ -215,20 +312,17 @@
                         let errors = xhr.responseJSON?.errors || {};
                         let generalErrors = [];
 
-                        // Loop through errors
                         for (let key in errors) {
                             let field = form.find(`[name="${key}"]`);
+
                             if (field.length) {
-                                // Field-specific error
                                 field.addClass('is-invalid');
                                 field.siblings('.invalid-feedback').text(errors[key][0]);
                             } else {
-                                // General errors
                                 generalErrors.push(errors[key][0]);
                             }
                         }
 
-                        // If response has message
                         if (xhr.responseJSON?.message) {
                             generalErrors.unshift(xhr.responseJSON.message);
                         }
