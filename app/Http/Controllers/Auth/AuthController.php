@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,25 +25,36 @@ class AuthController extends Controller
             if (Auth::attempt($credentials, $request->boolean('remember'))) {
                 $request->session()->regenerate();
 
+                $user = Auth::user();
+                $role = $user->roles->first()->name;
+
+                $redirect = match ($role) {
+                    'admin' => route('admin.dashboard'),
+                    'professional' => route('professional.dashboard'),
+                    default => route('recruiter.dashboard'),
+                };
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Login successful.',
-                    'redirect' => route('dashboard')
-                ], 200);
+                    'redirect' => $redirect
+                ]);
             }
 
-            // Return 200 OK with success = false for login failure
+            // return message only, no redirect for failed login
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid credentials.',
+                'redirect' => false
             ], 200);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Failed to log in user: ' . $e->getMessage());
 
             return response()->json([
                 'success' => false,
                 'message' => 'Something went wrong. Please try again.',
+                'redirect' => false
             ], 500);
         }
     }
@@ -51,7 +63,7 @@ class AuthController extends Controller
     {
         try {
             dd($request->all());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Failed to Register User ' . $e->getMessage());
         }
     }
@@ -79,7 +91,7 @@ class AuthController extends Controller
             // Redirect to login page
             return redirect()->route('login')->with('success', 'Logged out successfully');
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Failed to logout User: ' . $e->getMessage());
 
             // Handle error response

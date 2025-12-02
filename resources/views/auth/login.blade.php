@@ -186,7 +186,7 @@
         }
 
         // Handle AJAX form submission
-        function ajaxFormSubmit(formId, url, redirectUrl = '/dashboard') {
+        function ajaxFormSubmit(formId, url) {
             let form = $(formId);
             form.on('submit', function (e) {
                 e.preventDefault();
@@ -203,9 +203,11 @@
                     data: form.serialize(),
                     success: function (response) {
                         btn.prop('disabled', false);
-                        showToast(response.message || 'Success!', 'success');
-                        if (response.redirect !== false) {
-                            window.location.href = response.redirect || redirectUrl;
+
+                        showToast(response.message || 'Success!', response.success ? 'success' : 'danger');
+
+                        if (response.success && response.redirect) {
+                            window.location.href = response.redirect;
                         }
                     },
                     error: function (xhr) {
@@ -240,8 +242,8 @@
         }
 
         // Initialize forms
-        ajaxFormSubmit('#loginForm', "{{ route('login') }}", '/dashboard');
-        ajaxFormSubmit('#registerForm', "{{ route('register') }}", '/dashboard');
+        ajaxFormSubmit('#loginForm', "{{ route('login') }}");
+        ajaxFormSubmit('#registerForm', "{{ route('register') }}");
 
         // Toggle password visibility
         function togglePassword(inputId, eyeId) {
