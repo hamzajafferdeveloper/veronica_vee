@@ -8,6 +8,7 @@ class RecruiterProfiles extends Model
 {
     protected $fillable = [
         'user_id',
+        'avatar',
         'company_name',
         'designation',
         'phone',
@@ -20,5 +21,10 @@ class RecruiterProfiles extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
     }
 }
