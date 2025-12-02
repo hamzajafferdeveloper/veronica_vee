@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('weight')->nullable();
             $table->string('experience')->nullable();
             $table->string('location')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->string('portfolio_url')->nullable();
             $table->timestamps();
         });
