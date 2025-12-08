@@ -6,4 +6,5 @@ Route::prefix('professional')->middleware('role:professional')->name('profession
     Route::get('/dashboard', function () {
         return view('professional.dashboard');
     })->name('dashboard');
+
 });

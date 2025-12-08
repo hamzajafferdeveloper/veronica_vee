@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use DB;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,24 +27,27 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
         ]);
         $admin->assignRole($adminRole);
-//
-//        // Create a default recruiter user
-//        $recruiter = User::factory()->create([
-//            'first_name' => 'Recruiter',
-//            'last_name' => 'User',
-//            'email' => 'recruiter@example.com',
-//        ]);
-//        $recruiter->assignRole($recruiterRole);
-//
-//        // Create a default professional user
-//        $professional = User::factory()->create([
-//            'first_name' => 'Professional',
-//            'last_name' => 'User',
-//            'email' => 'professional@example.com',
-//        ]);
-//        $professional->assignRole($professionalRole);
-//
-//        // Create additional 10 random users
-//        User::factory(10)->create();
+
+        $categories = [
+            'Web Development',
+            'Graphic Design',
+            'Digital Marketing',
+            'Photography',
+            'Videography',
+            'Content Writing',
+            'Mobile App Development',
+            'UI/UX Design',
+            'SEO Optimization',
+            'Social Media Management',
+        ];
+
+        foreach ($categories as $category) {
+            DB::table('project_categories')->insert([
+                'name' => $category,
+                'slug' => Str::slug($category),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

@@ -8,9 +8,12 @@ class Project extends Model
 {
     protected $fillable = [
         'recruiter_id',
+        'image',
+        'document',
         'title',
+        'slug',
         'description',
-        'category',
+        'category_id',
         'budget',
         'deadline',
         'status'
@@ -19,5 +22,10 @@ class Project extends Model
     public function recruiter()
     {
         return $this->belongsTo(User::class, 'recruiter_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ProjectCategory::class, 'category_id');
     }
 }
