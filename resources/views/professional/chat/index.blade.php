@@ -4,41 +4,41 @@
 
 @section('content')
     <div class="chat-wrapper">
-        @include('professional.chat.partials.sidebar')
+        @include('recruiter.chat.partials.sidebar')
 
         <div class="chat-main card">
 
-            {{-- Selected Recruiter / User --}}
-            <div id="selectedUserInfo" class="chat-sidebar-single active d-none">
+            <!-- Chat Header -->
+            <div id="chatHeader" class="chat-sidebar-single active d-none">
                 <div class="img">
-                    <img id="selectedUserAvatar" src="{{ asset('assets/images/user.png') }}" alt="image"
-                        style="border-radius: 100%">
+                    <img id="headerAvatar" src="{{ asset('assets/images/user.png') }}" alt="image"
+                        style="border-radius: 100%; width:45px; height:45px;">
                 </div>
                 <div class="info">
-                    <h6 id="selectedUserName" class="text-md mb-0"></h6>
-                    <p class="mb-0">Available</p>
+                    <h6 id="headerName" class="text-md mb-0"></h6>
+                    <p id="headerEmail" class="mb-0"></p>
                 </div>
             </div>
 
-            {{-- Chat Messages --}}
-            <div id="chatMessagesBox">
-                @include('professional.chat.partials.chat-messages')
-            </div>
+            <!-- Chat Messages -->
+            @include('recruiter.chat.partials.chat-messages')
 
-            {{-- Chat Send Box --}}
-            <form class="chat-message-box" id="messageForm">
+            <!-- Chat Send Box -->
+            <form class="chat-message-box d-none" id="messageForm">
                 @csrf
-                <input type="hidden" id="conversation_id" name="conversation_id">
-                <input type="text" name="chatMessage" id="chatMessage" placeholder="Write message" autocomplete="off">
-
+                <input type="text" name="chatMessage" style="padding: 10px" id="chatMessage" placeholder="Write message"
+                    autocomplete="off">
                 <div class="chat-message-box-action">
+                    <button type="button" class="text-xl" title="Attach Image">
+                        <iconify-icon icon="solar:gallery-linear"></iconify-icon>
+                    </button>
                     <button type="submit"
                         class="btn btn-sm btn-primary-600 radius-8 d-inline-flex align-items-center gap-1">
-                        Send <iconify-icon icon="f7:paperplane"></iconify-icon>
+                        Send
+                        <iconify-icon icon="f7:paperplane"></iconify-icon>
                     </button>
                 </div>
             </form>
-
         </div>
     </div>
 @endsection
@@ -47,164 +47,161 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            const recruiterList = document.getElementById('recruiterList');
-            const searchInput = document.getElementById('recruiterSearch');
-            const chatMessagesBox = document.getElementById('chatMessagesBox');
+            let activeConversationId = null;
+            let activeReceiverId = null;
+
+            const professionalList = document.getElementById('professionalList');
+            const chatContainer = document.querySelector('.chat-message-list');
             const messageForm = document.getElementById('messageForm');
-            const conversationInput = document.getElementById('conversation_id');
-            const chatMessageInput = document.getElementById('chatMessage');
+            const chatInput = document.getElementById('chatMessage');
+            const AUTH_ID = {{ auth()->id() }};
 
-            const selectedUserInfo = document.getElementById('selectedUserInfo');
-            const selectedUserName = document.getElementById('selectedUserName');
-            const selectedUserAvatar = document.getElementById('selectedUserAvatar');
+            const headerBox = document.getElementById('chatHeader');
+            const headerName = document.getElementById('headerName');
+            const headerEmail = document.getElementById('headerEmail');
+            const headerAvatar = document.getElementById('headerAvatar');
 
-            let activeUserId = null;
-            let polling = null;
-
-            const fallbackImage = "{{ asset('assets/images/user.png') }}";
-
-
-            /* ============================================================
-                1. LOAD RECRUITERS
-            ============================================================ */
-            function loadRecruiters() {
+            // Load professionals in sidebar
+            function loadProfessionals() {
                 fetch("{{ route('professional.chat.get-recuiters') }}")
                     .then(res => res.json())
-                    .then(users => {
+                    .then(data => {
+                        professionalList.innerHTML = '';
 
-                        recruiterList.innerHTML = '';
-
-                        users.forEach(user => {
-                            let avatar = user.avatar ? `/storage/${user.avatar}` : fallbackImage;
-
+                        data.forEach(user => {
                             const div = document.createElement('div');
                             div.classList.add('chat-sidebar-single');
-                            div.setAttribute('data-id', user.id);
-                            div.setAttribute('data-name', user.first_name + ' ' + user.last_name);
-                            div.setAttribute('data-avatar', avatar);
+                            div.dataset.userId = user.id;
+                            div.dataset.name = `${user.first_name} ${user.last_name}`;
+                            div.dataset.email = user.email ?? '';
+                            div.dataset.avatar = user.model?.avatar ? '/storage/' + user.model.avatar :
+                                '{{ asset('assets/images/user.png') }}';
 
                             div.innerHTML = `
                         <div class="img">
-                            <img src="${avatar}" alt="image" style="border-radius:100%; width:45px; height:45px; object-fit:cover;">
+                            <img src="${div.dataset.avatar}" class="rounded-full" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
                         </div>
                         <div class="info">
-                            <h6 class="text-sm mb-1">${user.first_name ?? ''} ${user.last_name ?? ''}</h6>
+                            <h6 class="text-sm mb-1">${div.dataset.name}</h6>
                             <p class="mb-0 text-xs">Available</p>
                         </div>
                     `;
 
-                            recruiterList.appendChild(div);
+                            div.addEventListener('click', function() {
+                                activeReceiverId = this.dataset.userId;
+
+                                setActiveUser(this);
+                                updateHeader(this.dataset.name, this.dataset.email, this.dataset
+                                    .avatar);
+                                messageForm.classList.remove('d-none');
+                                getConversation(activeReceiverId);
+                            });
+
+                            professionalList.appendChild(div);
                         });
 
-                        activateClickListener();
-                    })
-                    .catch(error => console.error("Recruiter Load Error: ", error));
-            }
+                        // Auto-load conversation if URL has receiverId
+                        const urlParts = window.location.pathname.split('/');
+                        const receiverIdFromURL = parseInt(urlParts[urlParts.length - 1]);
 
-            loadRecruiters();
+                        if (receiverIdFromURL) {
+                            const userElement = Array.from(professionalList.children)
+                                .find(el => parseInt(el.dataset.userId) === receiverIdFromURL);
 
-
-            /* ============================================================
-                2. RECRUITER CLICK → OPEN CONVERSATION
-            ============================================================ */
-            function activateClickListener() {
-                recruiterList.querySelectorAll('.chat-sidebar-single').forEach(item => {
-
-                    item.addEventListener('click', async function() {
-
-                        activeUserId = this.dataset.id;
-
-                        selectedUserName.innerText = this.dataset.name;
-                        selectedUserAvatar.src = this.dataset.avatar;
-
-                        selectedUserInfo.classList.remove('d-none');
-
-                        // Step 1: Get or create conversation
-                        const response = await fetch(
-                            `/professional/chat/get-or-create/${activeUserId}`);
-                        const data = await response.json();
-
-                        conversationInput.value = data.conversation_id;
-
-                        // Step 2: Load Messages
-                        loadMessages();
-
-                        // Step 3: Start polling
-                        if (polling) clearInterval(polling);
-                        polling = setInterval(loadMessages, 2000);
-                    });
-                });
-            }
-
-
-            /* ============================================================
-                3. LOAD MESSAGES
-            ============================================================ */
-            function loadMessages() {
-
-                if (!conversationInput.value) return;
-
-                fetch(`/professional/chat/messages/${conversationInput.value}`)
-                    .then(res => res.json())
-                    .then(messages => {
-
-                        let html = '';
-
-                        messages.forEach(msg => {
-                            const myMessage = msg.sender_id == {{ auth()->id() }} ? 'my-message' :
-                                'other-message';
-
-                            html += `
-                        <div class="single-message ${myMessage}">
-                            <p>${msg.message}</p>
-                            <span class="msg-time">${msg.time}</span>
-                        </div>
-                    `;
-                        });
-
-                        chatMessagesBox.innerHTML = html;
-
-                        chatMessagesBox.scrollTop = chatMessagesBox.scrollHeight;
+                            if (userElement) {
+                                userElement.click();
+                            }
+                        }
                     });
             }
 
+            function setActiveUser(selected) {
+                document.querySelectorAll('.chat-sidebar-single').forEach(el => el.classList.remove('active'));
+                selected.classList.add('active');
+            }
 
-            /* ============================================================
-                4. SEND MESSAGE
-            ============================================================ */
-            messageForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+            function updateHeader(name, email, avatar) {
+                headerName.textContent = name;
+                headerAvatar.src = avatar;
+                headerEmail.textContent = email;
+                headerBox.classList.remove('d-none');
+            }
 
-                let message = chatMessageInput.value.trim();
-                if (!message) return;
-
-                let formData = new FormData(this);
-
-                fetch("{{ route('professional.chat.send') }}", {
-                        method: "POST",
-                        body: formData
+            function getConversation(receiverId) {
+                fetch(`/professional/chat/get-or-create/${receiverId}`, {
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
                     })
                     .then(res => res.json())
                     .then(data => {
-                        chatMessageInput.value = '';
+                        activeConversationId = data.conversation_id;
+                        updateURL(receiverId);
+                        loadMessages(activeConversationId);
+                    });
+            }
 
-                        loadMessages();
+            function loadMessages(conversationId) {
+                fetch(`/professional/chat/messages/${conversationId}`, {
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(messages => {
+                        chatContainer.innerHTML = '';
+                        messages.forEach(msg => {
+                            const messageHTML = `
+                    <div class="chat-single-message ${msg.sender_id == AUTH_ID ? 'right ' : 'left'}">
+                        ${msg.sender_id != AUTH_ID ? `<img src="{{ asset('assets/images/user.png') }}" class="avatar-lg rounded-circle">` : ''}
+                        <div class="chat-message-content ${msg.sender_id == AUTH_ID ? 'bg-primary ' : 'bg-info'}">
+                            <p class="mb-3">${msg.message}</p>
+                            <p class="chat-time mb-0"><span>${msg.time}</span></p>
+                        </div>
+                    </div>
+                `;
+                            chatContainer.insertAdjacentHTML('beforeend', messageHTML);
+                        });
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    });
+            }
+
+            function updateURL(receiverId) {
+                window.history.pushState({}, '', `/professional/chat/messages/${receiverId}`);
+            }
+
+            messageForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const message = chatInput.value.trim();
+                if (!message || !activeConversationId) return;
+
+                fetch("{{ route('professional.chat.send') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                        },
+                        body: JSON.stringify({
+                            message,
+                            conversation_id: activeConversationId
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(() => {
+                        chatContainer.insertAdjacentHTML('beforeend', `
+                <div class="chat-single-message right">
+                    <div class="chat-message-content">
+                        <p class="mb-3">${message}</p>
+                        <p class="chat-time mb-0"><span>now</span></p>
+                    </div>
+                </div>
+            `);
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                        chatInput.value = '';
                     });
             });
 
-
-            /* ============================================================
-                5. SEARCH FILTER
-            ============================================================ */
-            searchInput.addEventListener('input', function() {
-                const search = this.value.toLowerCase();
-
-                recruiterList.querySelectorAll('.chat-sidebar-single').forEach(item => {
-                    const name = item.dataset.name.toLowerCase();
-                    item.style.display = name.includes(search) ? '' : 'none';
-                });
-            });
-
+            loadProfessionals();
         });
     </script>
 @endpush

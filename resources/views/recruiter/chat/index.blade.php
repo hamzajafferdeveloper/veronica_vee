@@ -24,11 +24,9 @@
 
             <form class="chat-message-box d-none" id="messageForm">
                 @csrf
-                <input type="text" name="chatMessage " style="padding: 10px" id="chatMessage" placeholder="Write message" autocomplete="off">
+                <input type="text" name="chatMessage " style="padding: 10px" id="chatMessage" placeholder="Write message"
+                    autocomplete="off">
                 <div class="chat-message-box-action">
-                    <button type="button" class="text-xl" title="Attach File">
-                        <iconify-icon icon="ph:link"></iconify-icon>
-                    </button>
                     <button type="button" class="text-xl" title="Attach Image">
                         <iconify-icon icon="solar:gallery-linear"></iconify-icon>
                     </button>
@@ -161,8 +159,8 @@
                             const messageHTML = `
                         <div class="chat-single-message ${msg.sender_id == AUTH_ID ? 'right' : 'left'}">
                             ${msg.sender_id != AUTH_ID ? `<img src="{{ asset('assets/images/user.png') }}" class="avatar-lg rounded-circle">` : ''}
-                            <div class="chat-message-content">
-                                <p class="mb-3">${msg.message}</p>
+                            <div class="chat-message-content ${msg.sender_id == AUTH_ID ? 'bg-primary ' : 'bg-info'}">
+                                <p class="chat-text mb-3">${msg.message}</p>
                                 <p class="chat-time mb-0"><span>${msg.time}</span></p>
                             </div>
                         </div>

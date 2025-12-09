@@ -17,17 +17,13 @@ class ChatController extends Controller
     {
         $authId = auth()->id();
 
-        $conversation = Conversation::whereHas('participants', function ($q) use ($authId) {
-            $q->where('user_id', $authId);
-        })
-            ->whereHas('participants', function ($q) use ($userId) {
-                $q->where('user_id', $userId);
-            })
+        $conversation = Conversation::whereHas('participants', fn($q) => $q->where('user_id', $authId))
+            ->whereHas('participants', fn($q) => $q->where('user_id', $userId))
             ->first();
 
         if (!$conversation) {
             $conversation = Conversation::create([
-                'type' => 'recruiter_model',
+                'type' => 'professional_recruiter',
                 'created_by' => $authId,
             ]);
 
@@ -37,9 +33,7 @@ class ChatController extends Controller
             ]);
         }
 
-        return response()->json([
-            'conversation_id' => $conversation->id
-        ]);
+        return response()->json(['conversation_id' => $conversation->id]);
     }
 
     public function messages(Request $request, $conversationId)
@@ -48,19 +42,17 @@ class ChatController extends Controller
             $messages = Message::where('conversation_id', $conversationId)
                 ->orderBy('created_at', 'asc')
                 ->get()
-                ->map(function ($msg) {
-                    return [
-                        'id' => $msg->id,
-                        'message' => $msg->message,
-                        'sender_id' => $msg->sender_id,
-                        'time' => $msg->created_at->format('h:i A'),
-                    ];
-                });
+                ->map(fn($msg) => [
+                    'id' => $msg->id,
+                    'message' => $msg->message,
+                    'sender_id' => $msg->sender_id,
+                    'time' => $msg->created_at->format('h:i A'),
+                ]);
 
             return response()->json($messages);
         }
 
-        return view('recruiter.chat.index');
+        return view('professional.chat.index');
     }
 
     public function index()
@@ -71,10 +63,9 @@ class ChatController extends Controller
     public function getRecruiters()
     {
         try {
-            $recruiters = User::role('recruiter')->with('recruiter')->get();
-            return response()->json($recruiters);
+            return response()->json(User::role('recruiter')->with('recruiter')->get());
         } catch (\Exception $e) {
-            Log::error('Error getting recruiter ' . $e->getMessage());
+            Log::error('Error getting recruiters: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -83,7 +74,7 @@ class ChatController extends Controller
     {
         $request->validate([
             'conversation_id' => 'required|exists:conversations,id',
-            'message' => 'required|string'
+            'message' => 'required|string',
         ]);
 
         $msg = Message::create([
@@ -92,9 +83,6 @@ class ChatController extends Controller
             'message' => $request->message,
         ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => $msg
-        ]);
+        return response()->json(['status' => 'success', 'message' => $msg]);
     }
 }

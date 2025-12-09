@@ -14,7 +14,7 @@ Route::prefix('professional')->middleware('role:professional')->name('profession
         Route::get('/get-or-create/{userId}', [ChatController::class, 'getOrCreateConversation']);
         Route::get('/messages/{receiver_id}', [ChatController::class, 'messages'])->name('messages');
         Route::get('/index', [ChatController::class, 'index'])->name('index');
-        Route::get('/get-recuiter', [ChatController::class, 'getRecruiters'])->name('get-recuiters');
+        Route::get('/get-recuiters', [ChatController::class, 'getRecruiters'])->name('get-recuiters');
         Route::post('/send', [ChatController::class, 'send'])->name('send');
     });
 
