@@ -69,13 +69,13 @@
 
 <body>
     <!-- ..::  header area start ::.. -->
-    @include('layouts.partials.recruiter-sidebar')
+    @include('layouts.partials.professional-sidebar')
     <!-- ..::  header area end ::.. -->
 
     <main class="dashboard-main">
 
         <!-- ..::  navbar start ::.. -->
-        @include('layouts.partials.recruiter-navbar')
+        @include('layouts.partials.professional-navbar')
         <!-- ..::  navbar end ::.. -->
         <div class="dashboard-main-body">
 

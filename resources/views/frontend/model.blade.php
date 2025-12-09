@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Model Detail Page')
+@section('title', 'Models Page')
 
 @section('content')
     <section class="mt-5">
@@ -77,39 +77,23 @@
 
             </div>
 
-            <div class="row gy-4">
-
-                <div class="col-md-6">
-                    <img src="{{ asset('assets/images/m1.jpg') }}" alt="img" class="w-100">
-                </div>
-
-                <div class="col-md-6">
-                    <img src="{{ asset('assets/images/m1.jpg') }}" alt="img" class="w-100">
-                </div>
-
-                <div class="col-12">
-                    <div class="ratio ratio-16x9">
-                        <iframe src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" title="YouTube video"
-                                allowfullscreen></iframe>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                @foreach ($models as $model)
+                    <div class="col">
+                        <div class="card h-100 shadow-sm border-0">
+                            <!-- Aspect ratio utility keeps image height consistent -->
+                            <div class="ratio ratio-1x1 bg-light rounded-top">
+                                <img src="{{ $model->avatar ? asset('storage/' . $model->avatar) : asset('images/placeholder.png') }}"
+                                    alt="{{ $model->first_name ?? 'Model' }}"
+                                    class="w-100 h-100 object-fit-cover rounded-top">
+                            </div>
+                            <div class="card-body text-center">
+                                <a href="{{ route('frontend.model.profile', $model->id) }}"
+                                    class="card-title mb-0">{{ $model->user->first_name . ' ' . $model->user->last_name ?? 'Model Name' }}</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-md-6">
-                    <img src="{{ asset('assets/images/m1.jpg') }}" alt="img" class="w-100">
-                </div>
-
-                <div class="col-md-6">
-                    <img src="{{ asset('assets/images/m1.jpg') }}" alt="img" class="w-100">
-                </div>
-
-                <div class="col-md-6">
-                    <img src="{{ asset('assets/images/m1.jpg') }}" alt="img" class="w-100">
-                </div>
-
-                <div class="col-md-6">
-                    <img src="{{ asset('assets/images/m1.jpg') }}" alt="img" class="w-100">
-                </div>
-
+                @endforeach
             </div><!--/row-->
         </div>
 
@@ -118,18 +102,30 @@
 
 @push('scripts')
     <script>
-
         $('#brandCarousel').owlCarousel({
             margin: 24,
             nav: false,
             dots: false,
             responsive: {
-                0: {items: 2, margin: 16},
-                576: {items: 3},
-                768: {items: 4},
-                992: {items: 5},
-                1200: {items: 6},
-                1400: {items: 8},
+                0: {
+                    items: 2,
+                    margin: 16
+                },
+                576: {
+                    items: 3
+                },
+                768: {
+                    items: 4
+                },
+                992: {
+                    items: 5
+                },
+                1200: {
+                    items: 6
+                },
+                1400: {
+                    items: 8
+                },
             }
         })
     </script>
@@ -149,7 +145,8 @@
             })
         })()
 
-        <!--/validation-->
+        <
+        !--/validation-->
 
         function togglePassword() {
             var passwordInput = document.getElementById("password");
@@ -165,7 +162,7 @@
             }
         }
 
-        <!--/password-->
+        <
+        !--/password-->
     </script>
 @endpush
-

@@ -4,9 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Recruiter\ProjectController;
 
 Route::prefix('recruiter')->middleware('role:recruiter')->name('recruiter.')->group(function () {
-   Route::get('/dashboard', function () {
-       return view('recruiter.dashboard');
-   })->name('dashboard');
+    Route::get('/dashboard', function () {
+        return view('recruiter.dashboard');
+    })->name('dashboard');
+
+    Route::prefix('/chat')->name('chat.')->group(function () {
+        Route::get('/index', function () {
+            return view('recruiter.chat.index');
+        })->name('index');
+    });
 
     Route::prefix('/project')->name('project.')->group(function () {
         Route::get('/all', [ProjectController::class, 'index'])->name('index');
