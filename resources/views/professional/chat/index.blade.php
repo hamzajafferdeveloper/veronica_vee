@@ -3,142 +3,208 @@
 @section('title', 'Professional Chat Page')
 
 @section('content')
-
     <div class="chat-wrapper">
-        <div class="chat-sidebar card">
-            <div class="chat-sidebar-single active top-profile">
-                <div class="img">
-                    <img src="{{ asset('assets/images/chat/1.png') }}" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-md mb-0">Kathryn Murphy</h6>
-                    <p class="mb-0">Available</p>
-                </div>
-                <div class="action">
-                    <div class="btn-group">
-                        <button type="button" class="text-secondary-light text-xl" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                            <iconify-icon icon="bi:three-dots"></iconify-icon>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-lg-end border">
-                            <li>
-                                <a  href="" class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2">
-                                    <iconify-icon icon="fluent:person-32-regular"></iconify-icon>
-                                    Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a  href="" class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2">
-                                    <iconify-icon icon="carbon:settings"></iconify-icon>
-                                    Settings
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="chat-search">
-                <span class="icon">
-                    <iconify-icon icon="iconoir:search"></iconify-icon>
-                </span>
-                <input type="text" name="#0" autocomplete="off" placeholder="Search...">
-            </div>
-            <div class="chat-all-list">
-                <div class="chat-sidebar-single active">
-                    <div class="img">
-                        <img src="{{ asset('assets/images/chat/2.png') }}" alt="image">
-                    </div>
-                    <div class="info">
-                        <h6 class="text-sm mb-1">Kathryn Murphy</h6>
-                        <p class="mb-0 text-xs">hey! there i'm...</p>
-                    </div>
-                    <div class="action text-end">
-                        <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                        <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('professional.chat.partials.sidebar')
+
         <div class="chat-main card">
-            <div class="chat-sidebar-single active">
+
+            {{-- Selected Recruiter / User --}}
+            <div id="selectedUserInfo" class="chat-sidebar-single active d-none">
                 <div class="img">
-                    <img src="{{ asset('assets/images/chat/11.png') }}" alt="image">
+                    <img id="selectedUserAvatar" src="{{ asset('assets/images/user.png') }}" alt="image"
+                        style="border-radius: 100%">
                 </div>
                 <div class="info">
-                    <h6 class="text-md mb-0">Kathryn Murphy</h6>
+                    <h6 id="selectedUserName" class="text-md mb-0"></h6>
                     <p class="mb-0">Available</p>
                 </div>
-                <div class="action d-inline-flex align-items-center gap-3">
-                    <button type="button" class="text-xl text-primary-light">
-                        <iconify-icon icon="mi:call"></iconify-icon>
-                    </button>
-                    <button type="button" class="text-xl text-primary-light">
-                        <iconify-icon icon="fluent:video-32-regular"></iconify-icon>
-                    </button>
-                    <div class="btn-group">
-                        <button type="button" class="text-primary-light text-xl" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                            <iconify-icon icon="tabler:dots-vertical"></iconify-icon>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-lg-end border">
-                            <li>
-                                <button class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2" type="button">
-                                    <iconify-icon icon="mdi:clear-circle-outline"></iconify-icon>
-                                    Clear All
-                                </button>
-                            </li>
-                            <li>
-                                <button class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2" type="button">
-                                    <iconify-icon icon="ic:baseline-block"></iconify-icon>
-                                    Block
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-message-list">
-                <div class="chat-single-message left">
-                    <img src="{{ asset('assets/images/chat/11.png') }}" alt="image" class="avatar-lg object-fit-cover rounded-circle">
-                    <div class="chat-message-content">
-                        <p class="mb-3">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.</p>
-                        <p class="chat-time mb-0">
-                            <span>6.30 pm</span>
-                        </p>
-                    </div>
-                </div><!-- chat-single-message end -->
-                <div class="chat-single-message right">
-                    <div class="chat-message-content">
-                        <p class="mb-3">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.</p>
-                        <p class="chat-time mb-0">
-                            <span>6.30 pm</span>
-                        </p>
-                    </div>
-                </div><!-- chat-single-message end -->
-                <div class="chat-single-message left">
-                    <img src="{{ asset('assets/images/chat/11.png') }}" alt="image" class="avatar-lg object-fit-cover rounded-circle">
-                    <div class="chat-message-content">
-                        <p class="mb-3">The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.Contrary to popular belief, Lorem Ipsum is not simply random text is the model text for your company.</p>
-                        <p class="chat-time mb-0">
-                            <span>6.30 pm</span>
-                        </p>
-                    </div>
-                </div><!-- chat-single-message end -->
             </div>
-            <form class="chat-message-box">
-                <input type="text" name="chatMessage" placeholder="Write message">
+
+            {{-- Chat Messages --}}
+            <div id="chatMessagesBox">
+                @include('professional.chat.partials.chat-messages')
+            </div>
+
+            {{-- Chat Send Box --}}
+            <form class="chat-message-box" id="messageForm">
+                @csrf
+                <input type="hidden" id="conversation_id" name="conversation_id">
+                <input type="text" name="chatMessage" id="chatMessage" placeholder="Write message" autocomplete="off">
+
                 <div class="chat-message-box-action">
-                    <button type="button" class="text-xl">
-                        <iconify-icon icon="ph:link"></iconify-icon>
-                    </button>
-                    <button type="button" class="text-xl">
-                        <iconify-icon icon="solar:gallery-linear"></iconify-icon>
-                    </button>
-                    <button type="submit" class="btn btn-sm btn-primary-600 radius-8 d-inline-flex align-items-center gap-1">
-                        Send
-                        <iconify-icon icon="f7:paperplane"></iconify-icon>
+                    <button type="submit"
+                        class="btn btn-sm btn-primary-600 radius-8 d-inline-flex align-items-center gap-1">
+                        Send <iconify-icon icon="f7:paperplane"></iconify-icon>
                     </button>
                 </div>
             </form>
+
         </div>
     </div>
-
 @endsection
+
+@push('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const recruiterList = document.getElementById('recruiterList');
+            const searchInput = document.getElementById('recruiterSearch');
+            const chatMessagesBox = document.getElementById('chatMessagesBox');
+            const messageForm = document.getElementById('messageForm');
+            const conversationInput = document.getElementById('conversation_id');
+            const chatMessageInput = document.getElementById('chatMessage');
+
+            const selectedUserInfo = document.getElementById('selectedUserInfo');
+            const selectedUserName = document.getElementById('selectedUserName');
+            const selectedUserAvatar = document.getElementById('selectedUserAvatar');
+
+            let activeUserId = null;
+            let polling = null;
+
+            const fallbackImage = "{{ asset('assets/images/user.png') }}";
+
+
+            /* ============================================================
+                1. LOAD RECRUITERS
+            ============================================================ */
+            function loadRecruiters() {
+                fetch("{{ route('professional.chat.get-recuiters') }}")
+                    .then(res => res.json())
+                    .then(users => {
+
+                        recruiterList.innerHTML = '';
+
+                        users.forEach(user => {
+                            let avatar = user.avatar ? `/storage/${user.avatar}` : fallbackImage;
+
+                            const div = document.createElement('div');
+                            div.classList.add('chat-sidebar-single');
+                            div.setAttribute('data-id', user.id);
+                            div.setAttribute('data-name', user.first_name + ' ' + user.last_name);
+                            div.setAttribute('data-avatar', avatar);
+
+                            div.innerHTML = `
+                        <div class="img">
+                            <img src="${avatar}" alt="image" style="border-radius:100%; width:45px; height:45px; object-fit:cover;">
+                        </div>
+                        <div class="info">
+                            <h6 class="text-sm mb-1">${user.first_name ?? ''} ${user.last_name ?? ''}</h6>
+                            <p class="mb-0 text-xs">Available</p>
+                        </div>
+                    `;
+
+                            recruiterList.appendChild(div);
+                        });
+
+                        activateClickListener();
+                    })
+                    .catch(error => console.error("Recruiter Load Error: ", error));
+            }
+
+            loadRecruiters();
+
+
+            /* ============================================================
+                2. RECRUITER CLICK → OPEN CONVERSATION
+            ============================================================ */
+            function activateClickListener() {
+                recruiterList.querySelectorAll('.chat-sidebar-single').forEach(item => {
+
+                    item.addEventListener('click', async function() {
+
+                        activeUserId = this.dataset.id;
+
+                        selectedUserName.innerText = this.dataset.name;
+                        selectedUserAvatar.src = this.dataset.avatar;
+
+                        selectedUserInfo.classList.remove('d-none');
+
+                        // Step 1: Get or create conversation
+                        const response = await fetch(
+                            `/professional/chat/get-or-create/${activeUserId}`);
+                        const data = await response.json();
+
+                        conversationInput.value = data.conversation_id;
+
+                        // Step 2: Load Messages
+                        loadMessages();
+
+                        // Step 3: Start polling
+                        if (polling) clearInterval(polling);
+                        polling = setInterval(loadMessages, 2000);
+                    });
+                });
+            }
+
+
+            /* ============================================================
+                3. LOAD MESSAGES
+            ============================================================ */
+            function loadMessages() {
+
+                if (!conversationInput.value) return;
+
+                fetch(`/professional/chat/messages/${conversationInput.value}`)
+                    .then(res => res.json())
+                    .then(messages => {
+
+                        let html = '';
+
+                        messages.forEach(msg => {
+                            const myMessage = msg.sender_id == {{ auth()->id() }} ? 'my-message' :
+                                'other-message';
+
+                            html += `
+                        <div class="single-message ${myMessage}">
+                            <p>${msg.message}</p>
+                            <span class="msg-time">${msg.time}</span>
+                        </div>
+                    `;
+                        });
+
+                        chatMessagesBox.innerHTML = html;
+
+                        chatMessagesBox.scrollTop = chatMessagesBox.scrollHeight;
+                    });
+            }
+
+
+            /* ============================================================
+                4. SEND MESSAGE
+            ============================================================ */
+            messageForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                let message = chatMessageInput.value.trim();
+                if (!message) return;
+
+                let formData = new FormData(this);
+
+                fetch("{{ route('professional.chat.send') }}", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        chatMessageInput.value = '';
+
+                        loadMessages();
+                    });
+            });
+
+
+            /* ============================================================
+                5. SEARCH FILTER
+            ============================================================ */
+            searchInput.addEventListener('input', function() {
+                const search = this.value.toLowerCase();
+
+                recruiterList.querySelectorAll('.chat-sidebar-single').forEach(item => {
+                    const name = item.dataset.name.toLowerCase();
+                    item.style.display = name.includes(search) ? '' : 'none';
+                });
+            });
+
+        });
+    </script>
+@endpush

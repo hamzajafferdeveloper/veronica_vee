@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Professional\ChatController;
 use App\Http\Controllers\Professional\ProfessionalProfileController;
 use App\Http\Controllers\Professional\ProjectController;
 use Illuminate\Support\Facades\Route;
@@ -10,9 +11,11 @@ Route::prefix('professional')->middleware('role:professional')->name('profession
     })->name('dashboard');
 
     Route::prefix('/chat')->name('chat.')->group(function () {
-        Route::get('/index', function () {
-            return view('professional.chat.index');
-        })->name('index');
+        Route::get('/get-or-create/{userId}', [ChatController::class, 'getOrCreateConversation']);
+        Route::get('/messages/{receiver_id}', [ChatController::class, 'messages'])->name('messages');
+        Route::get('/index', [ChatController::class, 'index'])->name('index');
+        Route::get('/get-recuiter', [ChatController::class, 'getRecruiters'])->name('get-recuiters');
+        Route::post('/send', [ChatController::class, 'send'])->name('send');
     });
 
     Route::prefix('/projects')->name('project.')->group(function () {
