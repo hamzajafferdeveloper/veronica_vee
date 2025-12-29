@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Recruiter;
 
+use App\Events\MessageEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Conversation;
 use App\Models\ConversationParticipant;
@@ -81,20 +82,27 @@ class ChatController extends Controller
 
     public function send(Request $request)
     {
-        $request->validate([
-            'conversation_id' => 'required|exists:conversations,id',
-            'message' => 'required|string'
-        ]);
+        try {
+            $request->validate([
+                'conversation_id' => 'required|exists:conversations,id',
+                'message' => 'required|string'
+            ]);
 
-        $msg = Message::create([
-            'conversation_id' => $request->conversation_id,
-            'sender_id' => auth()->id(),
-            'message' => $request->message,
-        ]);
+            $msg = Message::create([
+                'conversation_id' => $request->conversation_id,
+                'sender_id' => auth()->id(),
+                'message' => $request->message,
+            ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => $msg
-        ]);
+            broadcast(new MessageEvent($msg))->toOthers();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => $msg
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error sending message: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to send message'], 500);
+        }
     }
 }

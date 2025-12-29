@@ -137,8 +137,37 @@
                     .then(data => {
                         activeConversationId = data.conversation_id;
                         updateURL(receiverId);
+                        ListenToConversation(activeConversationId);
                         loadMessages(activeConversationId);
                     });
+            }
+
+            function ListenToConversation(conversationId) {
+                window.Echo.channel(`conversation.${conversationId}`)
+                    .listen('.message.sent', (e) => {
+                        if (e.sender_id === AUTH_ID) return;
+                        addMessageToUI(e)
+                    })
+            }
+
+            function addMessageToUI(msg) {
+                const isMine = msg.sender_id == AUTH_ID;
+
+
+                const messageHTML = `
+                    <div class="chat-single-message ${isMine ? 'right' : 'left'}">
+                        ${!isMine ? `<img src="{{ asset('assets/images/user.png') }}" class="avatar-lg rounded-circle">` : ''}
+                        <div class="chat-message-content ${isMine ? 'bg-primary' : 'bg-info'}">
+                            <p class="mb-3">${msg.message}</p>
+                            <p class="chat-time mb-0">
+                                <span>${new Date(msg.created_at).toLocaleTimeString()}</span>
+                            </p>
+                        </div>
+                    </div>
+                `;
+
+                chatContainer.insertAdjacentHTML('beforeend', messageHTML);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
             }
 
             function loadMessages(conversationId) {
