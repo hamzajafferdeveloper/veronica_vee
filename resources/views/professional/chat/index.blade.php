@@ -24,24 +24,51 @@
             @include('recruiter.chat.partials.chat-messages')
 
             <!-- Chat Send Box -->
-            <form class="chat-message-box d-none" id="messageForm">
+            <form class="chat-message-box d-none p-1" id="messageForm"
+                style="
+                border-top:1px solid #e0e0e0;
+            ">
+
                 @csrf
-                <input type="text" name="chatMessage" style="padding: 10px" id="chatMessage" placeholder="Write message"
-                    autocomplete="off">
-                <input type="file" name="attachment" id="chatAttachment" style="display:none;">
-                <div class="chat-message-box-action">
-                    <button type="button" class="text-xl" title="Attach Image" id="attachBtn">
-                        <iconify-icon icon="solar:gallery-linear"></iconify-icon>
+
+                <div class="d-flex align-items-center gap-2 p-1 w-100"><!-- Attach -->
+                    <button type="button" id="attachBtn" class="btn  d-flex align-items-center justify-content-center"
+                        style="width:38px;height:38px;">
+                        <iconify-icon icon="openmoji:paperclip" style="font-size:26px;"></iconify-icon>
                     </button>
-                    <button type="submit"
-                        class="btn btn-sm btn-primary-600 radius-8 d-inline-flex align-items-center gap-1">
-                        Send
-                        <iconify-icon icon="f7:paperplane"></iconify-icon>
+                    <input type="file" name="attachment" id="chatAttachment" style="display:none;">
+
+                    <!-- Message box -->
+                    <textarea name="chatMessage" id="chatMessage" rows="1" placeholder="Type a message" autocomplete="off"
+                        class="flex-grow-1 pt-1 px-3"
+                        style="
+                    border-radius:4px !important;
+                    border:1px solid #d8dadd;
+                    background:#f0f2f5;
+                    outline:none;
+                    font-size:14px;
+                    overflow-y:auto;
+                "></textarea>
+
+                    <!-- Send -->
+                    <button type="submit" class="btn d-flex align-items-center justify-content-center"
+                        style="
+                    width:35px;
+                    height:35px;
+                    background:#0d6efd;
+                    color:#fff;
+                ">
+                        <iconify-icon icon="f7:paperplane" style="font-size:18px;"></iconify-icon>
                     </button>
                 </div>
+
+                <text id="selectedImagePreview" class="px-3"></text>
+
             </form>
         </div>
     </div>
+
+
 @endsection
 
 @push('script')
@@ -64,10 +91,42 @@
 
             const attachBtn = document.getElementById('attachBtn');
             const chatAttachment = document.getElementById('chatAttachment');
+            const selectedImagePreview = document.getElementById('selectedImagePreview');
+
+            const sendButton = messageForm.querySelector('button[type="submit"]');
 
             attachBtn.addEventListener('click', () => {
                 chatAttachment.click();
             });
+
+            chatAttachment.addEventListener('change', () => {
+                if (chatAttachment.files.length > 0) {
+                    let fileName = chatAttachment.files[0].name;
+
+                    // Truncate filename if longer than 20 characters
+                    const maxLength = 20;
+                    if (fileName.length > maxLength) {
+                        const ext = fileName.split('.').pop();
+                        const nameWithoutExt = fileName.substring(0, fileName.length - ext.length - 1);
+                        fileName = nameWithoutExt.substring(0, maxLength - ext.length - 3) + '….' + ext;
+                    }
+
+                    selectedImagePreview.innerHTML = `
+            <span style="display:inline-block; margin-right:8px;" title="${chatAttachment.files[0].name}">${fileName}</span>
+            <button type="button" id="removeAttachment" style="padding:2px 5px; font-size:12px;">Remove</button>
+        `;
+
+                    const removeBtn = document.getElementById('removeAttachment');
+                    removeBtn.addEventListener('click', () => {
+                        chatAttachment.value = '';
+                        selectedImagePreview.textContent = '';
+                    });
+                } else {
+                    selectedImagePreview.textContent = '';
+                }
+            });
+
+
             // Load professionals in sidebar
             function loadProfessionals() {
                 fetch("{{ route('professional.chat.get-recuiters') }}")
@@ -84,15 +143,14 @@
                             div.dataset.avatar = user.model?.avatar ? '/storage/' + user.model.avatar :
                                 '{{ asset('assets/images/user.png') }}';
 
-
                             div.innerHTML = `
-                                <div class="img">
-                                    <img src="${div.dataset.avatar}" class="rounded-full" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
-                                </div>
-                                <div class="info">
-                                    <h6 class="text-sm mb-1">${div.dataset.name}</h6>
-                                </div>
-                            `;
+                        <div class="img">
+                            <img src="${div.dataset.avatar}" class="rounded-full" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
+                        </div>
+                        <div class="info">
+                            <h6 class="text-sm mb-1">${div.dataset.name}</h6>
+                        </div>
+                    `;
 
                             div.addEventListener('click', function() {
                                 activeReceiverId = this.dataset.userId;
@@ -110,14 +168,10 @@
                         // Auto-load conversation if URL has receiverId
                         const urlParts = window.location.pathname.split('/');
                         const receiverIdFromURL = parseInt(urlParts[urlParts.length - 1]);
-
                         if (receiverIdFromURL) {
                             const userElement = Array.from(professionalList.children)
                                 .find(el => parseInt(el.dataset.userId) === receiverIdFromURL);
-
-                            if (userElement) {
-                                userElement.click();
-                            }
+                            if (userElement) userElement.click();
                         }
                     });
             }
@@ -152,32 +206,46 @@
             function ListenToConversation(conversationId) {
                 window.Echo.channel(`conversation.${conversationId}`)
                     .listen('.message.sent', (e) => {
-                        is_mine = e.sender_id == AUTH_ID;
+                        const is_mine = e.sender_id == AUTH_ID;
                         addMessageToUI(is_mine, e)
-                    })
+                    });
             }
 
             function addMessageToUI(is_mine, message) {
-                const messageHTML = `
-                    <div class="chat-single-message d-flex mb-2 ${is_mine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
+                let attachmentHTML = '';
 
+                if (message.attachment) {
+                    const fileUrl = `/storage/${message.attachment}`;
+                    const fileName = message.attachment_name ?? 'Attachment';
+                    const fileType = message.attachment_type || '';
 
-                        <div class="chat-message-content p-1 px-3 rounded-3 position-relative"
-                            style="
-                                max-width: 70%;
-                                background-color: ${is_mine ? '#DCF8C6' : '#F0F0F0'};
-                                color: #2c2c2c;
-                                word-break: break-word;
-                                box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-                            "
-                        >
-                            <p class="mb-1" style="margin:0; color:#2c2c2c;">${message.message}</p>
-                            <span class="chat-time d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
-                                ${new Date(message.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', hour12: true })}
-                            </span>
+                    if (fileType.startsWith('image')) {
+                        attachmentHTML = `
+                    <div class="mt-1">
+                        <img src="${fileUrl}" alt="${fileName}" onclick="window.open('${fileUrl}', '_blank')" style="max-width:220px; border-radius:8px; display:block;">
+                    </div>
+                `;
+                    } else {
+                        attachmentHTML = `
+                    <div class="d-flex align-items-center mt-1 p-2 rounded" style="border:1px solid #e0e0e0;">
+                        <span style="font-size:20px;margin-right:8px;"><iconify-icon icon="openmoji:paperclip" style="font-size:26px;"></iconify-icon></span>
+                        <div style="flex:1;">
+                            <a href="${fileUrl}" target="_blank" style="font-size:0.8rem; color:#333; text-decoration:none;">${fileName}</a>
                         </div>
                     </div>
                 `;
+                    }
+                }
+
+                const messageHTML = `
+            <div class="chat-single-message d-flex mb-2 ${is_mine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
+                <div class="chat-message-content p-2 px-3 rounded-3 position-relative" style="max-width:70%; background-color:${is_mine ? '#DCF8C6' : '#F0F0F0'}; color:#2c2c2c; word-break:break-word; box-shadow:0 1px 1px rgba(0,0,0,0.1);">
+                    ${message.message ? `<p class="mb-1 px-3" style="margin:0; color:#2c2c2c;">${message.message}</p>` : ''}
+                    <div class="px-3">${attachmentHTML}</div>
+                    <span class="chat-time px-3 d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">${new Date(message.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', hour12:true }).toUpperCase()}</span>
+                </div>
+            </div>
+        `;
                 chatContainer.insertAdjacentHTML('beforeend', messageHTML);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
@@ -216,7 +284,13 @@
                 formData.append('message', message);
                 if (file) formData.append('attachment', file);
 
-                fetch("{{ route('recruiter.chat.send') }}", {
+                // Show loading
+                const originalContent = sendButton.innerHTML;
+                sendButton.disabled = true;
+                sendButton.innerHTML =
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
+
+                fetch("{{ route('professional.chat.send') }}", {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
@@ -225,10 +299,15 @@
                     })
                     .then(res => res.json())
                     .then(data => {
-                        addMessageToUI(data.sender_id == AUTH_ID, data); // your existing UI function
                         chatInput.value = '';
-                        chatAttachment.value = ''; // reset file input
+                        chatAttachment.value = '';
+                        selectedImagePreview.textContent = '';
                         chatContainer.scrollTop = chatContainer.scrollHeight;
+                    })
+                    .finally(() => {
+                        // Restore button
+                        sendButton.disabled = false;
+                        sendButton.innerHTML = originalContent;
                     });
             });
 

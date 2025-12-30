@@ -45,9 +45,14 @@ class ChatController extends Controller
                 ->get()
                 ->map(fn($msg) => [
                     'id' => $msg->id,
-                    'message' => $msg->message,
                     'sender_id' => $msg->sender_id,
-                    'created_at' => $msg->created_at,
+                    'message' => $msg->message,
+                    'attachment' => $msg->attachment,
+                    'attachment_name' => $msg->attachment_name,
+                    'attachment_extension' => $msg->attachment_extension,
+                    'attachment_type' => $msg->attachment_type,
+                    'attachment_size' => $msg->attachment_size,
+                    'created_at' => $msg->created_at->toDateTimeString(),
                 ]);
 
             return response()->json($messages);
