@@ -81,14 +81,30 @@ class ChatController extends Controller
         try {
             $request->validate([
                 'conversation_id' => 'required|exists:conversations,id',
-                'message' => 'required|string',
+                'message' => 'nullable|string', // message can be empty if attachment is sent
+                'attachment' => 'nullable|file|max:10240', // max 10MB, adjust as needed
             ]);
 
-            $msg = Message::create([
+            $attachmentData = null;
+
+            if ($request->hasFile('attachment')) {
+                $file = $request->file('attachment');
+                $path = $file->store('attachments', 'public'); // store in storage/app/public/attachments
+
+                $attachmentData = [
+                    'attachment' => $path,
+                    'attachment_name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                    'attachment_extension' => $file->getClientOriginalExtension(),
+                    'attachment_type' => $file->getMimeType(),
+                    'attachment_size' => $file->getSize(),
+                ];
+            }
+
+            $msg = Message::create(array_merge([
                 'conversation_id' => $request->conversation_id,
                 'sender_id' => auth()->id(),
                 'message' => $request->message,
-            ]);
+            ], $attachmentData ?? []));
 
             broadcast(new MessageEvent($msg))->toOthers();
 
@@ -98,4 +114,5 @@ class ChatController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 }
