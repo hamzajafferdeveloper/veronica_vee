@@ -53,7 +53,7 @@ class ChatController extends Controller
                         'id' => $msg->id,
                         'message' => $msg->message,
                         'sender_id' => $msg->sender_id,
-                        'time' => $msg->created_at->format('h:i A'),
+                        'created_at' => $msg->created_at,
                     ];
                 });
 

@@ -28,8 +28,9 @@
                 @csrf
                 <input type="text" name="chatMessage" style="padding: 10px" id="chatMessage" placeholder="Write message"
                     autocomplete="off">
+                <input type="file" name="attachment" id="chatAttachment" style="display:none;">
                 <div class="chat-message-box-action">
-                    <button type="button" class="text-xl" title="Attach Image">
+                    <button type="button" class="text-xl" title="Attach Image" id="attachBtn">
                         <iconify-icon icon="solar:gallery-linear"></iconify-icon>
                     </button>
                     <button type="submit"
@@ -61,6 +62,12 @@
             const headerEmail = document.getElementById('headerEmail');
             const headerAvatar = document.getElementById('headerAvatar');
 
+            const attachBtn = document.getElementById('attachBtn');
+            const chatAttachment = document.getElementById('chatAttachment');
+
+            attachBtn.addEventListener('click', () => {
+                chatAttachment.click();
+            });
             // Load professionals in sidebar
             function loadProfessionals() {
                 fetch("{{ route('professional.chat.get-recuiters') }}")
@@ -145,36 +152,32 @@
             function ListenToConversation(conversationId) {
                 window.Echo.channel(`conversation.${conversationId}`)
                     .listen('.message.sent', (e) => {
-                        // if (e.sender_id === AUTH_ID) return;
-                        addMessageToUI(e)
+                        is_mine = e.sender_id == AUTH_ID;
+                        addMessageToUI(is_mine, e)
                     })
             }
 
-            function addMessageToUI(msg) {
-                const isMine = msg.sender_id == AUTH_ID;
-
+            function addMessageToUI(is_mine, message) {
                 const messageHTML = `
-                    <div class="chat-single-message d-flex mb-2 ${isMine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
+                    <div class="chat-single-message d-flex mb-2 ${is_mine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
 
 
                         <div class="chat-message-content p-1 px-3 rounded-3 position-relative"
                             style="
                                 max-width: 70%;
-                                background-color: ${isMine ? '#DCF8C6' : '#F0F0F0'};
+                                background-color: ${is_mine ? '#DCF8C6' : '#F0F0F0'};
                                 color: #2c2c2c;
                                 word-break: break-word;
                                 box-shadow: 0 1px 1px rgba(0,0,0,0.1);
                             "
                         >
-                            <p class="mb-1" style="margin:0; color:#2c2c2c;">${msg.message}</p>
+                            <p class="mb-1" style="margin:0; color:#2c2c2c;">${message.message}</p>
                             <span class="chat-time d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
-                                ${new Date(msg.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' })}
+                                ${new Date(message.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', hour12: true })}
                             </span>
                         </div>
                     </div>
                 `;
-
-
                 chatContainer.insertAdjacentHTML('beforeend', messageHTML);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
@@ -189,26 +192,8 @@
                     .then(messages => {
                         chatContainer.innerHTML = '';
                         messages.forEach(msg => {
-                            const messageHTML = `
-                                <div class="chat-single-message d-flex mb-2 ${msg.sender_id == AUTH_ID ? 'justify-content-end' : 'justify-content-start'} align-items-end">
-                                    <!-- Chat bubble -->
-                                    <div class="chat-message-content p-1 px-3 rounded-3 position-relative"
-                                        style="
-                                            max-width: 70%;
-                                            background-color: ${msg.sender_id == AUTH_ID ? '#DCF8C6' : '#FFFFFF'};
-                                            color: #2c2c2c;
-                                            word-break: break-word;
-                                            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-                                        "
-                                    >
-                                        <p class="mb-1" style="margin:0;">${msg.message}</p>
-                                        <span class="chat-time d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
-                                            ${msg.time}
-                                        </span>
-                                    </div>
-                                </div>
-                            `;
-                            chatContainer.insertAdjacentHTML('beforeend', messageHTML);
+                            const is_mine = msg.sender_id == AUTH_ID;
+                            addMessageToUI(is_mine, msg);
                         });
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                     });
@@ -221,23 +206,29 @@
             messageForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const message = chatInput.value.trim();
-                if (!message || !activeConversationId) return;
+                const file = chatAttachment.files[0];
 
-                fetch("{{ route('professional.chat.send') }}", {
+                if (!message && !file) return;
+                if (!activeConversationId) return;
+
+                const formData = new FormData();
+                formData.append('conversation_id', activeConversationId);
+                formData.append('message', message);
+                if (file) formData.append('attachment', file);
+
+                fetch("{{ route('recruiter.chat.send') }}", {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
                         },
-                        body: JSON.stringify({
-                            message,
-                            conversation_id: activeConversationId
-                        })
+                        body: formData
                     })
                     .then(res => res.json())
-                    .then(() => {
-                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    .then(data => {
+                        addMessageToUI(data.sender_id == AUTH_ID, data); // your existing UI function
                         chatInput.value = '';
+                        chatAttachment.value = ''; // reset file input
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
                     });
             });
 
