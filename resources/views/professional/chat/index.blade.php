@@ -77,14 +77,15 @@
                             div.dataset.avatar = user.model?.avatar ? '/storage/' + user.model.avatar :
                                 '{{ asset('assets/images/user.png') }}';
 
+
                             div.innerHTML = `
-                        <div class="img">
-                            <img src="${div.dataset.avatar}" class="rounded-full" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
-                        </div>
-                        <div class="info">
-                            <h6 class="text-sm mb-1">${div.dataset.name}</h6>
-                        </div>
-                    `;
+                                <div class="img">
+                                    <img src="${div.dataset.avatar}" class="rounded-full" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
+                                </div>
+                                <div class="info">
+                                    <h6 class="text-sm mb-1">${div.dataset.name}</h6>
+                                </div>
+                            `;
 
                             div.addEventListener('click', function() {
                                 activeReceiverId = this.dataset.userId;
@@ -144,7 +145,7 @@
             function ListenToConversation(conversationId) {
                 window.Echo.channel(`conversation.${conversationId}`)
                     .listen('.message.sent', (e) => {
-                        if (e.sender_id === AUTH_ID) return;
+                        // if (e.sender_id === AUTH_ID) return;
                         addMessageToUI(e)
                     })
             }
@@ -152,16 +153,9 @@
             function addMessageToUI(msg) {
                 const isMine = msg.sender_id == AUTH_ID;
 
-
                 const messageHTML = `
                     <div class="chat-single-message d-flex mb-2 ${isMine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
-                        ${!isMine ? `
-                                        <img
-                                            src="{{ asset('assets/images/user.png') }}"
-                                            class="rounded-circle me-2"
-                                            style="width:36px; height:36px; object-fit:cover;"
-                                        >
-                                    ` : ''}
+
 
                         <div class="chat-message-content p-1 px-3 rounded-3 position-relative"
                             style="
@@ -197,16 +191,6 @@
                         messages.forEach(msg => {
                             const messageHTML = `
                                 <div class="chat-single-message d-flex mb-2 ${msg.sender_id == AUTH_ID ? 'justify-content-end' : 'justify-content-start'} align-items-end">
-
-                                    <!-- Avatar for received messages -->
-                                    ${msg.sender_id != AUTH_ID ? `
-                                                            <img
-                                                                src="{{ asset('assets/images/user.png') }}"
-                                                                class="rounded-circle me-2"
-                                                                style="width:36px; height:36px; object-fit:cover;"
-                                                            >
-                                                        ` : ''}
-
                                     <!-- Chat bubble -->
                                     <div class="chat-message-content p-1 px-3 rounded-3 position-relative"
                                         style="
@@ -252,9 +236,6 @@
                     })
                     .then(res => res.json())
                     .then(() => {
-                        addMessageToUI({
-                            message,
-                        });
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                         chatInput.value = '';
                     });

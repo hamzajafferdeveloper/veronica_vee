@@ -59,8 +59,6 @@
             const headerEmail = document.getElementById('headerEmail');
             const headerAvatar = document.getElementById('headerAvatar');
 
-
-
             // Load professionals in sidebar
             function loadProfessionals() {
 
@@ -149,7 +147,7 @@
             function ListenToConversation(conversationId) {
                 window.Echo.channel(`conversation.${conversationId}`)
                     .listen('.message.sent', (e) => {
-                        if (e.sender_id === AUTH_ID) return;
+                        // if (e.sender_id === AUTH_ID) return;
                         addMessageToUI(e)
                     })
             }
@@ -158,16 +156,7 @@
                 const isMine = msg.sender_id == AUTH_ID;
 
                 const messageHTML = `
-                    <div class="chat-single-message d-flex mb-2 ${isMine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
-
-                        <!-- Avatar for received messages -->
-                        ${!isMine ? `
-                                        <img
-                                            src="{{ asset('assets/images/user.png') }}"
-                                            class="rounded-circle me-2"
-                                            style="width:36px; height:36px; object-fit:cover;"
-                                        >
-                                    ` : ''}
+                    <div class="chat-single-message d-flex mb-2 ${msg.sender_id == AUTH_ID ? 'justify-content-end' : 'justify-content-start'} align-items-end">
 
                         <!-- Chat Bubble -->
                         <div class="chat-message-content p-1 px-3 rounded-3 position-relative"
@@ -204,15 +193,6 @@
                         messages.forEach(msg => {
                             const messageHTML = `
                                 <div class="chat-single-message d-flex mb-2 ${msg.sender_id == AUTH_ID ? 'justify-content-end' : 'justify-content-start'} align-items-end">
-
-                                    <!-- Avatar for received messages -->
-                                    ${msg.sender_id != AUTH_ID ? `
-                                                            <img
-                                                                src="{{ asset('assets/images/user.png') }}"
-                                                                class="rounded-circle me-2"
-                                                                style="width:36px; height:36px; object-fit:cover;"
-                                                            >
-                                                        ` : ''}
 
                                     <!-- Chat bubble -->
                                     <div class="chat-message-content p-1 px-3 rounded-3 position-relative"
@@ -259,9 +239,6 @@
                     })
                     .then(res => res.json())
                     .then(() => {
-                        addMessageToUI({
-                            message,
-                        });
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                         chatInput.value = '';
                     });

@@ -64,7 +64,12 @@ class ChatController extends Controller
     public function getRecruiters()
     {
         try {
-            return response()->json(User::role('recruiter')->with('recruiter')->get());
+
+            $recruiters = User::role('recruiter')->with('recruiter')->get();
+
+            // dd($recruiters);
+
+            return response()->json($recruiters);
         } catch (\Exception $e) {
             Log::error('Error getting recruiters: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
