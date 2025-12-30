@@ -11,7 +11,12 @@ class Message extends Model
         'sender_id',
         'message',
         'file',
-        'seen_at'
+        'seen_at',
+        'attachment',
+        'attachment_name',
+        'attachment_extension',
+        'attachment_type',
+        'attachment_size',
     ];
 
     public function conversation()
