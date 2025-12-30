@@ -78,14 +78,13 @@
                                 '{{ asset('assets/images/user.png') }}';
 
                             div.innerHTML = `
-                        <div class="img">
-                            <img src="${div.dataset.avatar}" class="rounded-full" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
-                        </div>
-                        <div class="info">
-                            <h6 class="text-sm mb-1">${div.dataset.name}</h6>
-                            <p class="mb-0 text-xs">Available</p>
-                        </div>
-                    `;
+                                <div class="img">
+                                    <img src="${div.dataset.avatar}" class="rounded-full" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
+                                </div>
+                                <div class="info">
+                                    <h6 class="text-sm mb-1">${div.dataset.name}</h6>
+                                </div>
+                            `;
 
                             div.addEventListener('click', function() {
                                 activeReceiverId = this.dataset.userId;
@@ -159,16 +158,35 @@
                 const isMine = msg.sender_id == AUTH_ID;
 
                 const messageHTML = `
-                    <div class="chat-single-message ${isMine ? 'right' : 'left'}">
-                        ${!isMine ? `<img src="{{ asset('assets/images/user.png') }}" class="avatar-lg rounded-circle">` : ''}
-                        <div class="chat-message-content ${isMine ? 'bg-primary' : 'bg-info'}">
-                            <p class="mb-3">${msg.message}</p>
-                            <p class="chat-time mb-0">
-                                <span>${new Date(msg.created_at).toLocaleTimeString()}</span>
-                            </p>
+                    <div class="chat-single-message d-flex mb-2 ${isMine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
+
+                        <!-- Avatar for received messages -->
+                        ${!isMine ? `
+                                        <img
+                                            src="{{ asset('assets/images/user.png') }}"
+                                            class="rounded-circle me-2"
+                                            style="width:36px; height:36px; object-fit:cover;"
+                                        >
+                                    ` : ''}
+
+                        <!-- Chat Bubble -->
+                        <div class="chat-message-content p-1 px-3 rounded-3 position-relative"
+                            style="
+                                max-width: 70%;
+                                background-color: ${isMine ? '#DCF8C6' : '#F0F0F0'};
+                                color: #2c2c2c;
+                                word-break: break-word;
+                                box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+                            "
+                        >
+                            <p class="mb-1" style="margin:0; color:#2c2c2c;">${msg.message}</p>
+                            <span class="chat-time d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
+                                ${new Date(msg.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' })}
+                            </span>
                         </div>
                     </div>
-                `;
+`;
+
 
                 chatContainer.insertAdjacentHTML('beforeend', messageHTML);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -185,14 +203,34 @@
                         chatContainer.innerHTML = '';
                         messages.forEach(msg => {
                             const messageHTML = `
-                        <div class="chat-single-message ${msg.sender_id == AUTH_ID ? 'right' : 'left'}">
-                            ${msg.sender_id != AUTH_ID ? `<img src="{{ asset('assets/images/user.png') }}" class="avatar-lg rounded-circle">` : ''}
-                            <div class="chat-message-content ${msg.sender_id == AUTH_ID ? 'bg-primary ' : 'bg-info'}">
-                                <p class="chat-text mb-3">${msg.message}</p>
-                                <p class="chat-time mb-0"><span>${msg.time}</span></p>
-                            </div>
-                        </div>
-                    `;
+                                <div class="chat-single-message d-flex mb-2 ${msg.sender_id == AUTH_ID ? 'justify-content-end' : 'justify-content-start'} align-items-end">
+
+                                    <!-- Avatar for received messages -->
+                                    ${msg.sender_id != AUTH_ID ? `
+                                                            <img
+                                                                src="{{ asset('assets/images/user.png') }}"
+                                                                class="rounded-circle me-2"
+                                                                style="width:36px; height:36px; object-fit:cover;"
+                                                            >
+                                                        ` : ''}
+
+                                    <!-- Chat bubble -->
+                                    <div class="chat-message-content p-1 px-3 rounded-3 position-relative"
+                                        style="
+                                            max-width: 70%;
+                                            background-color: ${msg.sender_id == AUTH_ID ? '#DCF8C6' : '#FFFFFF'};
+                                            color: #2c2c2c;
+                                            word-break: break-word;
+                                            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+                                        "
+                                    >
+                                        <p class="mb-1" style="margin:0;">${msg.message}</p>
+                                        <span class="chat-time d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
+                                            ${msg.time}
+                                        </span>
+                                    </div>
+                                </div>
+                            `;
                             chatContainer.insertAdjacentHTML('beforeend', messageHTML);
                         });
                         chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -221,14 +259,9 @@
                     })
                     .then(res => res.json())
                     .then(() => {
-                        chatContainer.insertAdjacentHTML('beforeend', `
-                <div class="chat-single-message right">
-                    <div class="chat-message-content">
-                        <p class="mb-3">${message}</p>
-                        <p class="chat-time mb-0"><span>now</span></p>
-                    </div>
-                </div>
-            `);
+                        addMessageToUI({
+                            message,
+                        });
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                         chatInput.value = '';
                     });
