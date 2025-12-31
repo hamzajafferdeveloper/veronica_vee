@@ -38,4 +38,9 @@ class ProjectService
             'trend' => $percentage >= 0 ? 'up' : 'down',
         ];
     }
+
+    public static function getLatestProjects(int $limit = 5)
+    {
+        return Project::latest()->take($limit)->get();
+    }
 }
