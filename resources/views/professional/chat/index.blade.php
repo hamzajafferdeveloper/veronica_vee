@@ -27,7 +27,7 @@
             <form class="chat-message-box d-none p-1" id="messageForm"
                 style="
                 border-top:1px solid #e0e0e0;
-            ">
+            " enctype="multipart/form-data">
 
                 @csrf
 
@@ -220,35 +220,63 @@
                     const fileType = message.attachment_type || '';
 
                     if (fileType.startsWith('image')) {
+                        // Image preview
                         attachmentHTML = `
-                    <div class="mt-1">
-                        <img src="${fileUrl}" alt="${fileName}" onclick="window.open('${fileUrl}', '_blank')" style="max-width:220px; border-radius:8px; display:block;">
-                    </div>
-                `;
+                <div class="mt-1">
+                    <img src="${fileUrl}" alt="${fileName}" onclick="window.open('${fileUrl}', '_blank')" style="max-width:220px; border-radius:8px; display:block;">
+                </div>
+            `;
+                    } else if (fileType.startsWith('audio')) {
+                        // Audio player
+                        attachmentHTML = `
+                <div class="mt-1">
+                    <audio controls style="width:100%;">
+                        <source src="${fileUrl}" type="${fileType}">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            `;
+                    } else if (fileType.startsWith('video')) {
+                        // Video player
+                        attachmentHTML = `
+                <div class="mt-1">
+                    <video controls style="max-width:220px; border-radius:8px;">
+                        <source src="${fileUrl}" type="${fileType}">
+                        Your browser does not support the video element.
+                    </video>
+                </div>
+            `;
                     } else {
+                        // Other files
                         attachmentHTML = `
-                    <div class="d-flex align-items-center mt-1 p-2 rounded" style="border:1px solid #e0e0e0;">
-                        <span style="font-size:20px;margin-right:8px;"><iconify-icon icon="openmoji:paperclip" style="font-size:26px;"></iconify-icon></span>
-                        <div style="flex:1;">
-                            <a href="${fileUrl}" target="_blank" style="font-size:0.8rem; color:#333; text-decoration:none;">${fileName}</a>
-                        </div>
+                <div class="d-flex align-items-center mt-1 p-2 rounded" style="border:1px solid #e0e0e0;">
+                    <span style="font-size:20px;margin-right:8px;">
+                        <iconify-icon icon="openmoji:paperclip" style="font-size:26px;"></iconify-icon>
+                    </span>
+                    <div style="flex:1;">
+                        <a href="${fileUrl}" target="_blank" style="font-size:0.8rem; color:#333; text-decoration:none;">${fileName}</a>
                     </div>
-                `;
+                </div>
+            `;
                     }
                 }
 
                 const messageHTML = `
-            <div class="chat-single-message d-flex mb-2 ${is_mine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
-                <div class="chat-message-content p-2 px-3 rounded-3 position-relative" style="max-width:70%; background-color:${is_mine ? '#DCF8C6' : '#F0F0F0'}; color:#2c2c2c; word-break:break-word; box-shadow:0 1px 1px rgba(0,0,0,0.1);">
-                    ${message.message ? `<p class="mb-1 px-3" style="margin:0; color:#2c2c2c;">${message.message}</p>` : ''}
-                    <div class="px-3">${attachmentHTML}</div>
-                    <span class="chat-time px-3 d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">${new Date(message.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', hour12:true }).toUpperCase()}</span>
-                </div>
+        <div class="chat-single-message d-flex mb-2 ${is_mine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
+            <div class="chat-message-content p-2 px-3 rounded-3 position-relative" style="max-width:70%; background-color:${is_mine ? '#DCF8C6' : '#F0F0F0'}; color:#2c2c2c; word-break:break-word; box-shadow:0 1px 1px rgba(0,0,0,0.1);">
+                ${message.message ? `<p class="mb-1 px-3" style="margin:0; color:#2c2c2c;">${message.message}</p>` : ''}
+                <div class="px-3">${attachmentHTML}</div>
+                <span class="chat-time px-3 d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
+                    ${new Date(message.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', hour12:true }).toUpperCase()}
+                </span>
             </div>
-        `;
+        </div>
+    `;
+
                 chatContainer.insertAdjacentHTML('beforeend', messageHTML);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
+
 
             function loadMessages(conversationId) {
                 fetch(`/professional/chat/messages/${conversationId}`, {
@@ -273,8 +301,11 @@
 
             messageForm.addEventListener('submit', function(e) {
                 e.preventDefault();
+
                 const message = chatInput.value.trim();
                 const file = chatAttachment.files[0];
+
+                console.log(file);
 
                 if (!message && !file) return;
                 if (!activeConversationId) return;
@@ -283,6 +314,7 @@
                 formData.append('conversation_id', activeConversationId);
                 formData.append('message', message);
                 if (file) formData.append('attachment', file);
+                formData.append('_token', document.querySelector('input[name="_token"]').value);
 
                 // Show loading
                 const originalContent = sendButton.innerHTML;
@@ -292,9 +324,6 @@
 
                 fetch("{{ route('professional.chat.send') }}", {
                         method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                        },
                         body: formData
                     })
                     .then(res => res.json())
@@ -304,8 +333,8 @@
                         selectedImagePreview.textContent = '';
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                     })
+                    .catch(err => console.error(err))
                     .finally(() => {
-                        // Restore button
                         sendButton.disabled = false;
                         sendButton.innerHTML = originalContent;
                     });

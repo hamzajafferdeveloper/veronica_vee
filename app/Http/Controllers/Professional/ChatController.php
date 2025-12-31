@@ -84,17 +84,29 @@ class ChatController extends Controller
     public function send(Request $request)
     {
         try {
+            \Log::info('Send request received', $request->all());
+
             $request->validate([
                 'conversation_id' => 'required|exists:conversations,id',
-                'message' => 'nullable|string', // message can be empty if attachment is sent
-                'attachment' => 'nullable|file|max:10240', // max 10MB, adjust as needed
+                'message' => 'nullable|string',
+                'attachment' => 'nullable|file|max:10240',
             ]);
+
+            \Log::info('Request validated');
 
             $attachmentData = null;
 
             if ($request->hasFile('attachment')) {
+                \Log::info('File found in request', [
+                    'file_name' => $request->file('attachment')->getClientOriginalName(),
+                    'file_size' => $request->file('attachment')->getSize(),
+                    'file_type' => $request->file('attachment')->getMimeType(),
+                ]);
+
                 $file = $request->file('attachment');
-                $path = $file->store('attachments', 'public'); // store in storage/app/public/attachments
+                $path = $file->store('attachments', 'public');
+
+                \Log::info('File stored at: ' . $path);
 
                 $attachmentData = [
                     'attachment' => $path,
@@ -105,17 +117,27 @@ class ChatController extends Controller
                 ];
             }
 
-            $msg = Message::create(array_merge([
+            $messageData = [
                 'conversation_id' => $request->conversation_id,
                 'sender_id' => auth()->id(),
                 'message' => $request->message,
-            ], $attachmentData ?? []));
+            ];
+
+            if ($attachmentData) {
+                $messageData = array_merge($messageData, $attachmentData);
+            }
+
+            \Log::info('Creating message with data:', $messageData);
+            $msg = Message::create($messageData);
+
+            \Log::info('Message created:', $msg->toArray());
 
             broadcast(new MessageEvent($msg))->toOthers();
 
             return response()->json(['status' => 'success', 'message' => $msg]);
         } catch (\Exception $e) {
-            Log::error('Error sending message: ' . $e->getMessage());
+            \Log::error('Error in ChatController@send: ' . $e->getMessage());
+            \Log::error($e->getTraceAsString());
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
