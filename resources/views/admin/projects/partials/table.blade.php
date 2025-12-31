@@ -2,7 +2,8 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Project Title</th>
+            <th>Image</th>
+            <th>Title</th>
             <th>Category</th>
             <th>Budget</th>
             <th>Deadline</th>
@@ -16,6 +17,9 @@
         @forelse ($projects as $project)
             <tr>
                 <td>{{ $loop->iteration + ($projects->currentPage() - 1) * $projects->perPage() }}</td>
+                <td>
+                    <img src="{{ asset($project->image ? 'storage/' . $project->image : 'assets/images/placeholder-1.jpg') }}"
+                        alt="Project Image" class="w-60-px h-40-px rounded object-fit-cover">
                 <td>{{ $project->title }}</td>
                 <td>{{ $project->category->name ?? '-' }}</td>
                 <td>${{ $project->budget }}</td>

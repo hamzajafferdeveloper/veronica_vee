@@ -6,7 +6,7 @@
 
     <div class="card basic-data-table">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">All Projects</h5>
+            <h5 class="card-title mb-0">All Professionals</h5>
             {{-- <a href="{{ route('recruiter.project.create') }}" class="btn btn-primary d-flex gap-2 align-items-center">
                 <iconify-icon icon="icons8:plus"></iconify-icon> Create New
             </a> --}}
@@ -15,13 +15,13 @@
         <div class="card-body">
 
             {{-- Filters --}}
-            <form method="GET" id="filterForm" action="{{ route('admin.projects.index') }}"
+            <form method="GET" id="filterForm" action="{{ route('admin.recruiters.index') }}"
                 class="row align-items-center mb-3 gy-2 gx-2">
 
                 {{-- LEFT SIDE: SEARCH --}}
                 <div class="col-12 col-md-4">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search projects..."
-                        class="form-control form-control-sm shadow-sm">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Search professionals..." class="form-control form-control-sm shadow-sm">
                 </div>
 
                 {{-- RIGHT SIDE: FILTERS --}}
@@ -41,9 +41,10 @@
                         {{-- Sort By --}}
                         <select name="sort_by" class="custom-select-sm border shadow-sm py-1 px-3">
                             <option value="id" {{ request('sort_by') == 'id' ? 'selected' : '' }}>ID</option>
-                            <option value="title" {{ request('sort_by') == 'title' ? 'selected' : '' }}>Title</option>
-                            <option value="budget" {{ request('sort_by') == 'budget' ? 'selected' : '' }}>Budget</option>
-                            <option value="deadline" {{ request('sort_by') == 'deadline' ? 'selected' : '' }}>Deadline
+                            <option value="phone" {{ request('sort_by') == 'phone' ? 'selected' : '' }}>Phone</option>
+                            <option value="address" {{ request('sort_by') == 'address' ? 'selected' : '' }}>Address</option>
+                            <option value="created_at" {{ request('sort_by') == 'created_at' ? 'selected' : '' }}>
+                                Registered On
                             </option>
                         </select>
 
@@ -61,7 +62,7 @@
 
             {{-- Data Table --}}
             <div id="projectTable">
-                @include('admin.projects.partials.table', ['projects' => $projects])
+                @include('admin.recruiter.partials.table', ['recruiters' => $recruiters])
             </div>
 
         </div>
@@ -88,7 +89,7 @@
             let typingTimer;
             let debounceDelay = 500;
 
-            function loadTable(url = "{{ route('admin.projects.index') }}") {
+            function loadTable(url = "{{ route('admin.recruiters.index') }}") {
                 $.ajax({
                     url: url,
                     type: "GET",
@@ -132,4 +133,3 @@
         });
     </script>
 @endpush
-
