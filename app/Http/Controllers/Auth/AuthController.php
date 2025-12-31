@@ -24,10 +24,21 @@ class AuthController extends Controller
         try {
             $credentials = $request->only('email', 'password');
 
-            if (Auth::attempt($credentials, $request->boolean('remember'))) {
-                $request->session()->regenerate();
 
+
+            if (Auth::attempt($credentials, $request->boolean('remember'))) {
                 $user = Auth::user();
+
+                if ($user->suspend) {
+                    Auth::logout();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Your account has been suspended. Reason: ' . $user->suspend_reason,
+                        'redirect' => false
+                    ], 200);
+                }
+
+                $request->session()->regenerate();
                 $role = $user->roles->first()->name;
 
                 $redirect = match ($role) {
