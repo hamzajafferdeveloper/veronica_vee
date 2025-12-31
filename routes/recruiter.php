@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Recruiter\ChatController;
+use App\Http\Controllers\Recruiter\RecruiterProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Recruiter\ProjectController;
 
@@ -10,6 +11,9 @@ Route::prefix('recruiter')->middleware('role:recruiter')->name('recruiter.')->gr
     Route::get('/dashboard', function () {
         return view('recruiter.dashboard');
     })->name('dashboard');
+
+    Route::get('/profile', [RecruiterProfileController::class, 'profile'])->name('profile');
+    Route::post('/profile/update', [RecruiterProfileController::class, 'update'])->name('profile.update');
 
     // Chat Routes
     Route::prefix('/chat')->name('chat.')->group(function () {

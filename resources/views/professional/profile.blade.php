@@ -29,7 +29,9 @@
                             <div class="mb-3">
                                 <label class="form-label">Avatar</label>
                                 <input type="file" name="avatar" class="form-control" id="avatarInput" accept="image/*">
-                                <span class="text-danger small error-text" data-error="avatar"></span>
+                                @error('avatar')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             {{-- Personal Info --}}
@@ -38,51 +40,68 @@
                                     <label class="form-label">First Name</label>
                                     <input type="text" name="first_name"
                                         value="{{ old('first_name', $profile->first_name) }}" class="form-control">
-                                    <span class="text-danger small error-text" data-error="first_name"></span>
+                                    @error('first_name')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Last Name</label>
                                     <input type="text" name="last_name"
                                         value="{{ old('last_name', $profile->last_name) }}" class="form-control">
-                                    <span class="text-danger small error-text" data-error="last_name"></span>
+                                    @error('last_name')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Age</label>
-                                    <input type="number" name="age" value="{{ old('age', $profile->model->age ?? '') }}"
-                                        class="form-control">
-                                    <span class="text-danger small error-text" data-error="age"></span>
+                                    <input type="number" name="age"
+                                        value="{{ old('age', $profile->model->age ?? '') }}" class="form-control">
+                                    @error('age')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Gender</label>
                                     <select name="gender" class="form-select">
                                         <option value="">Select Gender</option>
                                         <option value="male"
-                                            {{ old('gender', $profile->model->gender ?? '') == 'male' ? 'selected' : '' }}>Male</option>
+                                            {{ old('gender', $profile->model->gender ?? '') == 'male' ? 'selected' : '' }}>
+                                            Male</option>
                                         <option value="female"
-                                            {{ old('gender', $profile->model->gender ?? '') == 'female' ? 'selected' : '' }}>Female
+                                            {{ old('gender', $profile->model->gender ?? '') == 'female' ? 'selected' : '' }}>
+                                            Female
                                         </option>
                                         <option value="other"
-                                            {{ old('gender', $profile->model->gender ?? '') == 'other' ? 'selected' : '' }}>Other</option>
+                                            {{ old('gender', $profile->model->gender ?? '') == 'other' ? 'selected' : '' }}>
+                                            Other</option>
                                     </select>
-                                    <span class="text-danger small error-text" data-error="gender"></span>
+                                    @error('gender')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Height</label>
-                                    <input type="text" name="height" value="{{ old('height', $profile->model->height ?? '') }}"
-                                        class="form-control" placeholder="e.g., 5'9&quot;">
-                                    <span class="text-danger small error-text" data-error="height"></span>
+                                    <input type="text" name="height"
+                                        value="{{ old('height', $profile->model->height ?? '') }}" class="form-control"
+                                        placeholder="e.g., 5'9&quot;">
+                                    @error('height')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Weight</label>
-                                    <input type="text" name="weight" value="{{ old('weight', $profile->model->weight ?? '') }}"
-                                        class="form-control" placeholder="e.g., 70kg">
-                                    <span class="text-danger small error-text" data-error="weight"></span>
+                                    <input type="text" name="weight"
+                                        value="{{ old('weight', $profile->model->weight ?? '') }}" class="form-control"
+                                        placeholder="e.g., 70kg">
+                                    @error('weight')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -91,22 +110,29 @@
                                 <input type="text" name="experience"
                                     value="{{ old('experience', $profile->model->experience ?? '') }}" class="form-control"
                                     placeholder="e.g., 3 years modeling">
-                                <span class="text-danger small error-text" data-error="experience"></span>
+                                @error('experience')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Location</label>
-                                <input type="text" name="location" value="{{ old('location', $profile->model->location ?? '') }}"
-                                    class="form-control" placeholder="City, Country">
-                                <span class="text-danger small error-text" data-error="location"></span>
+                                <input type="text" name="location"
+                                    value="{{ old('location', $profile->model->location ?? '') }}" class="form-control"
+                                    placeholder="City, Country">
+                                @error('location')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Portfolio URL</label>
                                 <input type="url" name="portfolio_url"
-                                    value="{{ old('portfolio_url', $profile->model->portfolio_url ?? '') }}" class="form-control"
-                                    placeholder="https://portfolio.com">
-                                <span class="text-danger small error-text" data-error="portfolio_url"></span>
+                                    value="{{ old('portfolio_url', $profile->model->portfolio_url ?? '') }}"
+                                    class="form-control" placeholder="https://portfolio.com">
+                                @error('portfolio_url')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="d-grid mt-4">
