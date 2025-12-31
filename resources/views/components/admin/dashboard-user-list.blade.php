@@ -19,7 +19,7 @@
                         </button>
                     </li>
                 </ul>
-                <a href="javascript:void(0)"
+                <a href="javascript:void(0)" id="viewAllBtn"
                     class="text-primary-600 hover-text-primary d-flex align-items-center gap-1">
                     View All
                     <iconify-icon icon="solar:alt-arrow-right-linear" class="icon"></iconify-icon>
@@ -129,3 +129,19 @@
         </div>
     </div>
 </div>
+
+@push('script')
+    <script>
+        document.getElementById('viewAllBtn').addEventListener('click', function() {
+            // Check which tab is active
+            const recruiterTab = document.getElementById('pills-to-do-list-tab');
+            const professionalTab = document.getElementById('pills-recent-leads-tab');
+
+            if (recruiterTab.classList.contains('active')) {
+                window.location.href = "{{ route('admin.recruiters.index') }}";
+            } else if (professionalTab.classList.contains('active')) {
+                window.location.href = "{{ route('admin.professionals.index') }}";
+            }
+        });
+    </script>
+@endpush
