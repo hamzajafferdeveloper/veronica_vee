@@ -26,7 +26,7 @@
             <li class="sidebar-menu-group-title">Application</li>
             <li>
                 <a href="{{ route('professional.project.index') }}">
-                    <iconify-icon icon="solar:projector-outline" class="menu-icon"></iconify-icon>
+                    <iconify-icon icon="solar:documents-line-duotone" class="menu-icon"></iconify-icon>
                     <span>Projects</span>
                 </a>
             </li>

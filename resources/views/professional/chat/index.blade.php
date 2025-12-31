@@ -140,7 +140,7 @@
                             div.dataset.userId = user.id;
                             div.dataset.name = `${user.first_name} ${user.last_name}`;
                             div.dataset.email = user.email ?? '';
-                            div.dataset.avatar = user.model?.avatar ? '/storage/' + user.model.avatar :
+                            div.dataset.avatar = user.recruiter?.avatar ? '/storage/' + user.recruiter.avatar :
                                 '{{ asset('assets/images/user.png') }}';
 
                             div.innerHTML = `
@@ -276,7 +276,6 @@
                 chatContainer.insertAdjacentHTML('beforeend', messageHTML);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
-
 
             function loadMessages(conversationId) {
                 fetch(`/professional/chat/messages/${conversationId}`, {

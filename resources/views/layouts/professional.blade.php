@@ -1,6 +1,6 @@
-@include('layouts.base')
+@extends('layouts.base')
 
-@content('base-content')
+@section('base-content')
     <!-- ..::  header area start ::.. -->
     @include('layouts.partials.professional-sidebar')
     <!-- ..::  header area end ::.. -->
@@ -17,4 +17,4 @@
         </div>
 
     </main>
-@endcontent
+@endsection
