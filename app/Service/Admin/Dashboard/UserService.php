@@ -89,4 +89,12 @@ class UserService
             'trend' => $percentage >= 0 ? 'up' : 'down',
         ];
     }
+
+    /* ================= Latest Users By Role ================= */
+    public static function getLatestRecruiters(string $role = 'recruiter', int $limit = 3)
+    {
+        $relations = $role === 'recruiter' ? 'recruiter' : 'model';
+
+        return User::role($role)->with($relations)->latest()->take($limit)->get();
+    }
 }
