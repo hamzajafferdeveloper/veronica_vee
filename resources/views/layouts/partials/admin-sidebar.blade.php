@@ -12,22 +12,9 @@
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
             <li>
-                <a href="{{ route('recruiter.dashboard') }}">
+                <a href="{{ route('admin.dashboard') }}">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('recruiter.chat.index') }}">
-                    <iconify-icon icon="bi:chat-dots" class="menu-icon"></iconify-icon>
-                    <span>Chat</span>
-                </a>
-            </li>
-            <li class="sidebar-menu-group-title">Application</li>
-            <li>
-                <a href="{{ route('recruiter.project.index') }}">
-                    <iconify-icon icon="solar:projector-outline" class="menu-icon"></iconify-icon>
-                    <span>Projects</span>
                 </a>
             </li>
             <li>
