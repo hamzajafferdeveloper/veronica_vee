@@ -1,13 +1,13 @@
 <?php
 
-namespace App\View\Components\recruiter;
+namespace App\View\Components\Recruiter;
 
 use App\Http\Controllers\Recruiter\Dashboard\ProjectController;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class dashboardCard extends Component
+class DashboardCard extends Component
 {
     public $projectCounts;
     public $projectStats;

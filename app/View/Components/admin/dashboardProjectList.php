@@ -1,13 +1,13 @@
 <?php
 
-namespace App\View\Components\admin;
+namespace App\View\Components\Admin;
 
 use App\Service\Admin\Dashboard\ProjectService;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class dashboardProjectList extends Component
+class DashboardProjectList extends Component
 {
     public $projects;
 

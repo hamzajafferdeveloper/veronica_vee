@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\admin;
+namespace App\View\Components\Admin;
 
 use App\Service\Admin\Dashboard\ProjectService;
 use App\Service\Admin\Dashboard\UserService;
@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class dashboardCard extends Component
+class DashboardCard extends Component
 {
     public $totalNoOfUser;
     public $totalProfessionals;

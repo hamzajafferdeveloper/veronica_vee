@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\professional;
+namespace App\View\Components\Professional;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class dashboardCard extends Component
+class DashboardCard extends Component
 {
     /**
      * Create a new component instance.

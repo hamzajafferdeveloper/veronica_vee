@@ -1,13 +1,13 @@
 <?php
 
-namespace App\View\Components\admin;
+namespace App\View\Components\Admin;
 
 use App\Service\Admin\Dashboard\UserService;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class dashboardUserList extends Component
+class DashboardUserList extends Component
 {
     public $latestRecruiters;
     public $latestProfessionals;
