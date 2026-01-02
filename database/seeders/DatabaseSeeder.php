@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create roles
+        $this->call(ModelProfileSeeder::class);
+        // // Create roles
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $recruiterRole = Role::firstOrCreate(['name' => 'recruiter']);
         $professionalRole = Role::firstOrCreate(['name' => 'professional']);
