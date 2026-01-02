@@ -18,7 +18,7 @@ class ProjectApplication extends Model
         return $this->belongsTo(Project::class, 'project_id');
     }
 
-    public function model()
+    public function professional()
     {
         return $this->belongsTo(User::class, 'model_id');
     }

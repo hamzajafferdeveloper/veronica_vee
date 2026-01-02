@@ -31,6 +31,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('recruiter.project.requests') }}">
+                    <i class="bi bi-send-check me-1"></i>
+                    <span>Projects Requests</span>
+                </a>
+            </li>
+            <li>
         </ul>
     </div>
 </aside>

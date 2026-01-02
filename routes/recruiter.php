@@ -33,5 +33,11 @@ Route::prefix('recruiter')->middleware('role:recruiter')->name('recruiter.')->gr
         Route::get('/edit/{slug}', [ProjectController::class, 'edit'])->name('edit');
         Route::put('/update/{slug}', [ProjectController::class, 'update'])->name('update');
         Route::delete('/destroy/{slug}', [ProjectController::class, 'destroy'])->name('destroy');
-    });
+        Route::get('/requests', [ProjectController::class, 'requests'])->name('requests');
+        Route::post('/request/{id}/approve', [ProjectController::class, 'approve'])
+            ->name('request.approve');
+
+        Route::post('/request/{id}/reject', [ProjectController::class, 'reject'])
+            ->name('request.reject');
+            });
 });

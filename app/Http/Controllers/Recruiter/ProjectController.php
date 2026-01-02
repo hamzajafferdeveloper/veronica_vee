@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Recruiter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Recruiter\CreateProjectRequest;
 use App\Models\Project;
+use App\Models\ProjectApplication;
 use App\Models\ProjectCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -43,14 +44,13 @@ class ProjectController extends Controller
         // AJAX request returns only table HTML
         if ($request->ajax()) {
             return response()->json([
-                'html' => view('recruiter.project.partials.table', compact('projects'))->render()
+                'html' => view('recruiter.project.partials.table', compact('projects'))->render(),
             ]);
         }
 
         // Normal page load
         return view('recruiter.project.index', compact('projects'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -104,7 +104,7 @@ class ProjectController extends Controller
             ], 201);
 
         } catch (\Exception $e) {
-            Log::error('Fail to create project: ' . $e->getMessage());
+            Log::error('Fail to create project: '.$e->getMessage());
 
             return response()->json([
                 'status' => false,
@@ -188,7 +188,7 @@ class ProjectController extends Controller
                 'project' => $project,
             ]);
         } catch (\Exception $e) {
-            Log::error('Fail to create project: ' . $e->getMessage());
+            Log::error('Fail to create project: '.$e->getMessage());
 
             return response()->json([
                 'status' => false,
@@ -222,7 +222,7 @@ class ProjectController extends Controller
                 'message' => 'Project deleted successfully',
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Fail to delete project: ' . $e->getMessage());
+            Log::error('Fail to delete project: '.$e->getMessage());
 
             return response()->json([
                 'status' => false,
@@ -231,4 +231,33 @@ class ProjectController extends Controller
         }
     }
 
+    public function requests()
+    {
+        $requests = ProjectApplication::with(['project', 'professional'])
+            ->whereHas('project', function ($q) {
+                $q->where('recruiter_id', auth()->id());
+            })
+            ->latest()
+            ->get();
+
+        return view('recruiter.project.requests', compact('requests'));
+    }
+
+    public function approve($id)
+    {
+        $request = ProjectApplication::findOrFail($id);
+        $request->update(['status' => 'hired']);
+
+        // assign project to professional here if needed
+
+        return back()->with('success', 'Project request approved.');
+    }
+
+    public function reject($id)
+    {
+        $request = ProjectApplication::findOrFail($id);
+        $request->update(['status' => 'rejected']);
+
+        return back()->with('success', 'Project request rejected.');
+    }
 }
