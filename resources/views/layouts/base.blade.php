@@ -61,6 +61,8 @@
 
     <link rel="icon" href="{{ asset('assets/images/favicon.png') }}">
 
+    {{-- Pusher --}}
+    <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script>
 
     <title>@yield('title', 'VeronicaVee') - {{ config('app.name', 'Laravel') }}</title>
 

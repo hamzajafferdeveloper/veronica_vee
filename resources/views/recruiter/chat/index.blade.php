@@ -22,10 +22,9 @@
 
             @include('recruiter.chat.partials.chat-messages')
 
-            <form class="chat-message-box d-none p-1" id="messageForm" enctype="multipart/form-data"
-                style="
-                border-top:1px solid #e0e0e0;
-            ">
+            <form class="chat-message-box d-none p-1" id="messageForm" enctype="multipart/form-data" style="
+                    border-top:1px solid #e0e0e0;
+                ">
 
                 @csrf
 
@@ -38,24 +37,22 @@
 
                     <!-- Message box -->
                     <textarea name="chatMessage" id="chatMessage" rows="1" placeholder="Type a message" autocomplete="off"
-                        class="flex-grow-1 pt-1 px-3"
-                        style="
-                    border-radius:4px !important;
-                    border:1px solid #d8dadd;
-                    background:#f0f2f5;
-                    outline:none;
-                    font-size:14px;
-                    overflow-y:auto;
-                "></textarea>
+                        class="flex-grow-1 pt-1 px-3" style="
+                        border-radius:4px !important;
+                        border:1px solid #d8dadd;
+                        background:#f0f2f5;
+                        outline:none;
+                        font-size:14px;
+                        overflow-y:auto;
+                    "></textarea>
 
                     <!-- Send -->
-                    <button type="submit" class="btn d-flex align-items-center justify-content-center"
-                        style="
-                    width:35px;
-                    height:35px;
-                    background:#0d6efd;
-                    color:#fff;
-                ">
+                    <button type="submit" class="btn d-flex align-items-center justify-content-center" style="
+                        width:35px;
+                        height:35px;
+                        background:#0d6efd;
+                        color:#fff;
+                    ">
                         <iconify-icon icon="f7:paperplane" style="font-size:18px;"></iconify-icon>
                     </button>
                 </div>
@@ -69,7 +66,7 @@
 
 @push('script')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             let activeConversationId = null;
             let activeReceiverId = null;
 
@@ -107,9 +104,9 @@
                     }
 
                     selectedImagePreview.innerHTML = `
-            <span style="display:inline-block; margin-right:8px;" title="${chatAttachment.files[0].name}">${fileName}</span>
-            <button type="button" id="removeAttachment" style="padding:2px 5px; font-size:12px;">Remove</button>
-        `;
+                <span style="display:inline-block; margin-right:8px;" title="${chatAttachment.files[0].name}">${fileName}</span>
+                <button type="button" id="removeAttachment" style="padding:2px 5px; font-size:12px;">Remove</button>
+            `;
 
                     const removeBtn = document.getElementById('removeAttachment');
                     removeBtn.addEventListener('click', () => {
@@ -137,15 +134,15 @@
                                 '{{ asset('assets/images/user.png') }}';
 
                             div.innerHTML = `
-                        <div class="img">
-                            <img src="${div.dataset.avatar}" class="rounded-full" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
-                        </div>
-                        <div class="info">
-                            <h6 class="text-sm mb-1">${div.dataset.name}</h6>
-                        </div>
-                    `;
+                            <div class="img">
+                                <img src="${div.dataset.avatar}" class="rounded-full" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
+                            </div>
+                            <div class="info">
+                                <h6 class="text-sm mb-1">${div.dataset.name}</h6>
+                            </div>
+                        `;
 
-                            div.addEventListener('click', function() {
+                            div.addEventListener('click', function () {
                                 activeReceiverId = this.dataset.userId;
                                 setActiveUser(this);
                                 updateHeader(this.dataset.name, this.dataset.email || '', this
@@ -183,10 +180,10 @@
 
             function getConversation(receiverId) {
                 fetch(`/recruiter/chat/conversation/${receiverId}`, {
-                        headers: {
-                            "X-Requested-With": "XMLHttpRequest"
-                        }
-                    })
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                })
                     .then(res => res.json())
                     .then(data => {
                         activeConversationId = data.conversation_id;
@@ -197,7 +194,18 @@
             }
 
             function ListenToConversation(conversationId) {
-                window.Echo.channel(`conversation.${conversationId}`)
+                // Check if Echo is initialized
+                if (!window.Echo) {
+                    console.error('Echo is not initialized. Make sure echo.js is properly imported before calling this function.');
+                    return;
+                }
+
+                // Store the channel reference to be able to unsubscribe later
+                if (window.conversationChannel) {
+                    window.conversationChannel.stopListening('.message.sent');
+                }
+
+                window.conversationChannel = window.Echo.private(`conversation.${conversationId}`)
                     .listen('.message.sent', (e) => {
                         const is_mine = e.sender_id == AUTH_ID;
                         addMessageToUI(is_mine, e);
@@ -215,56 +223,56 @@
                     if (fileType.startsWith('image')) {
                         // Image preview
                         attachmentHTML = `
-                <div class="mt-1">
-                    <img src="${fileUrl}" alt="${fileName}" onclick="window.open('${fileUrl}', '_blank')" style="max-width:220px; border-radius:8px; display:block;">
-                </div>
-            `;
+                    <div class="mt-1">
+                        <img src="${fileUrl}" alt="${fileName}" onclick="window.open('${fileUrl}', '_blank')" style="max-width:220px; border-radius:8px; display:block;">
+                    </div>
+                `;
                     } else if (fileType.startsWith('audio')) {
                         // Audio player
                         attachmentHTML = `
-                <div class="mt-1">
-                    <audio controls style="width:100%;">
-                        <source src="${fileUrl}" type="${fileType}">
-                        Your browser does not support the audio element.
-                    </audio>
-                </div>
-            `;
+                    <div class="mt-1">
+                        <audio controls style="width:100%;">
+                            <source src="${fileUrl}" type="${fileType}">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                `;
                     } else if (fileType.startsWith('video')) {
                         // Video player
                         attachmentHTML = `
-                <div class="mt-1">
-                    <video controls style="max-width:220px; border-radius:8px;">
-                        <source src="${fileUrl}" type="${fileType}">
-                        Your browser does not support the video element.
-                    </video>
-                </div>
-            `;
+                    <div class="mt-1">
+                        <video controls style="max-width:220px; border-radius:8px;">
+                            <source src="${fileUrl}" type="${fileType}">
+                            Your browser does not support the video element.
+                        </video>
+                    </div>
+                `;
                     } else {
                         // Other files
                         attachmentHTML = `
-                <div class="d-flex align-items-center mt-1 p-2 rounded" style="border:1px solid #e0e0e0;">
-                    <span style="font-size:20px;margin-right:8px;">
-                        <iconify-icon icon="openmoji:paperclip" style="font-size:26px;"></iconify-icon>
-                    </span>
-                    <div style="flex:1;">
-                        <a href="${fileUrl}" target="_blank" style="font-size:0.8rem; color:#333; text-decoration:none;">${fileName}</a>
+                    <div class="d-flex align-items-center mt-1 p-2 rounded" style="border:1px solid #e0e0e0;">
+                        <span style="font-size:20px;margin-right:8px;">
+                            <iconify-icon icon="openmoji:paperclip" style="font-size:26px;"></iconify-icon>
+                        </span>
+                        <div style="flex:1;">
+                            <a href="${fileUrl}" target="_blank" style="font-size:0.8rem; color:#333; text-decoration:none;">${fileName}</a>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
                     }
                 }
 
                 const messageHTML = `
-        <div class="chat-single-message d-flex mb-2 ${is_mine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
-            <div class="chat-message-content p-2 px-3 rounded-3 position-relative" style="max-width:70%; background-color:${is_mine ? '#DCF8C6' : '#F0F0F0'}; color:#2c2c2c; word-break:break-word; box-shadow:0 1px 1px rgba(0,0,0,0.1);">
-                ${message.message ? `<p class="mb-1 px-3" style="margin:0; color:#2c2c2c;">${message.message}</p>` : ''}
-                <div class="px-3">${attachmentHTML}</div>
-                <span class="chat-time px-3 d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
-                    ${new Date(message.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', hour12:true }).toUpperCase()}
-                </span>
+            <div class="chat-single-message d-flex mb-2 ${is_mine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
+                <div class="chat-message-content p-2 px-3 rounded-3 position-relative" style="max-width:70%; background-color:${is_mine ? '#DCF8C6' : '#F0F0F0'}; color:#2c2c2c; word-break:break-word; box-shadow:0 1px 1px rgba(0,0,0,0.1);">
+                    ${message.message ? `<p class="mb-1 px-3" style="margin:0; color:#2c2c2c;">${message.message}</p>` : ''}
+                    <div class="px-3">${attachmentHTML}</div>
+                    <span class="chat-time px-3 d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
+                        ${new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase()}
+                    </span>
+                </div>
             </div>
-        </div>
-    `;
+        `;
 
                 chatContainer.insertAdjacentHTML('beforeend', messageHTML);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -272,10 +280,10 @@
 
             function loadMessages(conversationId) {
                 fetch(`/recruiter/chat/messages/${conversationId}`, {
-                        headers: {
-                            "X-Requested-With": "XMLHttpRequest"
-                        }
-                    })
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                })
                     .then(res => res.json())
                     .then(messages => {
                         chatContainer.innerHTML = '';
@@ -288,7 +296,7 @@
                 window.history.pushState({}, '', `/recruiter/chat/messages/${receiverId}`);
             }
 
-            messageForm.addEventListener('submit', function(e) {
+            messageForm.addEventListener('submit', function (e) {
                 e.preventDefault();
                 const message = chatInput.value.trim();
                 const file = chatAttachment.files[0];
@@ -307,12 +315,12 @@
                     `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
 
                 fetch("{{ route('recruiter.chat.send') }}", {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                        },
-                        body: formData
-                    })
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    },
+                    body: formData
+                })
                     .then(res => res.json())
                     .then(data => {
                         chatInput.value = '';
