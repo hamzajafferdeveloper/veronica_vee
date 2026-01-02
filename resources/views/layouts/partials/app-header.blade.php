@@ -3,7 +3,7 @@
         <div class="row align-items-center">
 
             <div class="col-sm-auto col-5 me-auto" id="logo">
-                <a href="#"><img src="{{ asset('assets/images/logo.png') }}" alt="img"
+                <a href="{{ route('home') }}"><img src="{{ asset('assets/images/logo.png') }}" alt="img"
                         class="img-fluid filterWhite" width="150"></a>
             </div><!--/col(logo)-->
 
@@ -24,35 +24,48 @@
                         </div><!--/offcanvas-header-->
 
                         <div class="offcanvas-body">
-                            <ul class="navbar-nav fw-bold ">
+                            <ul class="navbar-nav fw-bold">
 
-                                <li class="nav-item"><a class="nav-link active" href="{{ route('home') }}">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">About</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{{ route('model') }}">Model</a></li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
+                                        href="{{ route('home') }}">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}"
+                                        href="{{ route('about') }}">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('model') ? 'active' : '' }}"
+                                        href="{{ route('model') }}">Model</a>
+                                </li>
+
                                 @auth
                                     <li class="nav-item">
-
                                         @php
                                             $roles = auth()->user()->getRoleNames();
                                         @endphp
 
                                         @if ($roles->contains('professional'))
-                                            <a class="nav-link" href="{{ route('professional.dashboard') }}">Dashboard</a>
+                                            <a class="nav-link {{ request()->routeIs('professional.dashboard') ? 'active' : '' }}"
+                                                href="{{ route('professional.dashboard') }}">Dashboard</a>
                                         @elseif ($roles->contains('recruiter'))
-                                            <a class="nav-link" href="{{ route('recruiter.dashboard') }}">Dashboard</a>
+                                            <a class="nav-link {{ request()->routeIs('recruiter.dashboard') ? 'active' : '' }}"
+                                                href="{{ route('recruiter.dashboard') }}">Dashboard</a>
                                         @elseif ($roles->contains('admin'))
-                                            <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+                                                href="{{ route('admin.dashboard') }}">Dashboard</a>
                                         @endif
-
                                     </li>
                                 @else
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('loginOrSignup') }}">Login</a>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('loginOrSignup') ? 'active' : '' }}"
+                                            href="{{ route('loginOrSignup') }}">Login</a>
                                     </li>
                                 @endauth
 
                             </ul>
+                        </div>
 
-                        </div><!--/offcanvas-body-->
 
                         <div class="offcanvas-footer p-3 border-top border-secondary d-lg-none fs-12">
 
