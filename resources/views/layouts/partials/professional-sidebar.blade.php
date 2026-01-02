@@ -9,7 +9,7 @@
             <img src="{{ asset('assets/images/favicon.png') }}" alt="site logo" class="logo-icon">
         </a>
     </div>
-    <div class="sidebar-menu-area">
+    <div class="sidebar-menu-area d-flex flex-column justify-space-between" style="flex:1">
         <ul class="sidebar-menu" id="sidebar-menu">
             <li>
                 <a href="{{ route('professional.dashboard') }}">
@@ -32,5 +32,15 @@
             </li>
             <li>
         </ul>
+        <div class="mt-auto px-3 py-3">
+            <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit"
+                    class="sidebar-logout-btn d-flex align-items-center gap-3 w-100 border-0 rounded-3 px-5 py-1 bg-danger text-white fw-bold transition hover-shadow">
+                    <iconify-icon icon="lucide:power" class="menu-icon text-lg"></iconify-icon>
+                    <span>Log Out</span>
+                </button>
+            </form>
+        </div>
     </div>
 </aside>

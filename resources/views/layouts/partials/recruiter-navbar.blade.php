@@ -72,7 +72,7 @@
                             </li>
                         </ul>
                     </div>
-                </div><!-- Profile dropdown end -->
+                </div>
             </div>
         </div>
     </div>

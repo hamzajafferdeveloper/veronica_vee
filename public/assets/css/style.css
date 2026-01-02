@@ -15094,3 +15094,8 @@ td.fc-header-center {
 }
 
 /* === footer css end === */
+
+.sidebar-logout-btn{
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
