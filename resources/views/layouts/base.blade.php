@@ -66,6 +66,8 @@
 
     <title>@yield('title', 'VeronicaVee') - {{ config('app.name', 'Laravel') }}</title>
 
+     @stack('styles')
+
     @stack('head')
 </head>
 

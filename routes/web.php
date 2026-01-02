@@ -36,7 +36,10 @@ Route::get('/create-storage-link', function () {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+
+    $models = ModelProfiles::with('user')->take(20)->latest()->get();
+
+    return view('frontend.welcome', compact('models') );
 })->name('home');
 
 Route::get('/about', function () {

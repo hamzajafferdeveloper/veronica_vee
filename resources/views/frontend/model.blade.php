@@ -2,48 +2,50 @@
 
 @section('title', 'Models Page')
 
-<style>
-    /* Image hover zoom */
-    .model-card .model-img {
-        transition: transform 0.5s ease;
-    }
-
-    .model-card:hover .model-img {
-        transform: scale(1.05);
-    }
-
-    /* Overlay gradient */
-    .model-card .overlay {
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
-        transition: background 0.3s ease;
-    }
-
-    .model-card:hover .overlay {
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
-    }
-
-    /* Button hover shadow */
-    .btn-hover-shadow:hover {
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-        transform: translateY(-2px);
-        transition: all 0.3s ease;
-    }
-
-    /* Responsive card */
-    @media (max-width: 576px) {
-        .model-card .overlay h5 {
-            font-size: 1rem;
+@push('styles')
+    <style>
+        /* Image hover zoom */
+        .model-card .model-img {
+            transition: transform 0.5s ease;
         }
 
-        .model-card .overlay small {
-            font-size: 0.75rem;
+        .model-card:hover .model-img {
+            transform: scale(1.05);
         }
 
-        .model-card .overlay .badge {
-            font-size: 0.6rem;
+        /* Overlay gradient */
+        .model-card .overlay {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
+            transition: background 0.3s ease;
         }
-    }
-</style>
+
+        .model-card:hover .overlay {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+        }
+
+        /* Button hover shadow */
+        .btn-hover-shadow:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive card */
+        @media (max-width: 576px) {
+            .model-card .overlay h5 {
+                font-size: 1rem;
+            }
+
+            .model-card .overlay small {
+                font-size: 0.75rem;
+            }
+
+            .model-card .overlay .badge {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+@endpush
 
 @section('content')
     <section class="mt-5">
