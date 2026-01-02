@@ -30,49 +30,6 @@
                 </form>
             </div>
         </div>
-        {{-- <div class="col-auto">
-            <div class="d-flex flex-wrap align-items-center gap-3">
-                <div class="dropdown">
-                    <button
-                        class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"
-                        type="button" data-bs-toggle="dropdown">
-                        <p class="avatar-initial">
-                            {{ get_initial_helper(auth()->user()->first_name . ' ' . auth()->user()->last_name) }}</p>
-                    </button>
-                    <div class="dropdown-menu to-top dropdown-menu-sm">
-                        <div
-                            class="py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
-                            <div>
-                                <h6 class="text-lg text-primary-light fw-semibold mb-2">
-                                    {{ auth()->user()->first_name . ' ' . auth()->user()->last_name }}</h6>
-                                <span class="text-secondary-light fw-medium text-sm">{{ auth()->user()->email }}</span>
-                            </div>
-                            <button type="button" class="hover-text-danger">
-                                <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
-                            </button>
-                        </div>
-                        <ul class="to-top-list">
-                            <li>
-                                <a href="{{ route('professional.profile') }}"
-                                    class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
-                                    <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> My
-                                    Profile
-                                </a>
-                            </li>
-                            <li>
-                                <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit"
-                                        class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
-                                        href="javascript:void(0)">
-                                        <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log Out
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </div><!-- Profile dropdown end -->
-            </div>
-        </div> --}}
+
     </div>
 </div>

@@ -1,50 +1,28 @@
-<aside class="sidebar">
-    <button type="button" class="sidebar-close-btn">
-        <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
-    </button>
-    <div>
-        <a href="{{ route('home') }}" class="sidebar-logo">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="site logo" class="light-logo">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="site logo" class="dark-logo">
-            <img src="{{ asset('assets/images/favicon.png') }}" alt="site logo" class="logo-icon">
+@extends('layouts.partials.sidebar-layout')
+
+@section('sidebar-content')
+    <li>
+        <a href="{{ route('admin.dashboard') }}">
+            <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+            <span>Dashboard</span>
         </a>
-    </div>
-    <div class="sidebar-menu-area d-flex flex-column justify-space-between" style="flex:1">
-        <ul class="sidebar-menu" id="sidebar-menu">
-            <li>
-                <a href="{{ route('admin.dashboard') }}">
-                    <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.projects.index') }}">
-                    <iconify-icon icon="solar:documents-line-duotone" class="menu-icon"></iconify-icon>
-                    <span>Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.professionals.index') }}">
-                    <iconify-icon icon="solar:user-outline" class="menu-icon"></iconify-icon>
-                    <span>Professionals</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.recruiters.index') }}">
-                    <iconify-icon icon="fluent:people-20-filled" class="menu-icon"></iconify-icon>
-                    <span>Recruiters</span>
-                </a>
-            </li>
-        </ul>
-        <div class="mt-auto px-3 py-3">
-            <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit"
-                    class="sidebar-logout-btn d-flex align-items-center gap-3 w-100 border-0 rounded-3 px-5 py-1 bg-danger text-white fw-bold transition hover-shadow">
-                    <iconify-icon icon="lucide:power" class="menu-icon text-lg"></iconify-icon>
-                    <span>Log Out</span>
-                </button>
-            </form>
-        </div>
-    </div>
-</aside>
+    </li>
+    <li>
+        <a href="{{ route('admin.projects.index') }}">
+            <iconify-icon icon="solar:documents-line-duotone" class="menu-icon"></iconify-icon>
+            <span>Projects</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('admin.professionals.index') }}">
+            <iconify-icon icon="solar:user-outline" class="menu-icon"></iconify-icon>
+            <span>Professionals</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('admin.recruiters.index') }}">
+            <iconify-icon icon="fluent:people-20-filled" class="menu-icon"></iconify-icon>
+            <span>Recruiters</span>
+        </a>
+    </li>
+@endsection
