@@ -2,14 +2,33 @@
 
 @section('title', 'Login Page')
 
+<style>
+    .fade-slide {
+        animation: fadeSlide 0.45s ease-in-out;
+    }
+
+    @keyframes fadeSlide {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+
 @section('content')
     <section class="mt-5">
 
         <div class="container">
-            <div class="row justify-content-between align-items-center">
+            <div class="row justify-content-center align-items-center">
 
                 {{-- Login Form --}}
-                <div class="col-lg-4">
+                <div class="col-lg-4" id="loginBox">
                     <div class="card border-0 shadow-lg rounded-4">
                         <div class="card-body p-4">
 
@@ -21,7 +40,7 @@
                                 <div class="mb-3">
                                     <label for="loginEmail" class="form-label">Email*</label>
                                     <input type="email" name="email" class="form-control" id="loginEmail"
-                                           placeholder="Enter your email" required>
+                                        placeholder="Enter your email" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
 
@@ -31,11 +50,10 @@
                                         <a href="#" class="ms-auto text-muted fw-normal fs-12">Forget password?</a>
                                     </label>
                                     <div class="position-relative">
-                                        <input type="password" name="password" class="form-control pe-5"
-                                               id="loginPassword"
-                                               placeholder="Enter your password">
+                                        <input type="password" name="password" class="form-control pe-5" id="loginPassword"
+                                            placeholder="Enter your password">
                                         <button class="btn btn-link p-0 position-absolute bottom-0 end-0 mb-1 me-3"
-                                                type="button" onclick="togglePassword('loginPassword', 'loginEye')">
+                                            type="button" onclick="togglePassword('loginPassword', 'loginEye')">
                                             <i id="loginEye" class="bi bi-eye"></i>
                                         </button>
                                         <div class="invalid-feedback"></div>
@@ -49,7 +67,13 @@
 
                                 <button type="submit" class="btn btn-dark w-100">Log In</button>
 
-                                <div id="loginMessage" class="mt-2"></div>
+                                <div id="loginMessage" class="mt-3 text-center fs-14">
+                                    Don’t have an account?
+                                    <a href="javascript:void(0)" id="showRegister"
+                                        class="fw-semibold text-primary text-decoration-none">
+                                        Sign up →
+                                    </a>
+                                </div>
 
                             </form>
 
@@ -58,7 +82,7 @@
                 </div>
 
                 {{-- Registration Form --}}
-                <div class="col-lg-7">
+                <div class="col-lg-7 d-none" id="registerBox">
                     <div class="card border-0 shadow-lg rounded-4">
                         <div class="card-body p-4">
 
@@ -70,7 +94,7 @@
                                 <div class="col-12">
                                     <label for="registerEmail" class="form-label">Email*</label>
                                     <input type="email" name="email" class="form-control" id="registerEmail"
-                                           placeholder="Enter your email" required>
+                                        placeholder="Enter your email" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
 
@@ -78,11 +102,9 @@
                                     <label for="registerPassword" class="form-label">Password*</label>
                                     <div class="position-relative">
                                         <input type="password" name="password" class="form-control pe-5"
-                                               id="registerPassword"
-                                               placeholder="Enter your password" required>
+                                            id="registerPassword" placeholder="Enter your password" required>
                                         <button class="btn btn-link p-0 position-absolute bottom-0 end-0 mb-1 me-3"
-                                                type="button"
-                                                onclick="togglePassword('registerPassword', 'registerEye')">
+                                            type="button" onclick="togglePassword('registerPassword', 'registerEye')">
                                             <i id="registerEye" class="bi bi-eye"></i>
                                         </button>
                                         <div class="invalid-feedback"></div>
@@ -92,38 +114,39 @@
                                 <div class="col-md-6">
                                     <label for="firstName" class="form-label">First Name*</label>
                                     <input type="text" name="first_name" class="form-control" id="firstName"
-                                           placeholder="First Name" required>
+                                        placeholder="First Name" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label for="lastName" class="form-label">Last Name*</label>
                                     <input type="text" name="last_name" class="form-control" id="lastName"
-                                           placeholder="Last Name" required>
+                                        placeholder="Last Name" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="col-md-6 d-flex flex-column">
                                     <label for="country" class="form-label">Country*</label>
-                                    <input type="text" class="form-control" id="country" placeholder="Search Country">
+                                    <input type="text" class="form-control" id="country"
+                                        placeholder="Search Country">
                                     <input type="hidden" name="country" id="country_code"> <!-- backend value -->
                                 </div>
 
                                 <div class="col-md-6">
                                     <label for="postalCode" class="form-label">Postal Code</label>
                                     <input type="text" name="postal_code" class="form-control" id="postalCode"
-                                           placeholder="Postal Code">
+                                        placeholder="Postal Code">
                                 </div>
 
                                 <div class="col-12 fs-14">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="type" value="recruiter"
-                                               id="op1">
+                                            id="op1">
                                         <label class="form-check-label" for="op1">Recruiter</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="type" value="professional"
-                                               id="op2">
+                                        <input class="form-check-input" type="radio" name="type"
+                                            value="professional" id="op2">
                                         <label class="form-check-label" for="op2">Professional</label>
                                     </div>
                                     <div class="invalid-feedback"></div>
@@ -132,7 +155,8 @@
                                 <div class="col-12 fs-14">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="terms" id="terms">
-                                        <label class="form-check-label" for="terms">I agree to the <a href="#">Terms of
+                                        <label class="form-check-label" for="terms">I agree to the <a
+                                                href="#">Terms of
                                                 Use</a> and <a href="#">Privacy Policy</a></label>
                                         <div class="invalid-feedback"></div>
                                     </div>
@@ -147,7 +171,14 @@
                                     <button type="submit" class="btn btn-dark w-100">Submit</button>
                                 </div>
 
-                                <div id="registerMessage" class="mt-2"></div>
+                                <div class="text-center mt-3 fs-14">
+                                    Already have an account?
+                                    <a href="javascript:void(0)" id="showLogin"
+                                        class="fw-semibold text-primary text-decoration-none">
+                                        Log in
+                                    </a>
+                                </div>
+
 
                             </form>
 
@@ -163,7 +194,7 @@
 
 @push('script')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#country").countrySelect({
                 defaultCountry: "pk",
                 preferredCountries: ["pk", "us", "gb"],
@@ -171,7 +202,7 @@
             });
 
             // Store the country name instead of ISO2 code
-            $("#country").on("change", function () {
+            $("#country").on("change", function() {
                 let data = $("#country").countrySelect("getSelectedCountryData");
                 $("#country_code").val(data.name); // <-- Country name
             });
@@ -179,6 +210,17 @@
             // Save on page load
             let data = $("#country").countrySelect("getSelectedCountryData");
             $("#country_code").val(data.name);
+        });
+
+        // Toggle Login / Register with animation
+        $('#showRegister').on('click', function() {
+            $('#loginBox').addClass('d-none');
+            $('#registerBox').removeClass('d-none').addClass('fade-slide');
+        });
+
+        $('#showLogin').on('click', function() {
+            $('#registerBox').addClass('d-none');
+            $('#loginBox').removeClass('d-none').addClass('fade-slide');
         });
 
         // Function to show toast for general messages
@@ -193,7 +235,8 @@
 
             let toastContainer = $('#toastContainer');
             if (!toastContainer.length) {
-                $('body').append('<div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>');
+                $('body').append(
+                    '<div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>');
                 toastContainer = $('#toastContainer');
             }
             toastContainer.append(toastHtml);
@@ -259,7 +302,7 @@
 
         function ajaxFormSubmit(formId, url) {
             let form = $(formId);
-            form.on('submit', function (e) {
+            form.on('submit', function(e) {
                 e.preventDefault();
                 let btn = form.find('button[type="submit"]');
                 btn.prop('disabled', true);
@@ -275,7 +318,9 @@
                     let age = form.find('#age').is(':checked');
 
                     if (!terms || !age) {
-                        showToast("You must accept Terms & Privacy Policy and confirm you are at least 16 years old.", "danger");
+                        showToast(
+                            "You must accept Terms & Privacy Policy and confirm you are at least 16 years old.",
+                            "danger");
 
                         if (!terms) {
                             form.find('#terms').addClass('is-invalid');
@@ -298,16 +343,17 @@
                     url: url,
                     method: 'POST',
                     data: form.serialize(),
-                    success: function (response) {
+                    success: function(response) {
                         btn.prop('disabled', false);
 
-                        showToast(response.message || 'Success!', response.success ? 'success' : 'danger');
+                        showToast(response.message || 'Success!', response.success ? 'success' :
+                            'danger');
 
                         if (response.success && response.redirect) {
                             window.location.href = response.redirect;
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         btn.prop('disabled', false);
                         let errors = xhr.responseJSON?.errors || {};
                         let generalErrors = [];
@@ -352,5 +398,4 @@
             }
         }
     </script>
-
 @endpush

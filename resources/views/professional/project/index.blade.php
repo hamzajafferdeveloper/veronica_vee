@@ -3,7 +3,7 @@
 @section('title', 'My Projects')
 
 @section('content')
-<div class="container">
+<div class="">
     <div class="row mb-3">
         {{-- Filters --}}
         <form method="GET" id="filterForm" class="row gx-3 gy-3 align-items-center w-100">

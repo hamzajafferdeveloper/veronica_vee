@@ -38,6 +38,12 @@ class ProjectController extends Controller
 
     public function show(string $slug)
     {
-        return view('professional.project.show');
+        $project = Project::with(['recruiter', 'category'])->where('slug', $slug)->first();
+
+        if (!$project) {
+            abort(404);
+        }
+
+        return view('professional.project.show', compact('project'));
     }
 }
