@@ -11,95 +11,106 @@
 
         <div class="card-body">
 
-            @if ($requests->isEmpty())
-                <div class="text-center py-5 text-muted">
-                    <i class="bi bi-inbox fs-1"></i>
-                    <p class="mt-2 mb-0">No project requests yet</p>
-                </div>
-            @else
-                <div class="table-responsive">
-                    <table class="table align-middle table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Project</th>
-                                <th>Professional</th>
-                                <th>Note</th>
-                                <th>Status</th>
-                                <th class="text-end">Action</th>
-                            </tr>
-                        </thead>
+            <!-- Filter Form -->
+            <form id="filterForm" class="row g-3 align-items-end mb-4">
 
-                        <tbody>
-                            @foreach ($requests as $request)
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold">{{ $request->project->title }}</div>
-                                        <small class="text-muted">
-                                            Budget: ${{ number_format($request->project->budget, 2) }}
-                                        </small>
-                                    </td>
-
-                                    <td>
-                                        <div class="fw-semibold">
-                                            {{ $request->professional->first_name }}
-                                            {{ $request->professional->last_name }}
-                                        </div>
-                                        <small class="text-muted">
-                                            {{ $request->professional->email }}
-                                        </small>
-                                    </td>
-
-                                    <td style="max-width: 250px;">
-                                        <span class="text-muted">
-                                            {{ $request->notes ?: '—' }}
-                                        </span>
-                                    </td>
-
-                                    <td>
-                                        <span
-                                            class="badge
-                                @if ($request->status === 'pending') bg-warning text-dark
-                                @elseif($request->status === 'hired') bg-success
-                                @elseif($request->status === 'accepted') bg-success
-                                @else bg-danger @endif">
-                                            {{ ucfirst($request->status) }}
-                                        </span>
-                                    </td>
-
-                                    <td class="text-end">
-                                        @if ($request->status === 'pending')
-                                            <form method="POST"
-                                                action="{{ route('recruiter.project.request.approve', $request->id) }}"
-                                                class="d-inline">
-                                                @csrf
-                                                <button class="btn btn-sm btn-success rounded-pill">
-                                                    <i class="bi bi-check-circle"></i>
-                                                    Hire
-                                                </button>
-                                            </form>
-
-                                            <form method="POST"
-                                                action="{{ route('recruiter.project.request.reject', $request->id) }}"
-                                                class="d-inline">
-                                                @csrf
-                                                <button class="btn btn-sm btn-outline-danger rounded-pill">
-                                                    <i class="bi bi-x-circle"></i>
-                                                    Reject
-                                                </button>
-                                            </form>
-                                        @else
-                                            <span class="text-muted">—</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <!-- Search -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Search</label>
+                    <div class="input-group">
+                        <input type="text" name="search" value="{{ request('search') }}" class="form-control"
+                            placeholder="Project title or professional name/email">
+                    </div>
                 </div>
 
-            @endif
+                <!-- Status Filter -->
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="">All Status</option>
+                        @foreach (['pending', 'accepted', 'hired', 'rejected'] as $status)
+                            <option value="{{ $status }}" @selected(request('status') === $status)>
+                                {{ ucfirst($status) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Reset Button -->
+                <div class="col-md-3">
+                    <button type="button" id="resetFilter" class="btn btn-outline-secondary w-100">
+                        Reset
+                    </button>
+                </div>
+
+            </form>
+
+            <!-- Table Container -->
+            <div id="requestsContainer">
+                @include('recruiter.project.partials.requests-table', ['requests' => $requests])
+            </div>
 
         </div>
     </div>
 
 @endsection
+
+@push('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const filterForm = document.getElementById('filterForm');
+
+            // Function to fetch filtered requests via AJAX
+            function fetchRequests() {
+                const formData = new FormData(filterForm);
+                const params = new URLSearchParams(formData).toString();
+
+                fetch("{{ route('recruiter.project.requests') }}?" + params, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('requestsContainer').innerHTML = html;
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            // Auto-submit on status change
+            filterForm.querySelector('select[name="status"]').addEventListener('change', fetchRequests);
+
+            // Auto-submit on search input after 500ms debounce
+            let searchTimeout;
+            filterForm.querySelector('input[name="search"]').addEventListener('keyup', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(fetchRequests, 500);
+            });
+
+            // Reset filter
+            document.getElementById('resetFilter').addEventListener('click', function() {
+                filterForm.reset();
+                fetchRequests();
+            });
+
+            // Handle AJAX pagination click
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.pagination a')) {
+                    e.preventDefault();
+                    const url = e.target.closest('a').href;
+                    fetch(url, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(res => res.text())
+                        .then(html => {
+                            document.getElementById('requestsContainer').innerHTML = html;
+                        });
+                }
+            });
+
+        });
+    </script>
+@endpush

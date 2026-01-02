@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Recruiter\ChatController;
+use App\Http\Controllers\Recruiter\ProjectAppicationController;
 use App\Http\Controllers\Recruiter\RecruiterProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Recruiter\ProjectController;
@@ -33,11 +34,14 @@ Route::prefix('recruiter')->middleware('role:recruiter')->name('recruiter.')->gr
         Route::get('/edit/{slug}', [ProjectController::class, 'edit'])->name('edit');
         Route::put('/update/{slug}', [ProjectController::class, 'update'])->name('update');
         Route::delete('/destroy/{slug}', [ProjectController::class, 'destroy'])->name('destroy');
-        Route::get('/requests', [ProjectController::class, 'requests'])->name('requests');
-        Route::post('/request/{id}/approve', [ProjectController::class, 'approve'])
+        Route::get('/requests', [ProjectAppicationController::class, 'requests'])->name('requests');
+        Route::post('/request/{id}/approve', [ProjectAppicationController::class, 'approve'])
             ->name('request.approve');
 
-        Route::post('/request/{id}/reject', [ProjectController::class, 'reject'])
+        Route::post('/request/{id}/reject', [ProjectAppicationController::class, 'reject'])
             ->name('request.reject');
             });
+
+        Route::post('/request/{id}/hire', [ProjectAppicationController::class, 'hire'])
+            ->name('request.hire');
 });

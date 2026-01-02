@@ -2,101 +2,91 @@
 
 @section('title', 'Models Page')
 
+<style>
+    /* Image hover zoom */
+    .model-card .model-img {
+        transition: transform 0.5s ease;
+    }
+
+    .model-card:hover .model-img {
+        transform: scale(1.05);
+    }
+
+    /* Overlay gradient */
+    .model-card .overlay {
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
+        transition: background 0.3s ease;
+    }
+
+    .model-card:hover .overlay {
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    }
+
+    /* Button hover shadow */
+    .btn-hover-shadow:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+
+    /* Responsive card */
+    @media (max-width: 576px) {
+        .model-card .overlay h5 {
+            font-size: 1rem;
+        }
+
+        .model-card .overlay small {
+            font-size: 0.75rem;
+        }
+
+        .model-card .overlay .badge {
+            font-size: 0.6rem;
+        }
+    }
+</style>
+
 @section('content')
     <section class="mt-5">
         <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
 
-            <div class="row gy-4 mb-4">
-
-
-                <div class="col-md-4">
-                    <ul class="nav gap-2">
-                        <li><a href="#"><i class="bi bi-facebook"></i></a></li>
-                        <li><a href="#"><i class="bi bi-instagram"></i></a></li>
-                        <li><a href="#"><i class="bi bi-tiktok"></i></a></li>
-
-                    </ul>
-                </div>
-
-                <div class="col-md-4 text-center">
-                    <h2 class="font-Oswald text-uppercase mb-0">What we do</h2>
-                </div>
-
-                <div class="col-md-4 text-end">
-                    <a href="#" class="btn btn-outline-dark px-3 text-uppercase rounded-0">Contact</a>
-                </div>
-
-                <div class="col-md-2">
-                    <ul class="nav flex-column gap-1 fs-14 text-center">
-                        <li>Height</li>
-                        <li>178</li>
-                        <li>5', 10"</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-2">
-                    <ul class="nav flex-column gap-1 fs-14 text-center">
-                        <li>Height</li>
-                        <li>178</li>
-                        <li>5', 10"</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-2">
-                    <ul class="nav flex-column gap-1 fs-14 text-center">
-                        <li>Height</li>
-                        <li>178</li>
-                        <li>5', 10"</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-2">
-                    <ul class="nav flex-column gap-1 fs-14 text-center">
-                        <li>Height</li>
-                        <li>178</li>
-                        <li>5', 10"</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-2">
-                    <ul class="nav flex-column gap-1 fs-14 text-center">
-                        <li>Height</li>
-                        <li>178</li>
-                        <li>5', 10"</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-2">
-                    <ul class="nav flex-column gap-1 fs-14 text-center">
-                        <li>Height</li>
-                        <li>178</li>
-                        <li>5', 10"</li>
-                    </ul>
-                </div>
-
-
-            </div>
-
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 @foreach ($models as $model)
                     <div class="col">
-                        <div class="card h-100 shadow-sm border-0">
-                            <!-- Aspect ratio utility keeps image height consistent -->
-                            <div class="ratio ratio-1x1 bg-light rounded-top">
+                        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden position-relative model-card">
+
+                            <!-- Image with hover overlay -->
+                            <div class="position-relative overflow-hidden rounded-top" style="height: 350px;">
                                 <img src="{{ $model->avatar ? asset('storage/' . $model->avatar) : asset('images/placeholder.png') }}"
-                                    alt="{{ $model->first_name ?? 'Model' }}"
-                                    class="w-100 h-100 object-fit-cover rounded-top">
+                                    alt="{{ $model->user->first_name ?? 'Model' }}"
+                                    class="w-100 h-100 object-fit-cover model-img">
+
+                                <!-- Gradient Overlay -->
+                                <div
+                                    class="overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-3 text-white">
+                                    <h5 class="mb-1 fw-bold">{{ $model->user->first_name ?? 'Model' }}
+                                        {{ $model->user->last_name ?? '' }}</h5>
+                                    <small class="d-block">{{ $model->age ?? '-' }} yrs •
+                                        {{ $model->gender ?? '-' }}</small>
+                                    <small class="d-block">{{ $model->location ?? '-' }}</small>
+                                    @if ($model->experience)
+                                        <span class="badge bg-primary mt-2">{{ Str::limit($model->experience, 25) }}</span>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="card-body text-center">
+
+                            <!-- Card body -->
+                            <div class="card-body text-center p-3 bg-white">
                                 <a href="{{ route('frontend.model.profile', $model->id) }}"
-                                    class="card-title mb-0">{{ $model->user->first_name . ' ' . $model->user->last_name ?? 'Model Name' }}</a>
+                                    class="btn btn-primary w-100 rounded-pill fw-semibold btn-hover-shadow">
+                                    View Profile
+                                </a>
                             </div>
                         </div>
                     </div>
                 @endforeach
-            </div><!--/row-->
-        </div>
 
+            </div>
+        </div>
     </section>
 @endsection
 

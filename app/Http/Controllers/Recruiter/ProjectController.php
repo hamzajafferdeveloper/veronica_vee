@@ -230,34 +230,4 @@ class ProjectController extends Controller
             ], 500);
         }
     }
-
-    public function requests()
-    {
-        $requests = ProjectApplication::with(['project', 'professional'])
-            ->whereHas('project', function ($q) {
-                $q->where('recruiter_id', auth()->id());
-            })
-            ->latest()
-            ->get();
-
-        return view('recruiter.project.requests', compact('requests'));
-    }
-
-    public function approve($id)
-    {
-        $request = ProjectApplication::findOrFail($id);
-        $request->update(['status' => 'hired']);
-
-        // assign project to professional here if needed
-
-        return back()->with('success', 'Project request approved.');
-    }
-
-    public function reject($id)
-    {
-        $request = ProjectApplication::findOrFail($id);
-        $request->update(['status' => 'rejected']);
-
-        return back()->with('success', 'Project request rejected.');
-    }
 }
