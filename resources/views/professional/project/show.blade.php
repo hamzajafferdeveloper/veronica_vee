@@ -9,7 +9,7 @@
 
                 <!-- Project Header -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="fw-bold">{{ $project->title }}</h1>
+                    <h4 class="fw-bold">{{ $project->title }}</h4>
                     <span
                         class="badge
                     @if ($project->status == 'published') bg-success
@@ -93,11 +93,21 @@
                                 </div>
                             @endif
 
-                            <div class="text-end mt-3">
+                            <div class="text-end mt-3 gap-3 d-flex">
                                 <a href="{{ route('professional.project.index') }}" class="btn btn-secondary rounded-pill">
                                     <i class="bi bi-arrow-left-circle me-1"></i>Back to Projects
                                 </a>
+
+                                <button type="button" class="btn btn-primary rounded-pill px-3" data-bs-toggle="modal"
+                                    data-bs-target="#requestProjectModal">
+                                    <i class="bi bi-send-check me-1"></i>
+                                    Request Project
+                                </button>
+
+                                @include('professional.project.partials.request-project-modal')
+
                             </div>
+
                         </div>
 
                         <!-- Right Column: Media -->
@@ -130,3 +140,62 @@
         </div>
     </div>
 @endsection
+
+@push('script')
+    <script>
+        $(document).ready(function() {
+            /* ===============================
+               SUBMIT PROJECT REQUEST
+            ================================ */
+            $('#projectRequestForm').on('submit', function(e) {
+                e.preventDefault();
+
+                let form = $(this);
+                let btn = form.find('button[type="submit"]');
+
+                btn.prop('disabled', true)
+                    .html('<span class="spinner-border spinner-border-sm me-1"></span>Sending...');
+
+                $.ajax({
+                    url: "{{ route('professional.project.request', $project->id) }}",
+                    method: "POST",
+                    data: form.serialize(),
+                    success: function(response) {
+
+                        btn.prop('disabled', false)
+                            .html('<i class="bi bi-send-check me-1"></i>Send Request');
+
+                        // Optional toast (if you already use showToast)
+                        if (response.message) {
+                            showToast(response.message, 'success');
+                        }
+
+                        $('#requestProjectModal').modal('hide');
+                        form[0].reset();
+                    },
+                    error: function(xhr) {
+
+                        btn.prop('disabled', false)
+                            .html('<i class="bi bi-send-check me-1"></i>Send Request');
+
+                        let message = 'Something went wrong. Please try again.';
+
+                        if (xhr.responseJSON?.message) {
+                            message = xhr.responseJSON.message;
+                        }
+
+                        showToast(message, 'error');
+                    }
+                });
+            });
+
+            /* ===============================
+               RESET FORM ON MODAL CLOSE
+            ================================ */
+            $('#requestProjectModal').on('hidden.bs.modal', function() {
+                $('#projectRequestForm')[0].reset();
+            });
+
+        });
+    </script>
+@endpush
