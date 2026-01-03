@@ -80,103 +80,37 @@
         </div><!--/container-fluid-->
     </section><!--/listing-->
 
-    <section class="mt-5" id="other">
-        <div class="container">
-            <div class="card text-bg-primary bg-gradient border shadow-lg text-center rounded-4">
-                <div class="card-body py-5">
-
-                    <h4 class="fw-medium mb-5">The worlds best talent and creators that trust us</h4>
-
-                    <div class="row gy-4 justify-content-around">
-
-                        <div class="col-auto">
-                            <h2 class="mb-0 display-5 fw-bold">6,069</h2>
-                            <p class="mb-0">NEW JOB POSTED</p>
-                        </div><!--/col(1)-->
-
-                        <div class="col-auto">
-                            <h2 class="mb-0 display-5 fw-bold">241,661</h2>
-                            <p class="mb-0">MODEL AND ARTISTS</p>
-                        </div><!--/col(2)-->
-
-                        <div class="col-auto">
-                            <h2 class="mb-0 display-5 fw-bold">184,918</h2>
-                            <p class="mb-0">PRODUCERS AND DIRECTORS</p>
-                        </div><!--/col(3)-->
-
-                    </div><!--/row-->
-
-                </div><!--/card-body-->
-            </div><!--/card-->
-        </div>
-        </div><!--/container-fluid-->
-    </section>
-
-    <section class="mt-5" id="brandArea">
-        <div class="container-fluid">
-
-            <h2 class="fw-bold mb-5 text-center">Brands that trust us</h2>
-
-            <div class="owl-carousel text-center" id="brandCarousel">
-
-                <div>
-                    <img class="img-fluid" src="{{ asset('assets/images/brand.png') }}" alt="brand-logo">
-                </div>
-
-                <div>
-                    <img class="img-fluid" src="{{ asset('assets/images/brand.png') }}" alt="brand-logo">
-                </div>
-
-                <div>
-                    <img class="img-fluid" src="{{ asset('assets/images/brand.png') }}" alt="brand-logo">
-                </div>
-                <div>
-                    <img class="img-fluid" src="{{ asset('assets/images/brand.png') }}" alt="brand-logo">
-                </div>
-
-                <div>
-                    <img class="img-fluid" src="{{ asset('assets/images/brand.png') }}" alt="brand-logo">
-                </div>
-
-                <div>
-                    <img class="img-fluid" src="{{ asset('assets/images/brand.png') }}" alt="brand-logo">
-                </div>
-
-                <div>
-                    <img class="img-fluid" src="{{ asset('assets/images/brand.png') }}" alt="brand-logo">
-                </div>
-
-                <div>
-                    <img class="img-fluid" src="{{ asset('assets/images/brand.png') }}" alt="brand-logo">
-                </div>
-
-                <div>
-                    <img class="img-fluid" src="{{ asset('assets/images/brand.png') }}" alt="brand-logo">
-                </div>
-
-            </div><!--/owl-carouse-->
-
-        </div><!--/container-->
-    </section><!--/brandArea-->
+    <x-frontend.model-recruiter-no />
 
 @endsection
 
 @push('script')
     <script>
-
         $('#brandCarousel').owlCarousel({
             margin: 24,
             nav: false,
             dots: false,
             responsive: {
-                0: {items: 2, margin: 16},
-                576: {items: 3},
-                768: {items: 4},
-                992: {items: 5},
-                1200: {items: 6},
-                1400: {items: 8},
+                0: {
+                    items: 2,
+                    margin: 16
+                },
+                576: {
+                    items: 3
+                },
+                768: {
+                    items: 4
+                },
+                992: {
+                    items: 5
+                },
+                1200: {
+                    items: 6
+                },
+                1400: {
+                    items: 8
+                },
             }
         })
     </script>
-
 @endpush

@@ -23,7 +23,7 @@
               </div>
           </div><!-- card end -->
       </div>
-      <div class="col">
+      {{-- <div class="col">
           <div class="card shadow-none border bg-gradient-start-2 h-100">
               <div class="card-body p-20">
                   <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
@@ -111,5 +111,5 @@
                   </p>
               </div>
           </div><!-- card end -->
-      </div>
+      </div> --}}
   </div>
