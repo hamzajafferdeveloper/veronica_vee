@@ -11,7 +11,7 @@
 
                 <ul class="nav flex-column gap-2 fs-14">
                     <li><a href="#" class="text-white">About us</a></li>
-                    <li><a href="#" class="text-white">Testimonials</a></li>
+                    <li><a href="{{ route("testimonial") }}" class="text-white">Testimonials</a></li>
                     <li><a href="#" class="text-white">Success Stories</a></li>
                     <li><a href="#" class="text-white">Company Details</a></li>
                     <li><a href="#" class="text-white">Podcast</a></li>

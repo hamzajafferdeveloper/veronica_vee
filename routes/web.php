@@ -39,7 +39,7 @@ Route::get('/', function () {
 
     $models = ModelProfiles::with('user')->take(20)->latest()->get();
 
-    return view('frontend.welcome', compact('models') );
+    return view('frontend.welcome', compact('models'));
 })->name('home');
 
 Route::get('/about', function () {
@@ -54,11 +54,14 @@ Route::get('/model', function () {
 })->name('model');
 
 Route::get('/model/{id}', function ($id) {
-
     $model = ModelProfiles::with('user')->findOrFail($id);
 
     return view('frontend.model-profile', compact('model'));
 })->name('frontend.model.profile');
+
+Route::get('/testimonial', function () {
+    return view('frontend.testimonials');
+})->name('testimonial');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
