@@ -48,39 +48,19 @@
                     <!-- Buttons -->
                     <div class="d-flex gap-2 mt-3">
                         @auth
-                            <a class="btn btn-primary px-4">Message</a>
+                            <button class="btn btn-primary px-4 js-start-chat" data-user-id="{{ $model->user->id }}">
+                                Message
+                            </button>
                         @else
-                            <a href="{{ route('login') }}" class="btn btn-primary px-4">Login to Start Messaging</a>
+                            <a href="{{ route('login') }}" class="btn btn-primary px-4">
+                                Login to Start Messaging
+                            </a>
                         @endauth
-
-
                     </div>
+
                 </div>
 
                 <hr class="my-4">
-
-                <!-- Open to work + Providing services -->
-                {{-- <div class="row g-3">
-                <div class="col-md-6">
-                    <div class="border rounded p-3 bg-light">
-                        <h6 class="fw-bold mb-1">Open to work</h6>
-                        <p class="mb-1 small">
-                            Digital Designer, UI/UX Designer, Website Developer,...
-                        </p>
-                        <a href="#" class="small">Show details</a>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="border rounded p-3 bg-light">
-                        <h6 class="fw-bold mb-1">Providing Services</h6>
-                        <p class="mb-1 small">
-                            SEO Marketing, Website Optimization, Web Design,...
-                        </p>
-                        <a href="#" class="small">Show details</a>
-                    </div>
-                </div>
-            </div> --}}
 
             </div>
 
@@ -89,3 +69,42 @@
     </div>
 
 @endsection
+
+@push('script')
+    <script>
+        $(document).on('click', '.js-start-chat', function() {
+            const button = $(this);
+            const userId = button.data('user-id');
+
+            if (button.data('loading')) return;
+
+            button
+                .data('loading', true)
+                .prop('disabled', true)
+                .text('Starting...');
+
+            $.ajax({
+                url: "{{ route('recruiter.chat.conversation', ':userId') }}".replace(':userId', userId),
+                type: 'GET',
+                success: function(response) {
+                    if (response.conversation_id) {
+                        window.location.href =
+                            "{{ route('recruiter.chat.messages', ':id') }}"
+                            .replace(':id', response.conversation_id);
+                    }
+                    button
+                        .data('loading', false)
+                        .prop('disabled', false)
+                        .text('Message');
+                },
+                error: function() {
+                    showToast('Something went wrong. Please try again.', 'error');
+                    button
+                        .data('loading', false)
+                        .prop('disabled', false)
+                        .text('Message');
+                }
+            });
+        });
+    </script>
+@endpush

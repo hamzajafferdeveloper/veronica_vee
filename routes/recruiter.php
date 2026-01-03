@@ -18,7 +18,7 @@ Route::prefix('recruiter')->middleware('role:recruiter')->name('recruiter.')->gr
 
     // Chat Routes
     Route::prefix('/chat')->name('chat.')->group(function () {
-        Route::get('/conversation/{userId}', [ChatController::class, 'getOrCreateConversation']);
+        Route::get('/conversation/{userId}', [ChatController::class, 'getOrCreateConversation'])->name('conversation');
         Route::get('/messages/{conversationId}', [ChatController::class, 'messages'])->name('messages');
         Route::get('/index', [ChatController::class, 'index'])->name('index');
         Route::get('/get-professional', [ChatController::class, 'getProfessional'])->name('get-professional');

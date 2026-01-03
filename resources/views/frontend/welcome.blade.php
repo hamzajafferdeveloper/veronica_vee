@@ -54,7 +54,7 @@
                 </div><!--/col(logo)-->
 
                 <div class="col-md-6">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="img" class="img-fluid">
+                    <img src="{{ asset('assets/images/about-img.jpg') }}" alt="img" class="img-fluid">
                 </div><!--/col(logo)-->
 
             </div><!--/row-->
@@ -68,32 +68,30 @@
                 @php
                     $roles = auth()->user()->getRoleNames();
 
-                    if ($roles->containers('admin')) {
+                    if ($roles->contains('admin')) {
                         $route = 'admin.dashboard';
-                    } elseif ($roles->containers('professional')) {
+                    } elseif ($roles->contains('professional')) {
                         $route = 'professional.dashboard';
-                    } elseif ($roles->containers('recruiter')) {
+                    } elseif ($roles->contains('recruiter')) {
                         $route = 'recruiter.dashboard';
                     } else {
                         $route = 'loginOrSignup';
                     }
-
                 @endphp
-                <a href="{{ route($route) }}"
-                    class="card card-cta border-0 rounded-0 text-center text-white text-decoration-none">
-                    <div class="card-body py-5">
-                        <h2 class="font-Oswald text-uppercase fw-lighter display-3 mb-0">Application</h2>
-                    </div>
-                </a>
             @else
-                <a href="{{ route('loginOrSignup') }}"
-                    class="card card-cta border-0 rounded-0 text-center text-white text-decoration-none">
-                    <div class="card-body py-5">
-                        <h2 class="font-Oswald text-uppercase fw-lighter display-3 mb-0">Application</h2>
-                    </div>
-                </a>
+                @php
+                    $route = 'loginOrSignup';
+                @endphp
             @endauth
 
+            <a href="{{ route($route) }}"
+                class="card card-cta border-0 rounded-0 text-center text-white text-decoration-none">
+                <div class="card-body py-5">
+                    <h2 class="font-Oswald text-uppercase fw-lighter display-3 mb-0">
+                        Application
+                    </h2>
+                </div>
+            </a>
 
 
         </div><!--/container-fluid-->
