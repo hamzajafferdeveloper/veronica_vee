@@ -99,10 +99,10 @@
 
     <section class="mt-5" id="listing">
         <div class="container-fluid">
-            <div class="row g-4">
+            <div class="row g-sm-4 g-3">
 
                 @foreach ($models as $model)
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
                         <x-frontend.model-card :model="$model" />
                     </div>
                 @endforeach
