@@ -2,51 +2,6 @@
 
 @section('title', 'Home Page')
 
-@push('styles')
-    <style>
-        /* Image hover zoom */
-        .model-card .model-img {
-            transition: transform 0.5s ease;
-        }
-
-        .model-card:hover .model-img {
-            transform: scale(1.05);
-        }
-
-        /* Overlay gradient */
-        .model-card .overlay {
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
-            transition: background 0.3s ease;
-        }
-
-        .model-card:hover .overlay {
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
-        }
-
-        /* Button hover shadow */
-        .btn-hover-shadow:hover {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-        }
-
-        /* Responsive card */
-        @media (max-width: 576px) {
-            .model-card .overlay h5 {
-                font-size: 1rem;
-            }
-
-            .model-card .overlay small {
-                font-size: 0.75rem;
-            }
-
-            .model-card .overlay .badge {
-                font-size: 0.6rem;
-            }
-        }
-    </style>
-@endpush
-
 @section('content')
     <div id="banner" class="carousel slide overflow-hidden">
 
@@ -109,11 +64,37 @@
     <section class="mt-5" id="cta">
         <div class="container-fluid">
 
-            <a href="#" class="card card-cta border-0 rounded-0 text-center text-white text-decoration-none">
-                <div class="card-body py-5">
-                    <h2 class="font-Oswald text-uppercase fw-lighter display-3 mb-0">Application</h2>
-                </div>
-            </a>
+            @auth
+                @php
+                    $roles = auth()->user()->getRoleNames();
+
+                    if ($roles->containers('admin')) {
+                        $route = 'admin.dashboard';
+                    } elseif ($roles->containers('professional')) {
+                        $route = 'professional.dashboard';
+                    } elseif ($roles->containers('recruiter')) {
+                        $route = 'recruiter.dashboard';
+                    } else {
+                        $route = 'loginOrSignup';
+                    }
+
+                @endphp
+                <a href="{{ route($route) }}"
+                    class="card card-cta border-0 rounded-0 text-center text-white text-decoration-none">
+                    <div class="card-body py-5">
+                        <h2 class="font-Oswald text-uppercase fw-lighter display-3 mb-0">Application</h2>
+                    </div>
+                </a>
+            @else
+                <a href="{{ route('loginOrSignup') }}"
+                    class="card card-cta border-0 rounded-0 text-center text-white text-decoration-none">
+                    <div class="card-body py-5">
+                        <h2 class="font-Oswald text-uppercase fw-lighter display-3 mb-0">Application</h2>
+                    </div>
+                </a>
+            @endauth
+
+
 
         </div><!--/container-fluid-->
     </section><!--/cta-->
