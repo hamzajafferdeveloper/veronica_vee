@@ -90,7 +90,7 @@
                     if (response.conversation_id) {
                         window.location.href =
                             "{{ route('recruiter.chat.messages', ':id') }}"
-                            .replace(':id', response.conversation_id);
+                            .replace(':id', userId);
                     }
                     button
                         .data('loading', false)

@@ -118,7 +118,6 @@
                 }
             });
 
-
             // Load professionals in sidebar
             function loadProfessionals() {
                 fetch("{{ route('recruiter.chat.get-professional') }}")
