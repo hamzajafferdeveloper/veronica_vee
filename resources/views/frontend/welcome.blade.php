@@ -48,8 +48,6 @@
 @endpush
 
 @section('content')
-
-
     <div id="banner" class="carousel slide overflow-hidden">
 
         <div class="carousel-inner">
@@ -60,7 +58,8 @@
                 <div class="carousel-caption text-sm-start">
                     <h2 class="display-6 fw-bold text-uppercase">Match Making,<br>models & more,,</h2>
                     <h5 class="text-uppercase mb-3">Connections for a lifetime or<br>Just as your Desire</h5>
-                    <a href="{{ route('model') }}" class="btn btn-outline-light fw-bold text-uppercase rounded-0">FInd models and
+                    <a href="{{ route('model') }}" class="btn btn-outline-light fw-bold text-uppercase rounded-0">FInd
+                        models and
                         Talents<i class="bi bi-box-arrow-up-right ms-2"></i></a>
                 </div><!--/carousel-caption-->
 
@@ -72,7 +71,8 @@
                 <div class="carousel-caption text-sm-start">
                     <h2 class="display-6 fw-bold text-uppercase">Match Making,<br>models & more,,</h2>
                     <h5 class="text-uppercase mb-3">Connections for a lifetime or<br>Just as your Desire</h5>
-                    <a href="{{ route("model") }}" class="btn btn-outline-light fw-bold text-uppercase rounded-0">FInd models and
+                    <a href="{{ route('model') }}" class="btn btn-outline-light fw-bold text-uppercase rounded-0">FInd
+                        models and
                         Talents<i class="bi bi-box-arrow-up-right ms-2"></i></a>
                 </div><!--/carousel-caption-->
 
@@ -99,7 +99,7 @@
                 </div><!--/col(logo)-->
 
                 <div class="col-md-6">
-                    <img src="{{ asset('/assets/images/about-img.jpg') }}" alt="img" class="img-fluid">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="img" class="img-fluid">
                 </div><!--/col(logo)-->
 
             </div><!--/row-->
@@ -113,7 +113,7 @@
                 <div class="card-body py-5">
                     <h2 class="font-Oswald text-uppercase fw-lighter display-3 mb-0">Application</h2>
                 </div>
-            </a><!--/card-->
+            </a>
 
         </div><!--/container-fluid-->
     </section><!--/cta-->
@@ -124,126 +124,13 @@
 
                 @foreach ($models as $model)
                     <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <div class="card h-100 shadow border-0 rounded-4 overflow-hidden model-card position-relative">
-
-                            <!-- Image with hover effect -->
-                            <div class="position-relative overflow-hidden rounded-top" style="height: 360px;">
-                                <img src="{{ $model->avatar ? asset('storage/' . $model->avatar) : asset('images/placeholder.png') }}"
-                                    alt="{{ $model->user->first_name ?? 'Model' }}"
-                                    class="w-100 h-100 object-fit-cover transition-scale">
-
-                                <!-- Gradient Overlay -->
-                                <div class="overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-3 text-white"
-                                    style="background: linear-gradient(to top, rgba(0,0,0,0.65), transparent); transition: background 0.3s;">
-                                    <h5 class="mb-1 fw-bold">{{ $model->user->first_name ?? 'Model' }}
-                                        {{ $model->user->last_name ?? '' }}</h5>
-                                    <small class="d-block">{{ $model->age ?? '-' }} yrs •
-                                        {{ $model->gender ?? '-' }}</small>
-                                    <small class="d-block text-truncate">{{ $model->location ?? '-' }}</small>
-                                    @if ($model->experience)
-                                        <span class="badge bg-primary mt-2">{{ Str::limit($model->experience, 25) }}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <!-- Card body -->
-                            <div class="card-body text-center p-3 bg-white">
-                                <a href="{{ route('frontend.model.profile', $model->id) }}"
-                                    class="btn btn-primary w-100 rounded-pill fw-semibold btn-hover-shadow">
-                                    View Profile
-                                </a>
-                            </div>
-                        </div>
+                        <x-frontend.model-card :model="$model" />
                     </div>
                 @endforeach
 
             </div><!--/row-->
         </div><!--/container-fluid-->
     </section>
-
-    {{-- <section class="mt-5" id="moreThenModels">
-        <div class="container-fluid justify-content-center">
-            <div class="row g-4">
-
-                <div class="col-12 text-center">
-                    <h2 class="fw-bold">More Then Models</h2>
-                    <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br>Lorem
-                        Ipsum has been the industry's standard dummy text ever since the 1500s, </p>
-
-                </div><!--/col(heading)-->
-
-                <div class="col-lg-2 col-md-4 col-6">
-                    <a href="#" class="card border-0 rounded-0 text-center text-white">
-                        <img src="{{ asset('/assets/images/about-img.jpg') }}" class="card-img rounded-0" alt="img">
-                        <div class="card-img-overlay rounded-0 top-unset pt-5">
-                            <h3 class="fs-18 mb-0 fw-bold">I'm a Newcomer</h3>
-                            <p class="mb-0 fs-14">Tell me more</p>
-                        </div>
-                    </a><!--/card-->
-                </div><!--/col(1)-->
-
-                <div class="col-lg-2 col-md-4 col-6">
-                    <a href="#" class="card border-0 rounded-0 text-center text-white">
-                        <img src="{{ asset('/assets/images/about-img.jpg') }}" class="card-img rounded-0" alt="img">
-                        <div class="card-img-overlay rounded-0 top-unset pt-5">
-                            <h3 class="fs-18 mb-0 fw-bold">I'm a Newcomer</h3>
-                            <p class="mb-0 fs-14">Tell me more</p>
-                        </div>
-                    </a><!--/card-->
-                </div><!--/col(1)-->
-
-                <div class="col-lg-2 col-md-4 col-6">
-                    <a href="#" class="card border-0 rounded-0 text-center text-white">
-                        <img src="{{ asset('/assets/images/about-img.jpg') }}" class="card-img rounded-0"
-                            alt="img">
-                        <div class="card-img-overlay rounded-0 top-unset pt-5">
-                            <h3 class="fs-18 mb-0 fw-bold">I'm a Newcomer</h3>
-                            <p class="mb-0 fs-14">Tell me more</p>
-                        </div>
-                    </a><!--/card-->
-                </div><!--/col(1)-->
-
-                <div class="col-lg-2 col-md-4 col-6">
-                    <a href="#" class="card border-0 rounded-0 text-center text-white">
-                        <img src="{{ asset('/assets/images/about-img.jpg') }}" class="card-img rounded-0"
-                            alt="img">
-                        <div class="card-img-overlay rounded-0 top-unset pt-5">
-                            <h3 class="fs-18 mb-0 fw-bold">I'm a Newcomer</h3>
-                            <p class="mb-0 fs-14">Tell me more</p>
-                        </div>
-                    </a><!--/card-->
-                </div><!--/col(1)-->
-
-                <div class="col-lg-2 col-md-4 col-6">
-                    <a href="#" class="card border-0 rounded-0 text-center text-white">
-                        <img src="{{ asset('/assets/images/about-img.jpg') }}" class="card-img rounded-0"
-                            alt="img">
-                        <div class="card-img-overlay rounded-0 top-unset pt-5">
-                            <h3 class="fs-18 mb-0 fw-bold">I'm a Newcomer</h3>
-                            <p class="mb-0 fs-14">Tell me more</p>
-                        </div>
-                    </a><!--/card-->
-                </div><!--/col(1)-->
-
-                <div class="col-lg-2 col-md-4 col-6">
-                    <a href="#" class="card border-0 rounded-0 text-center text-white">
-                        <img src="{{ asset('/assets/images/about-img.jpg') }}" class="card-img rounded-0"
-                            alt="img">
-                        <div class="card-img-overlay rounded-0 top-unset pt-5">
-                            <h3 class="fs-18 mb-0 fw-bold">I'm a Newcomer</h3>
-                            <p class="mb-0 fs-14">Tell me more</p>
-                        </div>
-                    </a><!--/card-->
-                </div><!--/col(1)-->
-
-                <div class="col-12 text-center">
-                    <a href="{{ route('loginOrSignup') }}"
-                        class="btn btn-primary bg-gradient border-0 rounded-pill px-4 fw-bold">Sign up now!</a>
-                </div><!--/col(btn)-->
-
-            </div><!--/row-->
-        </div><!--/container-fluid-->
-    </section> --}}
 
     <x-frontend.model-recruiter-no />
 
