@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FrontendController;
 use App\Models\ModelProfiles;
 use Illuminate\Support\Facades\Route;
 
@@ -35,33 +36,15 @@ Route::get('/create-storage-link', function () {
     }
 });
 
-Route::get('/', function () {
+Route::get('/', [FrontendController::class, 'welcome'])->name('home');
 
-    $models = ModelProfiles::with('user')->take(20)->latest()->get();
+Route::get('/about', [FrontendController::class, 'about'])->name('about');
 
-    return view('frontend.welcome', compact('models'));
-})->name('home');
+Route::get('/model', [FrontendController::class, 'models'])->name('model');
 
-Route::get('/about', function () {
-    return view('frontend.about');
-})->name('about');
+Route::get('/model/{id}', [FrontendController::class, 'modelProfile'])->name('frontend.model.profile');
 
-Route::get('/model', function () {
-
-    $models = ModelProfiles::with('user')->get();
-
-    return view('frontend.model', compact('models'));
-})->name('model');
-
-Route::get('/model/{id}', function ($id) {
-    $model = ModelProfiles::with('user')->findOrFail($id);
-
-    return view('frontend.model-profile', compact('model'));
-})->name('frontend.model.profile');
-
-Route::get('/testimonial', function () {
-    return view('frontend.testimonials');
-})->name('testimonial');
+Route::get('/testimonial', [FrontendController::class, 'testimonials'])->name('testimonial');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';

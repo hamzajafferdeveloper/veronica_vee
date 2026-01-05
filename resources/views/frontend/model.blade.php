@@ -6,13 +6,16 @@
     <section class="mt-5">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-
                 @foreach ($models as $model)
                     <div class="col">
                         <x-frontend.model-card :model="$model" />
                     </div>
                 @endforeach
+            </div>
 
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center mt-5">
+                {{ $models->links() }}
             </div>
         </div>
     </section>
