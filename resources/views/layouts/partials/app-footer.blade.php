@@ -10,12 +10,12 @@
                 <h6 class="fw-bold mb-3">Company</h6>
 
                 <ul class="nav flex-column gap-2 fs-14">
-                    <li><a href="#" class="text-white">About us</a></li>
+                    <li><a href={{ route("about") }} class="text-white">About us</a></li>
                     <li><a href="{{ route("testimonial") }}" class="text-white">Testimonials</a></li>
-                    <li><a href="#" class="text-white">Success Stories</a></li>
+                    {{-- <li><a href="#" class="text-white">Success Stories</a></li>
                     <li><a href="#" class="text-white">Company Details</a></li>
                     <li><a href="#" class="text-white">Podcast</a></li>
-                    <li><a href="#" class="text-white">Blog</a></li>
+                    <li><a href="#" class="text-white">Blog</a></li> --}}
                 </ul>
 
             </div><!--/link-->
@@ -30,7 +30,7 @@
 
             </div><!--/link-->
 
-            <div class="col-md-auto col-6">
+            {{-- <div class="col-md-auto col-6">
                 <h6 class="fw-bold mb-3">Help</h6>
 
                 <ul class="nav flex-column gap-2 fs-14">
@@ -40,7 +40,7 @@
                     <li><a href="#" class="text-white">Contact us</a></li>
                 </ul>
 
-            </div><!--/link-->
+            </div> --}}
 
             <div class="col-md-auto col-6">
                 <h6 class="fw-bold mb-3">Download our App</h6>
