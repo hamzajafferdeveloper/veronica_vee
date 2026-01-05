@@ -24,9 +24,11 @@
             @include('recruiter.chat.partials.chat-messages')
 
             <!-- Chat Send Box -->
-            <form class="chat-message-box d-none p-1" id="messageForm" style="
+            <form class="chat-message-box d-none p-1" id="messageForm"
+                style="
                         border-top:1px solid #e0e0e0;
-                    " enctype="multipart/form-data">
+                    "
+                enctype="multipart/form-data">
 
                 @csrf
 
@@ -39,7 +41,8 @@
 
                     <!-- Message box -->
                     <textarea name="chatMessage" id="chatMessage" rows="1" placeholder="Type a message" autocomplete="off"
-                        class="flex-grow-1 pt-1 px-3" style="
+                        class="flex-grow-1 pt-1 px-3"
+                        style="
                             border-radius:4px !important;
                             border:1px solid #d8dadd;
                             background:#f0f2f5;
@@ -49,7 +52,8 @@
                         "></textarea>
 
                     <!-- Send -->
-                    <button type="submit" class="btn d-flex align-items-center justify-content-center" style="
+                    <button type="submit" class="btn d-flex align-items-center justify-content-center"
+                        style="
                             width:35px;
                             height:35px;
                             background:#0d6efd;
@@ -70,7 +74,7 @@
 
 @push('script')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
 
             let activeConversationId = null;
             let activeReceiverId = null;
@@ -123,55 +127,71 @@
                 }
             });
 
-
-            // Load professionals in sidebar
             function loadProfessionals() {
-                fetch("{{ route('professional.chat.get-recuiters') }}")
+                fetch("{{ route('recruiter.chat.get-professional') }}")
                     .then(res => res.json())
                     .then(data => {
-                        professionalList.innerHTML = '';
-
-                        data.forEach(user => {
-                            const div = document.createElement('div');
-                            div.classList.add('chat-sidebar-single');
-                            div.dataset.userId = user.id;
-                            div.dataset.name = `${user.first_name} ${user.last_name}`;
-                            div.dataset.email = user.email ?? '';
-                            div.dataset.avatar = user.recruiter?.avatar ? '/storage/' + user.recruiter
-                                .avatar :
-                                '{{ asset('assets/images/user.png') }}';
-
-                            div.innerHTML = `
-                                <div class="img">
-                                    <img src="${div.dataset.avatar}" class="rounded-full" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
-                                </div>
-                                <div class="info">
-                                    <h6 class="text-sm mb-1">${div.dataset.name}</h6>
-                                </div>
-                            `;
-
-                            div.addEventListener('click', function () {
-                                activeReceiverId = this.dataset.userId;
-
-                                setActiveUser(this);
-                                updateHeader(this.dataset.name, this.dataset.email, this.dataset
-                                    .avatar);
-                                messageForm.classList.remove('d-none');
-                                getConversation(activeReceiverId);
-                            });
-
-                            professionalList.appendChild(div);
-                        });
-
-                        // Auto-load conversation if URL has receiverId
-                        const urlParts = window.location.pathname.split('/');
-                        const receiverIdFromURL = parseInt(urlParts[urlParts.length - 1]);
-                        if (receiverIdFromURL) {
-                            const userElement = Array.from(professionalList.children)
-                                .find(el => parseInt(el.dataset.userId) === receiverIdFromURL);
-                            if (userElement) userElement.click();
-                        }
+                        allProfessionals = data; // store for search
+                        renderProfessionals(data);
                     });
+            }
+
+            document.getElementById('professionalSearch').addEventListener('input', function() {
+                const keyword = this.value.toLowerCase().trim();
+
+                const filtered = allProfessionals.filter(user => {
+                    const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
+                    return fullName.includes(keyword);
+                });
+
+                renderProfessionals(filtered);
+            });
+
+            // Load professionals in sidebar
+            function renderProfessionals(data) {
+                professionalList.innerHTML = '';
+
+                data.forEach(user => {
+                    const div = document.createElement('div');
+                    div.classList.add('chat-sidebar-single');
+                    div.dataset.userId = user.id;
+                    div.dataset.name = `${user.first_name} ${user.last_name}`.toLowerCase();
+                    div.dataset.email = user.email || '';
+                    div.dataset.avatar = user.model?.avatar ?
+                        '/storage/' + user.model.avatar :
+                        '{{ asset('assets/images/user.png') }}';
+
+                    div.innerHTML = `
+            <div class="img">
+                <img src="${div.dataset.avatar}" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
+            </div>
+            <div class="info">
+                <h6 class="text-sm mb-1">${user.first_name} ${user.last_name}</h6>
+            </div>
+        `;
+
+                    div.addEventListener('click', function() {
+                        activeReceiverId = this.dataset.userId;
+                        setActiveUser(this);
+                        updateHeader(`${user.first_name} ${user.last_name}`, user.email || '', this
+                            .dataset.avatar);
+                        messageForm.classList.remove('d-none');
+                        getConversation(activeReceiverId);
+                    });
+
+                    professionalList.appendChild(div);
+                });
+
+                // Auto-select user from URL
+                setTimeout(() => {
+                    const urlParts = window.location.pathname.split('/');
+                    const receiverIdFromURL = parseInt(urlParts[urlParts.length - 1]);
+                    if (receiverIdFromURL) {
+                        const userElement = [...professionalList.children]
+                            .find(el => parseInt(el.dataset.userId) === receiverIdFromURL);
+                        if (userElement) userElement.click();
+                    }
+                }, 300);
             }
 
             function setActiveUser(selected) {
@@ -188,10 +208,10 @@
 
             function getConversation(receiverId) {
                 fetch(`/professional/chat/get-or-create/${receiverId}`, {
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest"
-                    }
-                })
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    })
                     .then(res => res.json())
                     .then(data => {
                         activeConversationId = data.conversation_id;
@@ -204,7 +224,9 @@
             function ListenToConversation(conversationId) {
                 // Check if Echo is initialized
                 if (!window.Echo) {
-                    console.error('Echo is not initialized. Make sure echo.js is properly imported before calling this function.');
+                    console.error(
+                        'Echo is not initialized. Make sure echo.js is properly imported before calling this function.'
+                    );
                     return;
                 }
 
@@ -280,18 +302,30 @@
                         </span>
                     </div>
                 </div>
+
+
             `;
 
                 chatContainer.insertAdjacentHTML('beforeend', messageHTML);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                // 🔹 Move sender to top if the message is NOT mine
+                if (!is_mine) {
+                    const senderElement = Array.from(professionalList.children)
+                        .find(el => el.dataset.userId == message.sender_id);
+
+                    if (senderElement) {
+                        professionalList.insertBefore(senderElement, professionalList.firstChild);
+                    }
+                }
             }
 
             function loadMessages(conversationId) {
                 fetch(`/professional/chat/messages/${conversationId}`, {
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest"
-                    }
-                })
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    })
                     .then(res => res.json())
                     .then(messages => {
                         chatContainer.innerHTML = '';
@@ -307,7 +341,7 @@
                 window.history.pushState({}, '', `/professional/chat/messages/${receiverId}`);
             }
 
-            messageForm.addEventListener('submit', function (e) {
+            messageForm.addEventListener('submit', function(e) {
                 e.preventDefault();
 
                 const message = chatInput.value.trim();
@@ -331,9 +365,9 @@
                     `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
 
                 fetch("{{ route('professional.chat.send') }}", {
-                    method: 'POST',
-                    body: formData
-                })
+                        method: 'POST',
+                        body: formData
+                    })
                     .then(res => res.json())
                     .then(data => {
                         chatInput.value = '';
