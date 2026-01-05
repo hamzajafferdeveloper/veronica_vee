@@ -37,6 +37,8 @@
                             <form id="loginForm" class="needs-validation" novalidate>
                                 @csrf
 
+                                <input type="hidden" id="redirectUrl" name="redirect" value="{{ request('redirect') }}">
+
                                 <div class="mb-3">
                                     <label for="loginEmail" class="form-label">Email*</label>
                                     <input type="email" name="email" class="form-control" id="loginEmail"

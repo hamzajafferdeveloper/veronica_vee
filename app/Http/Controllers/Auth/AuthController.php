@@ -24,33 +24,48 @@ class AuthController extends Controller
         try {
             $credentials = $request->only('email', 'password');
 
-
-
             if (Auth::attempt($credentials, $request->boolean('remember'))) {
+
                 $user = Auth::user();
 
+                // Suspended user check
                 if ($user->suspend) {
                     Auth::logout();
+
                     return response()->json([
                         'success' => false,
-                        'message' => 'Your account has been suspended. Reason: ' . $user->suspend_reason,
-                        'redirect' => false
+                        'message' => 'Your account has been suspended. Reason: '.$user->suspend_reason,
+                        'redirect' => false,
                     ], 200);
                 }
 
+                // Regenerate session
                 $request->session()->regenerate();
-                $role = $user->roles->first()->name;
 
-                $redirect = match ($role) {
-                    'admin' => route('admin.dashboard'),
-                    'professional' => route('professional.dashboard'),
-                    default => route('recruiter.dashboard'),
-                };
+                // Get role
+                $role = optional($user->roles->first())->name;
+
+                // Get redirect from request (if any)
+                $redirect = $request->input('redirect');
+
+                // Security: allow only internal redirects
+                if ($redirect && ! str_starts_with($redirect, url('/'))) {
+                    $redirect = null;
+                }
+
+                // Fallback redirect if none provided
+                if (! $redirect) {
+                    $redirect = match ($role) {
+                        'admin' => route('admin.dashboard'),
+                        'professional' => route('professional.dashboard'),
+                        default => route('recruiter.dashboard'),
+                    };
+                }
 
                 return response()->json([
                     'success' => true,
                     'message' => 'Login successful.',
-                    'redirect' => $redirect
+                    'redirect' => $redirect,
                 ]);
             }
 
@@ -58,16 +73,16 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid credentials.',
-                'redirect' => false
+                'redirect' => false,
             ], 200);
 
         } catch (Exception $e) {
-            Log::error('Failed to log in user: ' . $e->getMessage());
+            Log::error('Failed to log in user: '.$e->getMessage());
 
             return response()->json([
                 'success' => false,
                 'message' => 'Something went wrong. Please try again.',
-                'redirect' => false
+                'redirect' => false,
             ], 500);
         }
     }
@@ -83,14 +98,14 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'country' => $request->country,
-                'postal_code' => $request->postal_code
+                'postal_code' => $request->postal_code,
             ]);
 
             // Assign Role
             if ($request->type === 'professional') {
                 $user->assignRole('professional');
                 $redirect = route('professional.dashboard');
-            } else if ($request->type === 'recruiter') {
+            } elseif ($request->type === 'recruiter') {
                 $user->assignRole('recruiter');
                 $redirect = route('recruiter.dashboard');
             } else {
@@ -103,17 +118,17 @@ class AuthController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Register successful.',
-                'redirect' => $redirect
+                'redirect' => $redirect,
             ], 200);
 
         } catch (\Exception $e) {
 
-            Log::error('Failed to register user: ' . $e->getMessage());
+            Log::error('Failed to register user: '.$e->getMessage());
 
             return response()->json([
                 'success' => false,
                 'message' => 'Something went wrong. Please try again.',
-                'redirect' => false
+                'redirect' => false,
             ], 500);
         }
     }
@@ -134,7 +149,7 @@ class AuthController extends Controller
             if ($request->wantsJson()) {
                 return response()->json([
                     'message' => 'Logged out successfully',
-                    'redirect' => route('login')
+                    'redirect' => route('login'),
                 ]);
             }
 
@@ -142,7 +157,7 @@ class AuthController extends Controller
             return redirect()->route('login')->with('success', 'Logged out successfully');
 
         } catch (Exception $e) {
-            Log::error('Failed to logout User: ' . $e->getMessage());
+            Log::error('Failed to logout User: '.$e->getMessage());
 
             // Handle error response
             if ($request->wantsJson()) {

@@ -52,7 +52,8 @@
                                 Message
                             </button>
                         @else
-                            <a href="{{ route('login') }}" class="btn btn-primary px-4">
+                            <a href="{{ route('login', ['redirect' => route('frontend.model.profile', $model->id)]) }}"
+                                class="btn btn-primary px-4">
                                 Login to Start Messaging
                             </a>
                         @endauth
