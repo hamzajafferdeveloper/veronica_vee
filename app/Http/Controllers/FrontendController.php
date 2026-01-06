@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FrontendPage;
 use App\Models\ModelProfiles;
+use Exception;
 
 class FrontendController extends Controller
 {
@@ -35,5 +37,21 @@ class FrontendController extends Controller
     public function testimonials()
     {
         return view('frontend.testimonials');
+    }
+
+    public function page(string $slug){
+        try {
+            $page = FrontendPage::where('slug', operator: $slug)->first();
+
+            if($page) {
+                return view('frontend.page', compact('page'));
+            }
+
+            abort(404);
+
+
+        } catch(Exception $e) {
+            abort(404);
+        }
     }
 }

@@ -46,6 +46,8 @@ Route::get('/model/{id}', [FrontendController::class, 'modelProfile'])->name('fr
 
 Route::get('/testimonial', [FrontendController::class, 'testimonials'])->name('testimonial');
 
+Route::get('/page/{slug}', [FrontendController::class, 'page'])->name('page');
+
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/recruiter.php';

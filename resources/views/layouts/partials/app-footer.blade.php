@@ -3,15 +3,16 @@
         <div class="row gy-4 justify-content-between">
 
             <div class="col-lg-auto">
-                <img class="img-fluid filterWhite" src="{{ asset('assets/images/logo.png') }}" alt="logo" width="150">
+                <img class="img-fluid filterWhite" src="{{ asset('assets/images/logo.png') }}" alt="logo"
+                    width="150">
             </div><!--/logo-->
 
             <div class="col-md-auto col-6">
                 <h6 class="fw-bold mb-3">Company</h6>
 
                 <ul class="nav flex-column gap-2 fs-14">
-                    <li><a href={{ route("about") }} class="text-white">About us</a></li>
-                    <li><a href="{{ route("testimonial") }}" class="text-white">Testimonials</a></li>
+                    <li><a href={{ route('about') }} class="text-white">About us</a></li>
+                    <li><a href="{{ route('testimonial') }}" class="text-white">Testimonials</a></li>
                     {{-- <li><a href="#" class="text-white">Success Stories</a></li>
                     <li><a href="#" class="text-white">Company Details</a></li>
                     <li><a href="#" class="text-white">Podcast</a></li>
@@ -24,8 +25,8 @@
                 <h6 class="fw-bold mb-3">Privacy</h6>
 
                 <ul class="nav flex-column gap-2 fs-14">
-                    <li><a href="#" class="text-white">Privacy policy</a></li>
-                    <li><a href="#" class="text-white">Terms of use</a></li>
+                    <li><a href="{{ route('page', 'privacy-policy') }}" class="text-white">Privacy policy</a></li>
+                    <li><a href="{{ route('page', 'term-of-use') }}" class="text-white">Terms of use</a></li>
                 </ul>
 
             </div><!--/link-->
