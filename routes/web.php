@@ -48,6 +48,11 @@ Route::get('/testimonial', [FrontendController::class, 'testimonials'])->name('t
 
 Route::get('/page/{slug}', [FrontendController::class, 'page'])->name('page');
 
+Route::middleware("auth")->group(function () {
+    Route::get("/application", [FrontendController::class, "application"])->name('application');
+    Route::post('/application/submit', [FrontendController::class, 'submitApplication'])->name('application.submit');
+});
+
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/recruiter.php';

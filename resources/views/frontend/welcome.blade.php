@@ -66,17 +66,7 @@
 
             @auth
                 @php
-                    $roles = auth()->user()->getRoleNames();
-
-                    if ($roles->contains('admin')) {
-                        $route = 'admin.dashboard';
-                    } elseif ($roles->contains('professional')) {
-                        $route = 'professional.dashboard';
-                    } elseif ($roles->contains('recruiter')) {
-                        $route = 'recruiter.dashboard';
-                    } else {
-                        $route = 'loginOrSignup';
-                    }
+                    $route = 'application';
                 @endphp
             @else
                 @php
