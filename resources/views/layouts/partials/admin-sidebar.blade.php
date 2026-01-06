@@ -25,16 +25,25 @@
             <span>Recruiters</span>
         </a>
     </li>
-    <li>
-        <a href="{{ route('admin.pages.privacy-policy') }}">
-            <iconify-icon icon="fluent:people-20-filled" class="menu-icon"></iconify-icon>
-            <span>Privacy Policy</span>
+
+    <li class="dropdown">
+        <a href="javascript:void(0)">
+            <iconify-icon icon="icon-park:page" class="menu-icon"></iconify-icon>
+            <span>Frontend Pages</span>
         </a>
-    </li>
-    <li>
-        <a href="{{ route('admin.pages.term-of-use') }}">
-            <iconify-icon icon="fluent:people-20-filled" class="menu-icon"></iconify-icon>
-            <span>Terms Of User</span>
-        </a>
+        <ul class="sidebar-submenu">
+            <li>
+                <a href="{{ route('admin.pages.privacy-policy') }}">
+                    <iconify-icon icon="ic:outline-privacy-tip" class="menu-icon"></iconify-icon>
+                    <span>Privacy Policy</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.pages.term-of-use') }}">
+                    <iconify-icon icon="mdi:gavel" class="menu-icon"></iconify-icon>
+                    <span>Terms Of User</span>
+                </a>
+            </li>
+        </ul>
     </li>
 @endsection

@@ -48,6 +48,8 @@
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
