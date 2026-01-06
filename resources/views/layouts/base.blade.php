@@ -66,7 +66,7 @@
 
     <title>@yield('title', 'VeronicaVee') - {{ config('app.name', 'Laravel') }}</title>
 
-     @stack('styles')
+    @stack('styles')
 
     @stack('head')
 </head>
@@ -109,6 +109,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.tiny.cloud/1/gfbd4q96herkfvw8eh7q01kmqoc5er2wnv5418gbm7yrv2gh/tinymce/8/tinymce.min.js"
+        referrerpolicy="origin" crossorigin="anonymous"></script>
 
     <script>
         function showToast(message, type = 'success') {

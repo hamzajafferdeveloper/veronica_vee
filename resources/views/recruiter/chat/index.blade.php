@@ -1,6 +1,6 @@
-@extends('layouts.professional')
+@extends('layouts.recruiter')
 
-@section('title', 'Professional Chat Page')
+@section('title', 'Recruiter Chat Page')
 
 @section('content')
     <div class="chat-wrapper">
@@ -107,9 +107,9 @@
                     }
 
                     selectedImagePreview.innerHTML = `
-                <span style="display:inline-block; margin-right:8px;" title="${chatAttachment.files[0].name}">${fileName}</span>
-                <button type="button" id="removeAttachment" style="padding:2px 5px; font-size:12px;">Remove</button>
-            `;
+                            <span style="display:inline-block; margin-right:8px;" title="${chatAttachment.files[0].name}">${fileName}</span>
+                            <button type="button" id="removeAttachment" style="padding:2px 5px; font-size:12px;">Remove</button>
+                        `;
 
                     const removeBtn = document.getElementById('removeAttachment');
                     removeBtn.addEventListener('click', () => {
@@ -131,7 +131,6 @@
 
                 renderProfessionals(filtered);
             });
-
 
             function loadProfessionals() {
                 fetch("{{ route('recruiter.chat.get-professional') }}")
@@ -156,13 +155,13 @@
                         '{{ asset('assets/images/user.png') }}';
 
                     div.innerHTML = `
-            <div class="img">
-                <img src="${div.dataset.avatar}" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
-            </div>
-            <div class="info">
-                <h6 class="text-sm mb-1">${user.first_name} ${user.last_name}</h6>
-            </div>
-        `;
+                    <div class="img">
+                        <img src="${div.dataset.avatar}" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
+                    </div>
+                    <div class="info">
+                        <h6 class="text-sm mb-1">${user.first_name} ${user.last_name}</h6>
+                    </div>
+                `;
 
                     div.addEventListener('click', function() {
                         activeReceiverId = this.dataset.userId;
@@ -187,7 +186,6 @@
                     }
                 }, 300);
             }
-
 
             function setActiveUser(selected) {
                 document.querySelectorAll('.chat-sidebar-single').forEach(el => el.classList.remove('active'));
@@ -247,45 +245,45 @@
 
                     if (fileType.startsWith('image')) {
                         attachmentHTML = `<div class="mt-1">
-                <img src="${fileUrl}" alt="${fileName}" onclick="window.open('${fileUrl}', '_blank')" style="max-width:220px; border-radius:8px; display:block;">
-            </div>`;
-                    } else if (fileType.startsWith('audio')) {
-                        attachmentHTML = `<div class="mt-1">
-                <audio controls style="width:100%;">
-                    <source src="${fileUrl}" type="${fileType}">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>`;
-                    } else if (fileType.startsWith('video')) {
-                        attachmentHTML = `<div class="mt-1">
-                <video controls style="max-width:220px; border-radius:8px;">
-                    <source src="${fileUrl}" type="${fileType}">
-                    Your browser does not support the video element.
-                </video>
-            </div>`;
-                    } else {
-                        attachmentHTML = `<div class="d-flex align-items-center mt-1 p-2 rounded" style="border:1px solid #e0e0e0;">
-                <span style="font-size:20px;margin-right:8px;">
-                    <iconify-icon icon="openmoji:paperclip" style="font-size:26px;"></iconify-icon>
-                </span>
-                <div style="flex:1;">
-                    <a href="${fileUrl}" target="_blank" style="font-size:0.8rem; color:#333; text-decoration:none;">${fileName}</a>
-                </div>
-            </div>`;
-                    }
-                }
+                                    <img src="${fileUrl}" alt="${fileName}" onclick="window.open('${fileUrl}', '_blank')" style="max-width:220px; border-radius:8px; display:block;">
+                                </div>`;
+                                        } else if (fileType.startsWith('audio')) {
+                                            attachmentHTML = `<div class="mt-1">
+                                    <audio controls style="width:100%;">
+                                        <source src="${fileUrl}" type="${fileType}">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>`;
+                                        } else if (fileType.startsWith('video')) {
+                                            attachmentHTML = `<div class="mt-1">
+                                    <video controls style="max-width:220px; border-radius:8px;">
+                                        <source src="${fileUrl}" type="${fileType}">
+                                        Your browser does not support the video element.
+                                    </video>
+                                </div>`;
+                                        } else {
+                                            attachmentHTML = `<div class="d-flex align-items-center mt-1 p-2 rounded" style="border:1px solid #e0e0e0;">
+                                    <span style="font-size:20px;margin-right:8px;">
+                                        <iconify-icon icon="openmoji:paperclip" style="font-size:26px;"></iconify-icon>
+                                    </span>
+                                    <div style="flex:1;">
+                                        <a href="${fileUrl}" target="_blank" style="font-size:0.8rem; color:#333; text-decoration:none;">${fileName}</a>
+                                    </div>
+                                </div>`;
+                                        }
+                                    }
 
-                const messageHTML = `
-        <div class="chat-single-message d-flex mb-2 ${is_mine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
-            <div class="chat-message-content p-2 px-3 rounded-3 position-relative" style="max-width:70%; background-color:${is_mine ? '#DCF8C6' : '#F0F0F0'}; color:#2c2c2c; word-break:break-word; box-shadow:0 1px 1px rgba(0,0,0,0.1);">
-                ${message.message ? `<p class="mb-1 px-3" style="margin:0; color:#2c2c2c;">${message.message}</p>` : ''}
-                <div class="px-3">${attachmentHTML}</div>
-                <span class="chat-time px-3 d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
-                    ${new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase()}
-                </span>
-            </div>
-        </div>
-    `;
+                                    const messageHTML = `
+                            <div class="chat-single-message d-flex mb-2 ${is_mine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
+                                <div class="chat-message-content p-2 px-3 rounded-3 position-relative" style="max-width:70%; background-color:${is_mine ? '#DCF8C6' : '#F0F0F0'}; color:#2c2c2c; word-break:break-word; box-shadow:0 1px 1px rgba(0,0,0,0.1);">
+                                    ${message.message ? `<p class="mb-1 px-3" style="margin:0; color:#2c2c2c;">${message.message}</p>` : ''}
+                                    <div class="px-3">${attachmentHTML}</div>
+                                    <span class="chat-time px-3 d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
+                                        ${new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase()}
+                                    </span>
+                                </div>
+                            </div>
+                        `;
 
                 chatContainer.insertAdjacentHTML('beforeend', messageHTML);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -300,7 +298,6 @@
                     }
                 }
             }
-
 
             function loadMessages(conversationId) {
                 fetch(`/recruiter/chat/messages/${conversationId}`, {

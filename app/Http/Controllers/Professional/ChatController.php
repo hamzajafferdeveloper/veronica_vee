@@ -16,25 +16,30 @@ class ChatController extends Controller
 {
     public function getOrCreateConversation($userId)
     {
-        $authId = auth()->id();
+        try {
+            $authId = auth()->id();
 
-        $conversation = Conversation::whereHas('participants', fn($q) => $q->where('user_id', $authId))
-            ->whereHas('participants', fn($q) => $q->where('user_id', $userId))
-            ->first();
+            $conversation = Conversation::whereHas('participants', fn($q) => $q->where('user_id', $authId))
+                ->whereHas('participants', fn($q) => $q->where('user_id', $userId))
+                ->first();
 
-        if (!$conversation) {
-            $conversation = Conversation::create([
-                'type' => 'professional_recruiter',
-                'created_by' => $authId,
-            ]);
+            if (!$conversation) {
+                $conversation = Conversation::create([
+                    'type' => 'recruiter_model',
+                    'created_by' => $authId,
+                ]);
 
-            ConversationParticipant::insert([
-                ['conversation_id' => $conversation->id, 'user_id' => $authId],
-                ['conversation_id' => $conversation->id, 'user_id' => $userId],
-            ]);
+                ConversationParticipant::insert([
+                    ['conversation_id' => $conversation->id, 'user_id' => $authId],
+                    ['conversation_id' => $conversation->id, 'user_id' => $userId],
+                ]);
+            }
+
+            return response()->json(['conversation_id' => $conversation->id]);
+        } catch (\Exception $e) {
+            Log::error($e);
+            return response()->json(['error' => 'Error creating conversation'], 500);
         }
-
-        return response()->json(['conversation_id' => $conversation->id]);
     }
 
     public function messages(Request $request, $conversationId)

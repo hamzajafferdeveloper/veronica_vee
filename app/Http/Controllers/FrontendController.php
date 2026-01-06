@@ -8,7 +8,7 @@ class FrontendController extends Controller
 {
     public function welcome()
     {
-        $models = ModelProfiles::with('user')->latest()->paginate(12);
+        $models = ModelProfiles::with('user')->latest()->get();
 
         return view('frontend.welcome', compact('models'));
     }

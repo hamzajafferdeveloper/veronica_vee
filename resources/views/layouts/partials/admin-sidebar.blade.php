@@ -25,4 +25,16 @@
             <span>Recruiters</span>
         </a>
     </li>
+    <li>
+        <a href="{{ route('admin.pages.privacy-policy') }}">
+            <iconify-icon icon="fluent:people-20-filled" class="menu-icon"></iconify-icon>
+            <span>Privacy Policy</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('admin.pages.term-of-use') }}">
+            <iconify-icon icon="fluent:people-20-filled" class="menu-icon"></iconify-icon>
+            <span>Terms Of User</span>
+        </a>
+    </li>
 @endsection

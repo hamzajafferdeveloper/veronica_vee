@@ -127,15 +127,6 @@
                 }
             });
 
-            function loadProfessionals() {
-                fetch("{{ route('recruiter.chat.get-professional') }}")
-                    .then(res => res.json())
-                    .then(data => {
-                        allProfessionals = data; // store for search
-                        renderProfessionals(data);
-                    });
-            }
-
             document.getElementById('professionalSearch').addEventListener('input', function() {
                 const keyword = this.value.toLowerCase().trim();
 
@@ -148,27 +139,37 @@
             });
 
             // Load professionals in sidebar
+            function loadProfessionals() {
+                fetch("{{ route('professional.chat.get-recuiters') }}")
+                    .then(res => res.json())
+                    .then(data => {
+                        allProfessionals = data; // store for search
+                        renderProfessionals(data);
+                    });
+            }
+
             function renderProfessionals(data) {
                 professionalList.innerHTML = '';
 
                 data.forEach(user => {
+                    console.log(user);
                     const div = document.createElement('div');
                     div.classList.add('chat-sidebar-single');
                     div.dataset.userId = user.id;
                     div.dataset.name = `${user.first_name} ${user.last_name}`.toLowerCase();
                     div.dataset.email = user.email || '';
-                    div.dataset.avatar = user.model?.avatar ?
-                        '/storage/' + user.model.avatar :
+                    div.dataset.avatar = user.recruiter?.avatar ?
+                        '/storage/' + user.recruiter.avatar :
                         '{{ asset('assets/images/user.png') }}';
 
                     div.innerHTML = `
-            <div class="img">
-                <img src="${div.dataset.avatar}" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
-            </div>
-            <div class="info">
-                <h6 class="text-sm mb-1">${user.first_name} ${user.last_name}</h6>
-            </div>
-        `;
+                        <div class="img">
+                            <img src="${div.dataset.avatar}" style="width:40px;height:40px;object-fit:cover;border-radius:100%">
+                        </div>
+                        <div class="info">
+                            <h6 class="text-sm mb-1">${user.first_name} ${user.last_name}</h6>
+                        </div>
+                    `;
 
                     div.addEventListener('click', function() {
                         activeReceiverId = this.dataset.userId;
@@ -302,8 +303,6 @@
                         </span>
                     </div>
                 </div>
-
-
             `;
 
                 chatContainer.insertAdjacentHTML('beforeend', messageHTML);

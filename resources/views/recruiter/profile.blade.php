@@ -1,4 +1,4 @@
-@extends('layouts.professional')
+@extends('layouts.recruiter')
 
 @section('title', 'My Profile')
 
