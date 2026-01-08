@@ -7,9 +7,9 @@
     <div class="card basic-data-table">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0">All Professionals</h5>
-            {{-- <a href="{{ route('recruiter.project.create') }}" class="btn btn-primary d-flex gap-2 align-items-center">
+            {{-- <button data-bs-toggle="modal" data-bs-target="#createProfessionalModal" class="btn btn-primary d-flex gap-2 align-items-center">
                 <iconify-icon icon="icons8:plus"></iconify-icon> Create New
-            </a> --}}
+            </button> --}}
         </div>
 
         <div class="card-body">
@@ -83,6 +83,9 @@
             </div>
         </div>
     </div>
+
+    @include('admin.professional.partials.create-modal')
+    @include('admin.professional.partials.edit-modal')
 
 @endsection
 

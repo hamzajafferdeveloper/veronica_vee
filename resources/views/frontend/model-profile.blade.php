@@ -40,9 +40,9 @@
                 </div>
                 <!-- Name + Info -->
                 <div class="ps-4" style="margin-top: 80px;">
-                    {{-- <h3 class="mb-0">{{ ($model->user->first_name ?? '') . ' ' . ($model->user->last_name ?? '') }}</h3>
-                    <p class="text-muted mb-1">{{ $model->user->email ?? '' }}</p>
-                    <p class="text-muted small mb-2">{{ $model->experience ?? '' }} </p> --}}
+                    <h3 class="mb-0">{{ ($model->user->first_name ?? '') . ' ' . ($model->user->last_name ?? '') }}</h3>
+                    {{-- <p class="text-muted mb-1">{{ $model->user->email ?? '' }}</p> --}}
+                    <p class="text-muted small mb-2">{{ $model->experience ?? '' }} </p>
                     <!-- Buttons -->
                     <div class="d-flex gap-2 mt-3">
                         @auth

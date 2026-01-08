@@ -68,6 +68,12 @@
 
     <title>@yield('title', 'VeronicaVee') - {{ config('app.name', 'Laravel') }}</title>
 
+    <style>
+        .swal2-title{
+            font-size: 20px !important;
+        }
+    </style>
+
     @stack('styles')
 
     @stack('head')

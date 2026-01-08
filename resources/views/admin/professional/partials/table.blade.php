@@ -10,7 +10,7 @@
             <th>Location</th>
             <th>Registered On</th>
             {{-- <th>Status</th> --}}
-            {{-- <th>Action</th> --}}
+            <th>Action</th>
         </tr>
     </thead>
 
@@ -41,10 +41,11 @@
                 <td>{{ $professional->weight ?? '-' }}</td>
                 <td>{{ Str::limit($professional->location, 15) ?? '-' }}</td>
                 <td>{{ $professional->created_at?->format('Y-m-d') ?? '-' }}</td>
-                {{-- <td>{{ Str::limit($professional->description, 40) }}</td> --}}
-                {{-- <td> <span
-                        class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">{{ $professional->status }}</span>
-                </td> --}}
+                <td>
+                    <button data-bs-toggle="modal" class="btn bg-primary text-white" data-bs-target="#editProfessionalModal">
+                        <iconify-icon icon="basil:edit-outline" class="h-10-px w-10-px"></iconify-icon>
+                    </button>
+                </td>
             </tr>
         @empty
             <tr>

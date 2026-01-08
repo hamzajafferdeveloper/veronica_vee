@@ -65,16 +65,7 @@
         <div class="container-fluid">
 
             @auth
-                @php
-                    $route = 'application';
-                @endphp
-            @else
-                @php
-                    $route = 'loginOrSignup';
-                @endphp
-            @endauth
-
-            <a href="{{ route($route) }}"
+                <a href="{{ route(name: 'application') }}"
                 class="card card-cta border-0 rounded-0 text-center text-white text-decoration-none">
                 <div class="card-body py-5">
                     <h2 class="font-Oswald text-uppercase fw-lighter display-3 mb-0">
@@ -82,6 +73,18 @@
                     </h2>
                 </div>
             </a>
+            @else
+                <a href="{{ route('loginOrSignup', ['redirect' => route('application')]) }}"
+                class="card card-cta border-0 rounded-0 text-center text-white text-decoration-none">
+                <div class="card-body py-5">
+                    <h2 class="font-Oswald text-uppercase fw-lighter display-3 mb-0">
+                        Application
+                    </h2>
+                </div>
+            </a>
+            @endauth
+
+
 
 
         </div><!--/container-fluid-->

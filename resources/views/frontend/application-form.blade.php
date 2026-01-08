@@ -41,7 +41,7 @@
 
             <!-- Phone -->
             <div class="mb-3">
-                <label for="phone" class="form-label">Phone Number</label>
+                <label for="phone" class="form-label">Whatsapp</label>
                 <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone') }}">
             </div>
 
@@ -64,7 +64,7 @@
 
             <!-- Upload CV / Document -->
             <div class="mb-3">
-                <label for="resume" class="form-label">Upload Resume / CV</label>
+                <label for="resume" class="form-label">Upload Photos</label>
                 <input type="file" class="form-control" id="resume" name="resume" accept=".pdf,.doc,.docx">
             </div>
 

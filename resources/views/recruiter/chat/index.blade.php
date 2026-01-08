@@ -195,7 +195,7 @@
             function updateHeader(name, email, avatar) {
                 headerName.textContent = name;
                 headerAvatar.src = avatar;
-                headerEmail.textContent = email;
+                // headerEmail.textContent = email;
                 headerBox.classList.remove('d-none');
             }
 
