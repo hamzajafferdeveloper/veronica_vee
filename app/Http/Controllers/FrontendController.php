@@ -12,14 +12,14 @@ class FrontendController extends Controller
 {
     public function welcome()
     {
-        $models = ModelProfiles::with('user')->latest()->get();
+        $models = ModelProfiles::with('user')->orderBy('ordering', 'asc')->get();
 
         return view('frontend.welcome', compact('models'));
     }
 
     public function models()
     {
-        $models = ModelProfiles::with('user')->latest()->paginate(12);
+        $models = ModelProfiles::with('user')->orderBy('ordering', 'asc')->paginate(12);
 
         return view('frontend.model', compact('models'));
     }

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('model_profiles', function (Blueprint $table) {
-            $table->integer('ordering')->default(1)->after('id')->unique();
+            $table->integer('ordering')->after('id')->unique();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('model_profiles', function (Blueprint $table) {
-            //
+            $table->dropColumn('ordering');
         });
     }
 };
