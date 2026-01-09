@@ -21,7 +21,21 @@
                 $avatar = $professional->avatar ? 'storage/' . $professional->avatar : 'assets/images/User.png';
             @endphp
             <tr>
-                <td>{{ $loop->iteration + ($professionals->currentPage() - 1) * $professionals->perPage() }}</td>
+                <td id="ordering_td" style="cursor: pointer">
+                    <form class="orderingForm d-flex align-items-center gap-2">
+                        @csrf
+                        <div class="input-group input-group-sm" style="max-width: 50px;">
+                            <input type="hidden" name="professional_id" value="{{ $professional->id }}">
+                            <input type="number" name="ordering" class="orderingInput form-control text-center"
+                                value="{{ $professional->ordering }}" min="1">
+                        </div>
+
+                        <button type="submit" class="orderingBtn btn btn-sm btn-primary d-none">
+                            <i class="bi bi-check2-circle"></i>
+                        </button>
+                    </form>
+                </td>
+
                 <td>
                     <div class="d-flex align-items-center">
                         <img src="{{ asset($avatar) }}" alt=""
@@ -42,7 +56,8 @@
                 <td>{{ Str::limit($professional->location, 15) ?? '-' }}</td>
                 <td>{{ $professional->created_at?->format('Y-m-d') ?? '-' }}</td>
                 <td>
-                    <button data-bs-toggle="modal" class="btn bg-primary text-white" data-bs-target="#editProfessionalModal">
+                    <button data-bs-toggle="modal" class="btn bg-primary text-white"
+                        data-bs-target="#editProfessionalModal">
                         <iconify-icon icon="basil:edit-outline" class="h-10-px w-10-px"></iconify-icon>
                     </button>
                 </td>

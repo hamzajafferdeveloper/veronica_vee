@@ -23,8 +23,9 @@ Route::prefix('admin')->middleware('role:admin')->name('admin.')->group(function
         Route::get('/all', [ProjectController::class, 'index'])->name('projects.index');
     });
 
-    Route::prefix('professionals')->group(function () {
-        Route::get('/all', [ProfessionalController::class, 'index'])->name('professionals.index');
+    Route::prefix('professionals')->name("professionals.")->group(function () {
+        Route::get('/all', [ProfessionalController::class, 'index'])->name('index');
+        Route::post('/update-order', [ProfessionalController::class, 'updateOrder'])->name('update-order');
     });
 
     Route::prefix('recruiters')->group(function () {

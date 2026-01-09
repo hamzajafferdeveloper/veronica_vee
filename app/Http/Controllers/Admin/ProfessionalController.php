@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ModelProfiles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProfessionalController extends Controller
 {
@@ -33,10 +34,9 @@ class ProfessionalController extends Controller
             });
         }
 
-
         // Sorting
-        $sort_by = $request->get('sort_by', 'id');
-        $sort_direction = $request->get('sort_direction', 'desc');
+        $sort_by = $request->get('sort_by', 'ordering');
+        $sort_direction = $request->get('sort_direction', 'asc');
 
         $query->orderBy($sort_by, $sort_direction);
 
@@ -47,9 +47,49 @@ class ProfessionalController extends Controller
         // AJAX request returns only table HTML
         if ($request->ajax()) {
             $html = view('admin.professional.partials.table', compact('professionals'))->render();
+
             return response()->json(['html' => $html]);
         }
 
         return view('admin.professional.index', compact('professionals'));
+    }
+
+    public function updateOrder(Request $request)
+    {
+        $request->validate([
+            'professional_id' => 'required|exists:model_profiles,id',
+            'ordering' => 'required|integer|min:1',
+        ]);
+
+        DB::transaction(function () use ($request) {
+
+            $profile = ModelProfiles::lockForUpdate()->findOrFail($request->professional_id);
+            $oldOrder = $profile->ordering;
+            $newOrder = (int) $request->ordering;
+
+            if ($oldOrder === $newOrder) {
+                return;
+            }
+
+            if ($newOrder < $oldOrder) {
+                // Move UP: shift others DOWN
+                ModelProfiles::where('ordering', '>=', $newOrder)
+                    ->where('ordering', '<', $oldOrder)
+                    ->increment('ordering');
+            } else {
+                // Move DOWN: shift others UP
+                ModelProfiles::where('ordering', '<=', $newOrder)
+                    ->where('ordering', '>', $oldOrder)
+                    ->decrement('ordering');
+            }
+
+            // Finally, update the current profile
+            $profile->update(['ordering' => $newOrder]);
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Order updated successfully',
+        ]);
     }
 }

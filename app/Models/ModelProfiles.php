@@ -16,7 +16,8 @@ class ModelProfiles extends Model
         'location',
         'latitude',
         'longitude',
-        'portfolio_url'
+        'portfolio_url',
+        'ordering'
     ];
 
     public function user()

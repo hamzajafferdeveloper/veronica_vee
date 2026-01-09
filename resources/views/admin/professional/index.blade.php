@@ -40,7 +40,7 @@
 
                         {{-- Sort By --}}
                         <select name="sort_by" class="custom-select-sm border shadow-sm py-1 px-3">
-                            <option value="id" {{ request('sort_by') == 'id' ? 'selected' : '' }}>ID</option>
+                            <option value="ordering" {{ request('sort_by') == 'ordering' ? 'selected' : '' }}>Order</option>
                             <option value="age" {{ request('sort_by') == 'age' ? 'selected' : '' }}>Age</option>
                             <option value="gender" {{ request('sort_by') == 'gender' ? 'selected' : '' }}>Gender</option>
                             <option value="height" {{ request('sort_by') == 'height' ? 'selected' : '' }}>Height</option>
@@ -137,6 +137,70 @@
                 loadTable($(this).attr('href'));
             });
 
+            $(document).ready(function() {
+
+                // Show button only for the input being edited
+                $(document).on('focus', '.orderingInput', function() {
+                    $(this).closest('form').find('.orderingBtn').removeClass('d-none');
+                });
+
+                // Hide button if input loses focus and value hasn't changed
+                $(document).on('blur', '.orderingInput', function() {
+                    let form = $(this).closest('form');
+                    let button = form.find('.orderingBtn');
+                    let inputVal = $(this).val();
+                    let originalVal = $(this).attr('value');
+
+                    if (inputVal == originalVal) {
+                        button.addClass('d-none');
+                    }
+                });
+
+                // AJAX submit per row
+                $(document).on('submit', '.orderingForm', function(e) {
+                    e.preventDefault();
+
+                    let form = $(this);
+                    let button = form.find('.orderingBtn');
+
+                    button.prop('disabled', true).html(
+                        '<span class="spinner-border spinner-border-sm"></span>');
+
+                    $.ajax({
+                        url: "{{ route('admin.professionals.update-order') }}",
+                        method: "POST",
+                        data: form.serialize(),
+                        success: function(response) {
+                            button
+                                .removeClass('btn-primary')
+                                .addClass('btn-success')
+                                .html('<i class="bi bi-check-lg"></i>');
+
+                            // Update the input value attribute to the new one
+                            form.find('.orderingInput').attr('value', form.find(
+                                '.orderingInput').val());
+
+                            setTimeout(() => {
+                                button
+                                    .removeClass('btn-success')
+                                    .addClass('btn-primary')
+                                    .html('<i class="bi bi-check2-circle"></i>')
+                                    .prop('disabled', false)
+                                    .addClass(
+                                    'd-none'); // Hide button after success
+                            }, 1500);
+
+                            // Optionally reload table for updated ordering
+                            // loadTable();
+                        },
+                        error: function() {
+                            alert('Something went wrong');
+                            button.prop('disabled', false).html(
+                                '<i class="bi bi-check2-circle"></i>');
+                        }
+                    });
+                });
+            });
         });
     </script>
 @endpush
