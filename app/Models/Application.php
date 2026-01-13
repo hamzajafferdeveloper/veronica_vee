@@ -21,4 +21,9 @@ class Application extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function assets()
+    {
+        return $this->hasMany(ApplicationAsset::class);
+    }
 }

@@ -64,8 +64,8 @@
 
             <!-- Upload CV / Document -->
             <div class="mb-3">
-                <label for="resume" class="form-label">Upload Photos</label>
-                <input type="file" class="form-control" id="resume" name="resume" accept=".pdf,.doc,.docx">
+                <label for="images" class="form-label">Upload Photos</label>
+                <input type="file" class="form-control" id="images" name="images[]" multiple>
             </div>
 
             <!-- Cover Letter -->

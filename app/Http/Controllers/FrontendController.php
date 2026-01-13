@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\ApplicationAsset;
 use App\Models\FrontendPage;
 use App\Models\ModelProfiles;
 use Exception;
@@ -64,7 +65,6 @@ class FrontendController extends Controller
 
     public function submitApplication(Request $request)
     {
-
         $user = auth()->user();
 
         $request->validate([
@@ -73,27 +73,36 @@ class FrontendController extends Controller
             'phone' => 'nullable|string|max:50',
             'dob' => 'nullable|date',
             'gender' => 'nullable|string',
-            'resume' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'cover_letter' => 'nullable|string',
         ]);
 
-        $data = $request->only(['full_name', 'email', 'phone', 'dob', 'gender', 'cover_letter']);
-
-        // Handle resume upload
-        if ($request->hasFile('resume')) {
-            $data['resume'] = $request->file('resume')->store('resumes', 'public');
-        }
-
-        Application::create([
+        // Step 1: Create the main application record
+        $application = Application::create([
             'user_id' => $user->id,
-            'full_name' => $data['full_name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'dob' => $data['dob'],
-            'gender' => $data['gender'],
-            'resume' => $data['resume'],
-            'cover_letter' => $data['cover_letter'],
+            'full_name' => $request->full_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'dob' => $request->dob,
+            'gender' => $request->gender,
+            'cover_letter' => $request->cover_letter,
         ]);
+
+        // Step 3: Handle multiple images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('applications/images', 'public');
+
+                $applicationAsset = new ApplicationAsset;
+                $applicationAsset->application_id = $application->id;
+                $applicationAsset->url = $path;
+                $applicationAsset->asset_type = 'image';
+                $applicationAsset->asset_extension = $image->getClientOriginalExtension();
+                $applicationAsset->save();
+
+            }
+        }
 
         return back()->with('success', 'Your application has been submitted successfully.');
     }
