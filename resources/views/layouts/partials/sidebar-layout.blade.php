@@ -26,7 +26,7 @@
                 <button type="submit"
                     class="sidebar-logout-btn d-flex align-items-center gap-3 w-100 border-0 rounded-3 px-5 py-1 bg-danger text-white fw-bold transition hover-shadow">
                     <iconify-icon icon="lucide:power" class="menu-icon text-lg"></iconify-icon>
-                    <span>Log Out</span>
+                    <span>{{ __('Log Out') }}</span>
                 </button>
             </form>
         </div>

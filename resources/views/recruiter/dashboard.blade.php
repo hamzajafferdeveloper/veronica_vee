@@ -1,6 +1,6 @@
 @extends('layouts.recruiter')
 
-@section('title', 'Recruiter Dashboard')
+@section('title', __('Recruiter Dashboard'))
 
 @section('content')
     <x-recruiter.dashboard-card />

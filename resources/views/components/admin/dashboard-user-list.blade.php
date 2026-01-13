@@ -8,20 +8,20 @@
                         <button class="nav-link d-flex align-items-center active" id="pills-to-do-list-tab"
                             data-bs-toggle="pill" data-bs-target="#pills-to-do-list" type="button" role="tab"
                             aria-controls="pills-to-do-list" aria-selected="true">
-                            Latest Recruiters
+                            {{ __('Latest Recruiters') }}
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link d-flex align-items-center" id="pills-recent-leads-tab"
                             data-bs-toggle="pill" data-bs-target="#pills-recent-leads" type="button" role="tab"
                             aria-controls="pills-recent-leads" aria-selected="false" tabindex="-1">
-                            Latest Professionals
+                            {{ __('Latest Professionals') }}
                         </button>
                     </li>
                 </ul>
                 <a href="javascript:void(0)" id="viewAllBtn"
                     class="text-primary-600 hover-text-primary d-flex align-items-center gap-1">
-                    View All
+                    {{ __('View All') }}
                     <iconify-icon icon="solar:alt-arrow-right-linear" class="icon"></iconify-icon>
                 </a>
             </div>
@@ -33,10 +33,10 @@
                         <table class="table bordered-table sm-table mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col">Users </th>
-                                    <th scope="col">Registered On</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Address</th>
+                                    <th scope="col">{{ __('Users') }} </th>
+                                    <th scope="col">{{ __('Registered On') }}</th>
+                                    <th scope="col">{{ __('Phone') }}</th>
+                                    <th scope="col">{{ __('Address') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,7 +70,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">No recruiters found</td>
+                                        <td colspan="4" class="text-center text-muted">{{ __('No recruiters found') }}</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -84,10 +84,10 @@
                         <table class="table bordered-table sm-table mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col">Users </th>
-                                    <th scope="col">Registered On</th>
-                                    <th scope="col">Gender</th>
-                                    <th scope="col" class="text-center">Address</th>
+                                    <th scope="col">{{ __('Users') }} </th>
+                                    <th scope="col">{{ __('Registered On') }}</th>
+                                    <th scope="col">{{ __('Gender') }}</th>
+                                    <th scope="col" class="text-center">{{ __('Address') }}</th>
                                 </tr>
                             </thead>
                             @forelse ($latestProfessionals as $professional)
@@ -119,7 +119,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center text-muted">No professionals found</td>
+                                    <td colspan="4" class="text-center text-muted">{{ __('No professionals found') }}</td>
                                 </tr>
                             @endforelse
                         </table>

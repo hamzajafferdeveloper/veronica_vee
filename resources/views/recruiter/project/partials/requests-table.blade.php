@@ -1,7 +1,7 @@
 @if ($requests->isEmpty())
     <div class="text-center py-5 text-muted">
         <i class="bi bi-inbox fs-1"></i>
-        <p class="mt-2 mb-0">No project requests yet</p>
+        <p class="mt-2 mb-0">{{ __('No project requests yet') }}</p>
     </div>
 @else
     <div class="table-responsive">
@@ -9,11 +9,11 @@
 
             <thead class="table-light">
                 <tr>
-                    <th>Project</th>
-                    <th>Professional</th>
-                    <th>Note</th>
-                    <th>Status</th>
-                    <th class="text-end">Action</th>
+                    <th>{{ __('Project') }}</th>
+                    <th>{{ __('Professional') }}</th>
+                    <th>{{ __('Note') }}</th>
+                    <th>{{ __('Status') }}</th>
+                    <th class="text-end">{{ __('Action') }}</th>
                 </tr>
             </thead>
 
@@ -23,7 +23,7 @@
                         <td>
                             <div class="fw-semibold">{{ $request->project->title }}</div>
                             <small class="text-muted">
-                                Budget: ${{ number_format($request->project->budget, 2) }}
+                                {{ __('Budget') }}: ${{ number_format($request->project->budget, 2) }}
                             </small>
                         </td>
 
@@ -51,7 +51,7 @@
                                 @elseif($request->status === 'hired') bg-success
                                 @elseif($request->status === 'accepted') bg-success
                                 @else bg-danger @endif">
-                                {{ ucfirst($request->status) }}
+                                {{ ucfirst(__($request->status)) }}
                             </span>
                         </td>
 
@@ -63,7 +63,7 @@
                                     @csrf
                                     <button class="btn btn-sm btn-success rounded-pill">
                                         <i class="bi bi-check-circle"></i>
-                                        Accept
+                                        {{ __('Accept') }}
                                     </button>
                                 </form>
 
@@ -73,7 +73,7 @@
                                     @csrf
                                     <button class="btn btn-sm btn-outline-danger rounded-pill">
                                         <i class="bi bi-x-circle"></i>
-                                        Reject
+                                        {{ __('Reject') }}
                                     </button>
                                 </form>
                             @else

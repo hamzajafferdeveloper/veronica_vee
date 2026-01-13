@@ -4,7 +4,7 @@
             <div class="card-body p-20">
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                     <div>
-                        <p class="fw-medium text-primary-light mb-1">Total Users</p>
+                        <p class="fw-medium text-primary-light mb-1">{{ __('Total Users') }}</p>
                         <h6 class="mb-0">{{ $totalNoOfUser }}</h6>
                     </div>
                     <div class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
@@ -17,7 +17,7 @@
                         <iconify-icon icon="bxs:{{ $userGrowthPercentage['trend'] }}-arrow"
                             class="text-xs"></iconify-icon> {{ $userGrowthPercentage['percentage'] }} %
                     </span>
-                    Last 30 days
+                    {{ __('Last 30 days') }}
                 </p>
             </div>
         </a><!-- user card end -->
@@ -27,7 +27,7 @@
             <div class="card-body p-20">
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                     <div>
-                        <p class="fw-medium text-primary-light mb-1">Total Professionals</p>
+                        <p class="fw-medium text-primary-light mb-1">{{ __('Total Professionals') }}</p>
                         <h6 class="mb-0">{{ $totalProfessionals }}</h6>
                     </div>
                     <div
@@ -41,7 +41,7 @@
                         <iconify-icon icon="bxs:{{ $professionalGrowthPercentage['trend'] }}-arrow"
                             class="text-xs"></iconify-icon> {{ $professionalGrowthPercentage['percentage'] }} %
                     </span>
-                    Last 30 days
+                    {{ __('Last 30 days') }}
                 </p>
             </div>
         </a><!-- professional card end -->
@@ -51,7 +51,7 @@
             <div class="card-body p-20">
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                     <div>
-                        <p class="fw-medium text-primary-light mb-1">Total Recruiters</p>
+                        <p class="fw-medium text-primary-light mb-1">{{ __('Total Recruiters') }}</p>
                         <h6 class="mb-0">{{ $totalRecruiters }}</h6>
                     </div>
                     <div
@@ -65,7 +65,7 @@
                         <iconify-icon icon="bxs:{{ $recruiterGrowthPercentage['trend'] }}-arrow"
                             class="text-xs"></iconify-icon> {{ $recruiterGrowthPercentage['percentage'] }} %
                     </span>
-                    Last 30 days
+                    {{ __('Last 30 days') }}
                 </p>
             </div>
         </a><!-- recruiter card end -->
@@ -75,7 +75,7 @@
             <div class="card-body p-20">
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                     <div>
-                        <p class="fw-medium text-primary-light mb-1">Total Projects</p>
+                        <p class="fw-medium text-primary-light mb-1">{{ __('Total Projects') }}</p>
                         <h6 class="mb-0">{{ $totalProjects }}</h6>
                     </div>
                     <div
@@ -90,7 +90,7 @@
                         <iconify-icon icon="bxs:{{ $projectGrowthPercentage['trend'] }}-arrow"
                             class="text-xs"></iconify-icon> {{ $projectGrowthPercentage['percentage'] }} %
                     </span>
-                    Last 30 days
+                    {{ __('Last 30 days') }}
                 </p>
             </div>
         </a><!-- total project card end -->

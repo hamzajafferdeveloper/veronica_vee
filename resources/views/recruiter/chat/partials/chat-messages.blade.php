@@ -2,7 +2,7 @@
 
     <!-- Placeholder when no conversation is selected -->
     <div id="noConversationPlaceholder" class="w-full h-full d-flex justify-content-center align-items-center">
-        <p class="text-muted">Please select a conversation to get started</p>
+        <p class="text-muted">{{ __('Please select a conversation to get started') }}</p>
     </div>
 
 </div>

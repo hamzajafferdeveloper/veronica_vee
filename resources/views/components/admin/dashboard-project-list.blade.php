@@ -2,9 +2,9 @@
     <div class="card h-100">
         <div class="card-body">
             <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                <h6 class="mb-2 fw-bold text-lg mb-0">Latest Projects</h6>
+                <h6 class="mb-2 fw-bold text-lg mb-0">{{ __('Latest Projects') }}</h6>
                 <a href="{{ route('admin.projects.index') }}" class="text-primary-600 hover-text-primary d-flex align-items-center gap-1">
-                    View All
+                    {{ __('View All') }}
                     <iconify-icon icon="solar:alt-arrow-right-linear" class="icon"></iconify-icon>
                 </a>
             </div>
@@ -29,7 +29,7 @@
                         <span class="text-primary-light text-md fw-medium">${{ $project->budget ?? '' }}</span>
                     </div>
                 @empty
-                    <p class="text-center text-secondary-light">No projects found.</p>
+                    <p class="text-center text-secondary-light">{{ __('No projects found.') }}</p>
                 @endforelse
             </div>
 

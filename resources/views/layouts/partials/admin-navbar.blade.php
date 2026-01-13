@@ -25,7 +25,7 @@
                     <iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
                 </button>
                 <form class="navbar-search">
-                    <input type="text" name="search" placeholder="Search">
+                    <input type="text" name="search" placeholder="{{ __('Search') }}">
                     <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
                 </form>
             </div>

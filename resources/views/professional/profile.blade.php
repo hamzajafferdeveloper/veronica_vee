@@ -98,7 +98,7 @@
                                     <label class="form-label">{{ __('Weight') }}</label>
                                     <input type="text" name="weight"
                                         value="{{ old('weight', $profile->model->weight ?? '') }}" class="form-control"
-                                        placeholder="{{ __('e.g., 70kg') }}">
+                                        placeholder="{{ __('e.g., 70kg') }}">') }}">
                                     @error('weight')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
@@ -109,7 +109,7 @@
                                 <label class="form-label">{{ __('Experience') }}</label>
                                 <input type="text" name="experience"
                                     value="{{ old('experience', $profile->model->experience ?? '') }}" class="form-control"
-                                    placeholder="{{ __('e.g., 3 years modeling') }}">
+                                    placeholder="{{ __('e.g., 3 years modeling') }}">') }}">
                                 @error('experience')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
@@ -119,7 +119,7 @@
                                 <label class="form-label">{{ __('Location') }}</label>
                                 <input type="text" name="location"
                                     value="{{ old('location', $profile->model->location ?? '') }}" class="form-control"
-                                    placeholder="{{ __('City, Country') }}">
+                                    placeholder="{{ __('City, Country') }}">') }}">
                                 @error('location')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror

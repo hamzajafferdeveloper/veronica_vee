@@ -1,6 +1,6 @@
 @extends('layouts.professional')
 
-@section('title', 'Project Details')
+@section('title', __('Project Details'))
 
 @section('content')
     <div class="container my-5">
@@ -32,7 +32,7 @@
                                     <div class="p-3 rounded-3 bg-light border d-flex align-items-center">
                                         <i class="bi bi-tags-fill text-primary me-3 fs-5"></i>
                                         <div>
-                                            <small class="text-muted">Category</small>
+                                            <small class="text-muted">{{ __('Category') }}</small>
                                             <div class="fw-semibold">{{ $project->category->name ?? 'N/A' }}</div>
                                         </div>
                                     </div>
@@ -41,7 +41,7 @@
                                     <div class="p-3 rounded-3 bg-light border d-flex align-items-center">
                                         <i class="bi bi-currency-dollar text-success me-3 fs-5"></i>
                                         <div>
-                                            <small class="text-muted">Budget</small>
+                                            <small class="text-muted">{{ __('Budget') }}</small>
                                             <div class="fw-semibold">${{ number_format($project->budget, 2) }}</div>
                                         </div>
                                     </div>
@@ -50,7 +50,7 @@
                                     <div class="p-3 rounded-3 bg-light border d-flex align-items-center">
                                         <i class="bi bi-calendar-event text-warning me-3 fs-5"></i>
                                         <div>
-                                            <small class="text-muted">Deadline</small>
+                                            <small class="text-muted">{{ __('Deadline') }}</small>
                                             <div class="fw-semibold">
                                                 {{ \Carbon\Carbon::parse($project->deadline)->format('F d, Y') }}</div>
                                         </div>
@@ -60,7 +60,7 @@
                                     <div class="p-3 rounded-3 bg-light border d-flex align-items-center">
                                         <i class="bi bi-clock-history text-info me-3 fs-5"></i>
                                         <div>
-                                            <small class="text-muted">Created At</small>
+                                            <small class="text-muted">{{ __('Created At') }}</small>
                                             <div class="fw-semibold">
                                                 {{ \Carbon\Carbon::parse($project->created_at)->format('F d, Y H:i') }}
                                             </div>
@@ -71,37 +71,37 @@
 
                             <!-- Description -->
                             <div class="mb-4 p-3 bg-white border rounded-3 shadow-sm">
-                                <h5 class="fw-bold"><i class="bi bi-card-text me-3 text-success"></i>Description</h5>
+                                <h5 class="fw-bold"><i class="bi bi-card-text me-3 text-success"></i>{{ __('Description') }}</h5>
                                 <p class="mb-0">{{ $project->description }}</p>
                             </div>
 
                             <!-- Recruiter Info -->
                             <div class="mb-4 p-3 bg-white border rounded-3 shadow-sm">
-                                <h5 class="fw-bold"><i class="bi bi-person-badge-fill me-3 text-primary"></i>Recruiter Info
+                                <h5 class="fw-bold"><i class="bi bi-person-badge-fill me-3 text-primary"></i>{{ __('Recruiter Info') }}
                                 </h5>
-                                <p class="mb-1"><strong>Name:</strong> {{ $project->recruiter->first_name }}
+                                <p class="mb-1"><strong>{{ __('Name:') }}</strong> {{ $project->recruiter->first_name }}
                                     {{ $project->recruiter->last_name }}</p>
-                                <p class="mb-1"><strong>Email:</strong> {{ $project->recruiter->email }}</p>
-                                <p class="mb-0"><strong>Country:</strong> {{ $project->recruiter->country ?? 'N/A' }}</p>
+                                <p class="mb-1"><strong>{{ __('Email:') }}</strong> {{ $project->recruiter->email }}</p>
+                                <p class="mb-0"><strong>{{ __('Country:') }}</strong> {{ $project->recruiter->country ?? 'N/A' }}</p>
                             </div>
 
                             <!-- Suspension -->
                             @if ($project->suspend)
                                 <div class="alert alert-danger mt-3 shadow-sm">
                                     <i class="bi bi-exclamation-triangle-fill me-3"></i>
-                                    <strong>Suspended:</strong> {{ $project->suspend_reason ?? 'No reason provided' }}
+                                    <strong>{{ __('Suspended:') }}</strong> {{ $project->suspend_reason ?? __('No reason provided') }}
                                 </div>
                             @endif
 
                             <div class="text-end mt-3 gap-3 d-flex">
                                 <a href="{{ route('professional.project.index') }}" class="btn btn-secondary rounded-pill">
-                                    <i class="bi bi-arrow-left-circle me-1"></i>Back to Projects
+                                    <i class="bi bi-arrow-left-circle me-1"></i>{{ __('Back to Projects') }}
                                 </a>
 
                                 <button type="button" class="btn btn-primary rounded-pill px-3" data-bs-toggle="modal"
                                     data-bs-target="#requestProjectModal">
                                     <i class="bi bi-send-check me-1"></i>
-                                    Request Project
+                                    {{ __('Request Project') }}
                                 </button>
 
                                 @include('professional.project.partials.request-project-modal')
@@ -115,7 +115,7 @@
                             class="col-lg-5 p-4 bg-light d-flex flex-column align-items-center justify-content-start gap-4">
                             @if ($project->image)
                                 <div class="w-100">
-                                    <h6 class="fw-bold mb-2"><i class="bi bi-image mb-3"></i>Project Image</h6>
+                                    <h6 class="fw-bold mb-2"><i class="bi bi-image mb-3"></i>{{ __('Project Image') }}</h6>
                                     <img src="{{ asset('storage/' . $project->image) }}" alt="Project Image"
                                         class="img-fluid rounded shadow-sm border">
                                 </div>
@@ -123,11 +123,11 @@
 
                             @if ($project->document)
                                 <div class="w-100">
-                                    <h6 class="fw-bold mb-2"><i class="bi bi-file-earmark-text mb-3"></i>Project Document
+                                    <h6 class="fw-bold mb-2"><i class="bi bi-file-earmark-text mb-3"></i>{{ __('Project Document') }}
                                     </h6>
                                     <a href="{{ asset('storage/' . $project->document) }}" target="_blank"
                                         class="btn btn-outline-primary w-100">
-                                        <i class="bi bi-file-earmark-arrow-down me-1"></i>View Document
+                                        <i class="bi bi-file-earmark-arrow-down me-1"></i>{{ __('View Document') }}
                                     </a>
                                 </div>
                             @endif
@@ -154,7 +154,7 @@
                 let btn = form.find('button[type="submit"]');
 
                 btn.prop('disabled', true)
-                    .html('<span class="spinner-border spinner-border-sm me-1"></span>Sending...');
+                    .html('<span class="spinner-border spinner-border-sm me-1"></span>{{ __('Sending...') }}');
 
                 $.ajax({
                     url: "{{ route('professional.project.request', $project->id) }}",
@@ -163,7 +163,7 @@
                     success: function(response) {
 
                         btn.prop('disabled', false)
-                            .html('<i class="bi bi-send-check me-1"></i>Send Request');
+                            .html('<i class="bi bi-send-check me-1"></i>{{ __('Send Request') }}');
 
                         // Optional toast (if you already use showToast)
                         if (response.message) {
@@ -176,9 +176,9 @@
                     error: function(xhr) {
 
                         btn.prop('disabled', false)
-                            .html('<i class="bi bi-send-check me-1"></i>Send Request');
+                            .html('<i class="bi bi-send-check me-1"></i>{{ __('Send Request') }}');
 
-                        let message = 'Something went wrong. Please try again.';
+                        let message = '{{ __('Something went wrong. Please try again.') }}';
 
                         if (xhr.responseJSON?.message) {
                             message = xhr.responseJSON.message;

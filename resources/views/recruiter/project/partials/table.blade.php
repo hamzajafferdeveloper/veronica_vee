@@ -2,13 +2,13 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Project Title</th>
-            <th>Category</th>
-            <th>Budget</th>
-            <th>Deadline</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th>{{ __('Project Title') }}</th>
+            <th>{{ __('Category') }}</th>
+            <th>{{ __('Budget') }}</th>
+            <th>{{ __('Deadline') }}</th>
+            <th>{{ __('Description') }}</th>
+            <th>{{ __('Status') }}</th>
+            <th>{{ __('Action') }}</th>
         </tr>
     </thead>
 
@@ -22,7 +22,7 @@
                 <td>{{ $project->deadline }}</td>
                 <td>{{ Str::limit($project->description, 40) }}</td>
                 <td> <span
-                        class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">{{ $project->status }}</span>
+                        class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">{{ __($project->status) }}</span>
                 </td>
                 <td>
                     <a href="javascript:void(0)"
@@ -35,14 +35,14 @@
                     </a>
                     <a href="javascript:void(0)"
                         class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center btn-delete-project"
-                        data-url="{{ route('recruiter.project.destroy', $project->slug) }}" title="Delete Project">
+                        data-url="{{ route('recruiter.project.destroy', $project->slug) }}" title="{{ __('Delete Project') }}">
                         <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
                     </a>
                 </td>
             </tr>
         @empty
             <tr>
-                <td colspan="7" class="text-center">No projects found</td>
+                <td colspan="7" class="text-center">{{ __('No projects found') }}</td>
             </tr>
         @endforelse
     </tbody>

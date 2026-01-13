@@ -25,7 +25,7 @@
                     <iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
                 </button>
                 <form class="navbar-search">
-                    <input type="text" name="search" placeholder="Search">
+                    <input type="text" name="search" placeholder="{{ __('Search') }}">
                     <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
                 </form>
             </div>
@@ -56,8 +56,7 @@
                                 <a
                                     href="{{ route('recruiter.profile') }}"
                                     class="dropdown-item text-black cursor-pointer px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
-                                    <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> My
-                                    Profile
+                                    <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> {{ __('My Profile') }}
                                 </a>
                             </li>
                             <li>
@@ -66,7 +65,7 @@
                                     <button type="submit"
                                         class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
                                         href="javascript:void(0)">
-                                        <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log Out
+                                        <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> {{ __('Log Out') }}
                                     </button>
                                 </form>
                             </li>

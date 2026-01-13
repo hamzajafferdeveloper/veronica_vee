@@ -1,6 +1,6 @@
 @extends('layouts.professional')
 
-@section('title', 'Model Dashboard')
+@section('title', __('Dashboard'))
 
 @section('content')
     <x-professional.dashboard-card />
