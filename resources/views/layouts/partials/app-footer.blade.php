@@ -8,11 +8,11 @@
             </div><!--/logo-->
 
             <div class="col-md-auto col-6">
-                <h6 class="fw-bold mb-3">Company</h6>
+                <h6 class="fw-bold mb-3">{{ __('Company') }}</h6>
 
                 <ul class="nav flex-column gap-2 fs-14">
-                    <li><a href={{ route('about') }} class="text-white">About us</a></li>
-                    <li><a href="{{ route('testimonial') }}" class="text-white">Testimonials</a></li>
+                    <li><a href={{ route('about') }} class="text-white">{{ __('About us') }}</a></li>
+                    <li><a href="{{ route('testimonial') }}" class="text-white">{{ __('Testimonials') }}</a></li>
                     {{-- <li><a href="#" class="text-white">Success Stories</a></li>
                     <li><a href="#" class="text-white">Company Details</a></li>
                     <li><a href="#" class="text-white">Podcast</a></li>
@@ -22,11 +22,11 @@
             </div><!--/link-->
 
             <div class="col-md-auto col-6">
-                <h6 class="fw-bold mb-3">Privacy</h6>
+                <h6 class="fw-bold mb-3">{{ __('Privacy') }}</h6>
 
                 <ul class="nav flex-column gap-2 fs-14">
-                    <li><a href="{{ route('page', 'privacy-policy') }}" class="text-white">Privacy policy</a></li>
-                    <li><a href="{{ route('page', 'term-of-use') }}" class="text-white">Terms of use</a></li>
+                    <li><a href="{{ route('page', 'privacy-policy') }}" class="text-white">{{ __('Privacy policy') }}</a></li>
+                    <li><a href="{{ route('page', 'term-of-use') }}" class="text-white">{{ __('Terms of use') }}</a></li>
                 </ul>
 
             </div><!--/link-->
@@ -44,11 +44,11 @@
             </div> --}}
 
             <div class="col-md-auto col-6">
-                <h6 class="fw-bold mb-3">Download our App</h6>
+                <h6 class="fw-bold mb-3">{{ __('Download our App') }}</h6>
 
                 <ul class="nav flex-column gap-2 fs-14">
-                    <li><a href="#" class="text-white">iOS</a></li>
-                    <li><a href="#" class="text-white">Android</a></li>
+                    <li><a href="#" class="text-white">{{ __('iOS') }}</a></li>
+                    <li><a href="#" class="text-white">{{ __('Android') }}</a></li>
                 </ul>
 
             </div><!--/link-->

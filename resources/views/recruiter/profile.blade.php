@@ -1,6 +1,6 @@
 @extends('layouts.recruiter')
 
-@section('title', 'My Profile')
+@section('title', __('My Profile'))
 
 @section('content')
     <div class="container py-4">
@@ -27,7 +27,7 @@
 
                             {{-- Avatar Upload --}}
                             <div class="mb-3">
-                                <label class="form-label">Avatar</label>
+                                <label class="form-label">{{ __('Avatar') }}</label>
                                 <input type="file" name="avatar" class="form-control" id="avatarInput" accept="image/*">
                                 @error('avatar')
                                     <span class="text-danger small">{{ $message }}</span>
@@ -38,7 +38,7 @@
                             {{-- Personal Info --}}
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">First Name</label>
+                                    <label class="form-label">{{ __('First Name') }}</label>
                                     <input type="text" name="first_name"
                                         value="{{ old('first_name', $profile->first_name) }}" class="form-control">
                                     @error('first_name')
@@ -46,7 +46,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Last Name</label>
+                                    <label class="form-label">{{ __('Last Name') }}</label>
                                     <input type="text" name="last_name"
                                         value="{{ old('last_name', $profile->last_name) }}" class="form-control">
                                     @error('last_name')
@@ -56,7 +56,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Phone Number</label>
+                                <label class="form-label">{{ __('Phone Number') }}</label>
                                 <input type="text" name="phone"
                                     value="{{ old('phone', $profile->recruiter->phone ?? '') }}" class="form-control">
                                 @error('phone')
@@ -66,26 +66,26 @@
 
 
                             <div class="mb-3">
-                                <label class="form-label">Address</label>
+                                <label class="form-label">{{ __('Address') }}</label>
                                 <input type="text" name="address"
                                     value="{{ old('address', $profile->recruiter->address ?? '') }}" class="form-control"
-                                    placeholder="City, Country">
+                                    placeholder="{{ __('City, Country') }}">
                                 @error('address')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Bio</label>
+                                <label class="form-label">{{ __('Bio') }}</label>
                                 <textarea type="text" name="bio" value="{{ old('bio', $profile->recruiter->bio ?? '') }}" class="form-control"
-                                    placeholder="Tell us about yourself"></textarea>
+                                    placeholder="{{ __('Tell us about yourself') }}"></textarea>
                                 @error('bio')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
 
                             <div class="d-grid mt-4">
-                                <button type="submit" class="btn btn-primary btn-lg">Update Profile</button>
+                                <button type="submit" class="btn btn-primary btn-lg">{{ __('Update Profile') }}</button>
                             </div>
                         </form>
 

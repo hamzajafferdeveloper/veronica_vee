@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Model Detail Page')
+@section('title', __('Model Detail Page'))
 
 @section('content')
     <style>
@@ -47,12 +47,12 @@
                     <div class="d-flex gap-2 mt-3">
                         @auth
                             <button class="btn btn-primary px-4 js-start-chat" data-user-id="{{ $model->user->id }}">
-                                Message
+                                {{ __('Message') }}
                             </button>
                         @else
                             <a href="{{ route('login', ['redirect' => route('frontend.model.profile', $model->id)]) }}"
                                 class="btn btn-primary px-4">
-                                Login to Start Messaging
+                                {{ __('Login to Start Messaging') }}
                             </a>
                         @endauth
                     </div>
@@ -80,7 +80,7 @@
             button
                 .data('loading', true)
                 .prop('disabled', true)
-                .text('Starting...');
+                .text("{{ __('Starting...') }}");
 
             $.ajax({
                 url: "{{ route('recruiter.chat.conversation', ':userId') }}".replace(':userId', userId),
@@ -94,14 +94,14 @@
                     button
                         .data('loading', false)
                         .prop('disabled', false)
-                        .text('Message');
+                        .text("{{ __('Message') }}");
                 },
                 error: function() {
-                    showToast('Something went wrong. Please try again.', 'error');
+                    showToast("{{ __('Something went wrong. Please try again.') }}", 'error');
                     button
                         .data('loading', false)
                         .prop('disabled', false)
-                        .text('Message');
+                        .text("{{ __('Message') }}");
                 }
             });
         });

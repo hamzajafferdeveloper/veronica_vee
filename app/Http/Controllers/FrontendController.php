@@ -104,6 +104,6 @@ class FrontendController extends Controller
             }
         }
 
-        return back()->with('success', 'Your application has been submitted successfully.');
+        return back()->with('success', __('Your application has been submitted successfully.'));
     }
 }

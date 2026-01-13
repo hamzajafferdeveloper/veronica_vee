@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login Page')
+@section('title', __('Login Page'))
 
 <style>
     .fade-slide {
@@ -32,7 +32,7 @@
                     <div class="card border-0 shadow-lg rounded-4">
                         <div class="card-body p-4">
 
-                            <h4 class="mb-3 fw-bold">Log In</h4>
+                            <h4 class="mb-3 fw-bold">{{ __('Log In') }}</h4>
 
                             <form id="loginForm" class="needs-validation" novalidate>
                                 @csrf
@@ -40,20 +40,20 @@
                                 <input type="hidden" id="redirectUrl" name="redirect" value="{{ request('redirect') }}">
 
                                 <div class="mb-3">
-                                    <label for="loginEmail" class="form-label">Email*</label>
+                                    <label for="loginEmail" class="form-label">{{ __('Email*') }}</label>
                                     <input type="email" name="email" class="form-control" id="loginEmail"
-                                        placeholder="Enter your email" required>
+                                        placeholder="{{ __('Enter your email') }}" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="loginPassword" class="form-label d-flex">
-                                        Password
-                                        <a href="#" class="ms-auto text-muted fw-normal fs-12">Forget password?</a>
+                                        {{ __('Password') }}
+                                        <a href="#" class="ms-auto text-muted fw-normal fs-12">{{ __('Forget password?') }}</a>
                                     </label>
                                     <div class="position-relative">
                                         <input type="password" name="password" class="form-control pe-5" id="loginPassword"
-                                            placeholder="Enter your password">
+                                            placeholder="{{ __('Enter your password') }}">
                                         <button class="btn btn-link p-0 position-absolute bottom-0 end-0 mb-1 me-3"
                                             type="button" onclick="togglePassword('loginPassword', 'loginEye')">
                                             <i id="loginEye" class="bi bi-eye"></i>
@@ -64,16 +64,16 @@
 
                                 <div class="form-check mb-3 fs-12">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                                    <label class="form-check-label" for="remember">Remember password?</label>
+                                    <label class="form-check-label" for="remember">{{ __('Remember password?') }}</label>
                                 </div>
 
-                                <button type="submit" class="btn btn-dark w-100">Log In</button>
+                                <button type="submit" class="btn btn-dark w-100">{{ __('Log In') }}</button>
 
                                 <div id="loginMessage" class="mt-3 text-center fs-14">
-                                    Don’t have an account?
+                                    {{ __('Don’t have an account?') }}
                                     <a href="javascript:void(0)" id="showRegister"
                                         class="fw-semibold text-primary text-decoration-none">
-                                        Sign up →
+                                        {{ __('Sign up') }} →
                                     </a>
                                 </div>
 
@@ -88,23 +88,23 @@
                     <div class="card border-0 shadow-lg rounded-4">
                         <div class="card-body p-4">
 
-                            <h4 class="mb-3 fw-bold">Create your account to get started</h4>
+                            <h4 class="mb-3 fw-bold">{{ __('Create your account to get started') }}</h4>
 
                             <form id="registerForm" class="needs-validation row gy-3" novalidate>
                                 @csrf
 
                                 <div class="col-12">
-                                    <label for="registerEmail" class="form-label">Email*</label>
+                                    <label for="registerEmail" class="form-label">{{ __('Email*') }}</label>
                                     <input type="email" name="email" class="form-control" id="registerEmail"
-                                        placeholder="Enter your email" required>
+                                        placeholder="{{ __('Enter your email') }}" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="col-12">
-                                    <label for="registerPassword" class="form-label">Password*</label>
+                                    <label for="registerPassword" class="form-label">{{ __('Password*') }}</label>
                                     <div class="position-relative">
                                         <input type="password" name="password" class="form-control pe-5"
-                                            id="registerPassword" placeholder="Enter your password" required>
+                                            id="registerPassword" placeholder="{{ __('Enter your password') }}" required>
                                         <button class="btn btn-link p-0 position-absolute bottom-0 end-0 mb-1 me-3"
                                             type="button" onclick="togglePassword('registerPassword', 'registerEye')">
                                             <i id="registerEye" class="bi bi-eye"></i>
@@ -114,42 +114,42 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="firstName" class="form-label">First Name*</label>
+                                    <label for="firstName" class="form-label">{{ __('First Name*') }}</label>
                                     <input type="text" name="first_name" class="form-control" id="firstName"
-                                        placeholder="First Name" required>
+                                        placeholder="{{ __('First Name') }}" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="lastName" class="form-label">Last Name*</label>
+                                    <label for="lastName" class="form-label">{{ __('Last Name*') }}</label>
                                     <input type="text" name="last_name" class="form-control" id="lastName"
-                                        placeholder="Last Name" required>
+                                        placeholder="{{ __('Last Name') }}" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="col-md-6 d-flex flex-column">
-                                    <label for="country" class="form-label">Country*</label>
+                                    <label for="country" class="form-label">{{ __('Country*') }}</label>
                                     <input type="text" class="form-control" id="country"
-                                        placeholder="Search Country">
+                                        placeholder="{{ __('Search Country') }}">
                                     <input type="hidden" name="country" id="country_code"> <!-- backend value -->
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="postalCode" class="form-label">Postal Code</label>
+                                    <label for="postalCode" class="form-label">{{ __('Postal Code') }}</label>
                                     <input type="text" name="postal_code" class="form-control" id="postalCode"
-                                        placeholder="Postal Code">
+                                        placeholder="{{ __('Postal Code') }}">
                                 </div>
 
                                 <div class="col-12 fs-14">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="type" value="recruiter"
                                             id="op1">
-                                        <label class="form-check-label" for="op1">Recruiter</label>
+                                        <label class="form-check-label" for="op1">{{ __('Recruiter') }}</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="type"
                                             value="professional" id="op2">
-                                        <label class="form-check-label" for="op2">Professional</label>
+                                        <label class="form-check-label" for="op2">{{ __('Professional') }}</label>
                                     </div>
                                     <div class="invalid-feedback"></div>
                                 </div>
@@ -157,27 +157,26 @@
                                 <div class="col-12 fs-14">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="terms" id="terms">
-                                        <label class="form-check-label" for="terms">I agree to the <a
-                                                href="#">Terms of
-                                                Use</a> and <a href="#">Privacy Policy</a></label>
+                                        <label class="form-check-label" for="terms">{{ __('I agree to the') }} <a
+                                                href="#">{{ __('Terms of Use') }}</a> {{ __('and') }} <a href="#">{{ __('Privacy Policy') }}</a></label>
                                         <div class="invalid-feedback"></div>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="age" id="age">
-                                        <label class="form-check-label" for="age">I am at least 16 years old</label>
+                                        <label class="form-check-label" for="age">{{ __('I am at least 16 years old') }}</label>
                                         <div class="invalid-feedback"></div>
                                     </div>
                                 </div>
 
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-dark w-100">Submit</button>
+                                    <button type="submit" class="btn btn-dark w-100">{{ __('Submit') }}</button>
                                 </div>
 
                                 <div class="text-center mt-3 fs-14">
-                                    Already have an account?
+                                    {{ __('Already have an account?') }}
                                     <a href="javascript:void(0)" id="showLogin"
                                         class="fw-semibold text-primary text-decoration-none">
-                                        Log in
+                                        {{ __('Log in') }}
                                     </a>
                                 </div>
 
@@ -321,19 +320,19 @@
 
                     if (!terms || !age) {
                         showToast(
-                            "You must accept Terms & Privacy Policy and confirm you are at least 16 years old.",
+                            "{{ __('You must accept Terms & Privacy Policy and confirm you are at least 16 years old.') }}",
                             "danger");
 
                         if (!terms) {
                             form.find('#terms').addClass('is-invalid');
                             form.find('#terms').closest('.form-check').find('.invalid-feedback')
-                                .text("You must accept the terms.");
+                                .text("{{ __('You must accept the terms.') }}");
                         }
 
                         if (!age) {
                             form.find('#age').addClass('is-invalid');
                             form.find('#age').closest('.form-check').find('.invalid-feedback')
-                                .text("You must confirm your age.");
+                                .text("{{ __('You must confirm your age.') }}");
                         }
 
                         btn.prop('disabled', false);
@@ -348,7 +347,7 @@
                     success: function(response) {
                         btn.prop('disabled', false);
 
-                        showToast(response.message || 'Success!', response.success ? 'success' :
+                        showToast(response.message || "{{ __('Success!') }}", response.success ? 'success' :
                             'danger');
 
                         if (response.success && response.redirect) {

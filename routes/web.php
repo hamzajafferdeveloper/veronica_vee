@@ -3,6 +3,14 @@
 use App\Http\Controllers\FrontendController;
 use App\Models\ModelProfiles;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'es'])) {
+        Session::put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('lang.switch');
 
 Route::get('/clear-all-caches', function () {
     try {
