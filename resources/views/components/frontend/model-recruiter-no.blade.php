@@ -3,23 +3,23 @@
         <div class="card text-bg-primary bg-gradient border shadow-lg text-center rounded-4">
             <div class="card-body py-5">
 
-                <h4 class="fw-medium mb-5">The worlds best talent and creators that trust us</h4>
+                <h4 class="fw-medium mb-5">{{ __('ui.talent_creators_trust') }}</h4>
 
                 <div class="row gy-4 justify-content-around">
 
                     <div class="col-auto">
                         <h2 class="mb-0 display-5 fw-bold">{{ $noOfProjects ?? 0 }}</h2>
-                        <p class="mb-0">NEW JOB POSTED</p>
+                        <p class="mb-0">{{ __('ui.new_jobs_posted') }}</p>
                     </div><!--/col(1)-->
 
                     <div class="col-auto">
                         <h2 class="mb-0 display-5 fw-bold">{{ $noOfModels ?? 0 }}</h2>
-                        <p class="mb-0">MODEL AND ARTISTS</p>
+                        <p class="mb-0">{{ __('ui.models_and_artists') }}</p>
                     </div><!--/col(2)-->
 
                     <div class="col-auto">
                         <h2 class="mb-0 display-5 fw-bold">{{ $noOfRecruiters ?? 0 }}</h2>
-                        <p class="mb-0">RECRUITERS</p>
+                        <p class="mb-0">{{ __('ui.recruiters_count') }}</p>
                     </div><!--/col(3)-->
 
                 </div><!--/row-->

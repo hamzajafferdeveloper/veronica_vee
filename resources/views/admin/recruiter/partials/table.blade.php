@@ -2,10 +2,10 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Recruiter</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>Registered On</th>
+            <th>{{ __('ui.recruiter') }}</th>
+            <th>{{ __('ui.phone') }}</th>
+            <th>{{ __('ui.address') }}</th>
+            <th>{{ __('ui.registered_on') }}</th>
         </tr>
     </thead>
 
@@ -37,7 +37,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="7" class="text-center">No recruiters found</td>
+                <td colspan="7" class="text-center">{{ __('messages.no_recruiters_found') }}</td>
             </tr>
         @endforelse
     </tbody>

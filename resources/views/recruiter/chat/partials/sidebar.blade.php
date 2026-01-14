@@ -3,7 +3,7 @@
         <span class="icon">
             <iconify-icon icon="iconoir:search"></iconify-icon>
         </span>
-        <input type="text" name="search" id="professionalSearch" autocomplete="off" placeholder="{{ __('Search...') }}">
+        <input type="text" name="search" id="professionalSearch" autocomplete="off" placeholder="{{ __('ui.search') }}...">
     </div>
 
     <div class="chat-all-list" id="professionalList">

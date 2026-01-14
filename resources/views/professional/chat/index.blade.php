@@ -1,6 +1,6 @@
 @extends('layouts.professional')
 
-@section('title', __('Professional Chat Page'))
+@section('title', __('ui.professional_chat'))
 
 @section('content')
     <div class="chat-wrapper">
@@ -40,7 +40,7 @@
                     <input type="file" name="attachment" id="chatAttachment" style="display:none;">
 
                     <!-- Message box -->
-                    <textarea name="chatMessage" id="chatMessage" rows="1" placeholder="{{ __('Type a message') }}" autocomplete="off"
+                    <textarea name="chatMessage" id="chatMessage" rows="1" placeholder="{{ __('messages.type_message') }}" autocomplete="off"
                         class="flex-grow-1 pt-1 px-3"
                         style="
                             border-radius:4px !important;
@@ -114,7 +114,7 @@
 
                     selectedImagePreview.innerHTML = `
                     <span style="display:inline-block; margin-right:8px;" title="${chatAttachment.files[0].name}">${fileName}</span>
-                    <button type="button" id="removeAttachment" style="padding:2px 5px; font-size:12px;">{{ __('Remove') }}</button>
+                    <button type="button" id="removeAttachment" style="padding:2px 5px; font-size:12px;">{{ __('buttons.remove') }}</button>
                 `;
 
                     const removeBtn = document.getElementById('removeAttachment');
@@ -248,7 +248,7 @@
 
                 if (message.attachment) {
                     const fileUrl = `/storage/${message.attachment}`;
-                    const fileName = message.attachment_name ?? '{{ __('Attachment') }}';
+                    const fileName = message.attachment_name ?? '{{ __('ui.attachment') }}';
                     const fileType = message.attachment_type || '';
 
                     if (fileType.startsWith('image')) {
@@ -264,7 +264,7 @@
                         <div class="mt-1">
                             <audio controls style="width:100%;">
                                 <source src="${fileUrl}" type="${fileType}">
-                                {{ __('Your browser does not support the audio element.') }}
+                                {{ __('messages.browser_audio_support') }}
                             </audio>
                         </div>
                     `;
@@ -274,7 +274,7 @@
                         <div class="mt-1">
                             <video controls style="max-width:220px; border-radius:8px;">
                                 <source src="${fileUrl}" type="${fileType}">
-                                {{ __('Your browser does not support the video element.') }}
+                                {{ __('messages.browser_video_support') }}
                             </video>
                         </div>
                     `;

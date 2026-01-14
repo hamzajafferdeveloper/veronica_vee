@@ -1,6 +1,6 @@
 @extends('layouts.recruiter')
 
-@section('title', __('Edit Project'))
+@section('title', __('ui.edit_project'))
 
 @section('content')
 
@@ -42,7 +42,7 @@
 
     <div class="card shadow-sm border-0">
         <div class="card-header bg-white border-0 pb-0">
-            <h5 class="card-title mb-0">{{ __('Edit Project') }}</h5>
+            <h5 class="card-title mb-0">{{ __('ui.edit_project') }}</h5>
         </div>
 
         <div class="card-body pt-3">
@@ -51,7 +51,7 @@
                 @method('PUT')
 
                 <div class="mb-3">
-                    <label class="form-label">{{ __('Project Image') }}</label>
+                    <label class="form-label">{{ __('ui.project_image') }}</label>
                     <input type="file" name="image" class="form-control pt-1" accept="image/*" id="imageInput">
                     @if ($project->image)
                         <img id="imagePreview" class="mt-2" src="{{ asset('storage/' . $project->image) }}"
@@ -63,21 +63,21 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">{{ __('Project Title') }}</label>
+                    <label class="form-label">{{ __('ui.project_title') }}</label>
                     <input type="text" name="title" value="{{ old('title', $project->title) }}" class="form-control"
-                        placeholder="{{ __('Enter project title') }}">
+                        placeholder="{{ __('ui.enter_project_title') }}">
                     <span class="text-danger small error-text" data-error="title"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">{{ __('Budget') }}</label>
+                    <label class="form-label">{{ __('ui.budget') }}</label>
                     <input type="number" name="budget" value="{{ old('budget', $project->budget) }}" class="form-control"
-                        placeholder="{{ __('Enter budget') }}">
+                        placeholder="{{ __('ui.enter_budget') }}">
                     <span class="text-danger small error-text" data-error="budget"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">{{ __('Category') }}</label>
+                    <label class="form-label fw-semibold">{{ __('ui.category') }}</label>
 
                     <!-- Custom input always visible -->
                     <div id="categorySelector" class="custom-category-box">
@@ -87,7 +87,7 @@
 
                     <!-- Real Select2 dropdown (hidden) -->
                     <select id="categorySelect" name="category_id" class="select2-hidden select2">
-                        <option value="">{{ __('Select Category') }}</option>
+                        <option value="">{{ __('ui.select_category') }}</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}"
                                 {{ $project->category_id == $category->id ? 'selected' : '' }}>
@@ -100,20 +100,20 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">{{ __('Deadline') }}</label>
+                    <label class="form-label">{{ __('ui.deadline') }}</label>
                     <input type="date" name="deadline" value="{{ old('deadline', $project->deadline) }}"
                         class="form-control">
                     <span class="text-danger small error-text" data-error="deadline"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">{{ __('Description') }}</label>
-                    <textarea name="description" class="form-control" rows="4" placeholder="{{ __('Project details...') }}">{{ old('description', $project->description) }}</textarea>
+                    <label class="form-label">{{ __('ui.description') }}</label>
+                    <textarea name="description" class="form-control" rows="4" placeholder="{{ __('ui.project_details') }}">{{ old('description', $project->description) }}</textarea>
                     <span class="text-danger small error-text" data-error="description"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">{{ __('Project Document') }}</label>
+                    <label class="form-label">{{ __('ui.project_document') }}</label>
                     <input type="file" name="document" class="form-control pt-1" id="documentInput">
                     @if ($project->document)
                         <span id="documentName" class="small text-muted mt-1 d-block">{{ $project->document }}</span>
@@ -124,7 +124,7 @@
                 </div>
 
                 <button type="submit" id="submitBtn" class="btn btn-primary">
-                    <span class="submit-text">{{ __('Update') }}</span>
+                    <span class="submit-text">{{ __('buttons.update') }}</span>
                     <span class="spinner-border spinner-border-sm d-none" id="loader"></span>
                 </button>
             </form>
@@ -152,7 +152,7 @@
             // Initialize Select2
             $('#categorySelect').select2({
                 dropdownParent: $('body'),
-                placeholder: "{{ __('Select Category') }}",
+                placeholder: "{{ __('ui.select_category') }}",
                 width: '100%',
             });
 
@@ -164,7 +164,7 @@
             // Update visible text when selected
             $('#categorySelect').on('change', function() {
                 let text = $("#categorySelect option:selected").text();
-                $('#categoryText').text(text !== "" ? text : "{{ __('Select Category') }}");
+                $('#categoryText').text(text !== "" ? text : "{{ __('ui.select_category') }}");
             });
 
             // Image preview
@@ -202,7 +202,7 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        $("#toastMessage").text("{{ __('Project updated successfully!') }}");
+                        $("#toastMessage").text("{{ __('messages.project_updated') }}");
                         $("#projectToast").removeClass("bg-danger").addClass("bg-success");
                         toast.show();
 
@@ -219,7 +219,7 @@
                                     0]);
                             });
                         } else {
-                            $("#toastMessage").text("{{ __('Something went wrong! Please try again.') }}");
+                            $("#toastMessage").text("{{ __('messages.something_wrong') }}");
                             $("#projectToast").removeClass("bg-success").addClass("bg-danger");
                             toast.show();
                         }

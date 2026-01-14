@@ -2,13 +2,13 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Image</th>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Budget</th>
-            <th>Deadline</th>
-            <th>Description</th>
-            <th>Status</th>
+            <th>{{ __('ui.image') }}</th>
+            <th>{{ __('ui.title') }}</th>
+            <th>{{ __('ui.category') }}</th>
+            <th>{{ __('ui.budget') }}</th>
+            <th>{{ __('ui.deadline') }}</th>
+            <th>{{ __('ui.description') }}</th>
+            <th>{{ __('ui.status') }}</th>
             {{-- <th>Action</th> --}}
         </tr>
     </thead>
@@ -31,7 +31,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="7" class="text-center">No projects found</td>
+                <td colspan="7" class="text-center">{{ __('messages.no_projects_found') }}</td>
             </tr>
         @endforelse
     </tbody>

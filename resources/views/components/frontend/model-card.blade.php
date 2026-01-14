@@ -56,13 +56,13 @@
             class="card-img-overlay rounded-0 top-unset pt-5">
             <h5 class="mb-1 fw-bold">{{ $model->user->first_name ?? 'Model' }}
                 {{ $model->user->last_name ?? '' }}</h5>
-            <p class="fs-14 mb-2">{{ $model->age ?? '-' }} yrs •  {{ $model->gender ?? '-' }}</p>
+            <p class="fs-14 mb-2">{{ $model->age ?? '-' }} {{ __('ui.years') }} •  {{ $model->gender ?? '-' }}</p>
             <p class="fs-14 mb-3 d-sm-block d-none "><i class="bi bi-geo-alt-fill me-1"></i>{{ $model->location ?? '-' }}</p>
             {{-- @if ($model->experience)
                 <span class="badge d-sm-block d-none bg-primary mb-2">{{ Str::limit($model->experience, 25) }}</span>
             @endif --}}
 
-             <a href="{{ route('frontend.model.profile', $model->id) }}" class="btn btn-primary w-100 rounded-pill fw-semibold btn-hover-shadow"> View Profile </a>
+             <a href="{{ route('frontend.model.profile', $model->id) }}" class="btn btn-primary w-100 rounded-pill fw-semibold btn-hover-shadow"> {{ __('ui.view_profile') }} </a>
         </div>
 
 

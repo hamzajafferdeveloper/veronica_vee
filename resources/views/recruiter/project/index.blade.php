@@ -1,14 +1,14 @@
 @extends('layouts.recruiter')
 
-@section('title', __('Projects'))
+@section('title', __('ui.projects'))
 
 @section('content')
 
     <div class="card basic-data-table">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">{{ __('All Projects') }}</h5>
+            <h5 class="card-title mb-0">{{ __('ui.all_projects') }}</h5>
             <a href="{{ route('recruiter.project.create') }}" class="btn btn-primary d-flex gap-2 align-items-center">
-                <iconify-icon icon="icons8:plus"></iconify-icon> {{ __('Create New') }}
+                <iconify-icon icon="icons8:plus"></iconify-icon> {{ __('buttons.create_new') }}
             </a>
         </div>
 
@@ -19,7 +19,7 @@
 
                 {{-- LEFT SIDE: SEARCH --}}
                 <div class="col-12 col-md-4">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('Search projects...') }}"
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('ui.search') }}"
                         class="form-control form-control-sm shadow-sm">
                 </div>
 
@@ -40,16 +40,16 @@
                         {{-- Sort By --}}
                         <select name="sort_by" class="custom-select-sm border shadow-sm py-1 px-3">
                             <option value="id" {{ request('sort_by') == 'id' ? 'selected' : '' }}>ID</option>
-                            <option value="title" {{ request('sort_by') == 'title' ? 'selected' : '' }}>{{ __('Title') }}</option>
-                            <option value="budget" {{ request('sort_by') == 'budget' ? 'selected' : '' }}>{{ __('Budget') }}</option>
-                            <option value="deadline" {{ request('sort_by') == 'deadline' ? 'selected' : '' }}>{{ __('Deadline') }}
+                            <option value="title" {{ request('sort_by') == 'title' ? 'selected' : '' }}>{{ __('ui.title') }}</option>
+                            <option value="budget" {{ request('sort_by') == 'budget' ? 'selected' : '' }}>{{ __('ui.budget') }}</option>
+                            <option value="deadline" {{ request('sort_by') == 'deadline' ? 'selected' : '' }}>{{ __('ui.deadline') }}
                             </option>
                         </select>
 
                         {{-- Sort Direction --}}
                         <select name="sort_direction" class="custom-select-sm border shadow-sm py-1 px-3">
-                            <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>{{ __('Asc') }}</option>
-                            <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>{{ __('Desc') }}
+                            <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>{{ __('ui.asc') }}</option>
+                            <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>{{ __('ui.desc') }}
                             </option>
                         </select>
 
@@ -122,12 +122,12 @@
             let url = $(this).data('url');
 
             Swal.fire({
-                title: '{{ __('Are you sure?') }}',
-                text: "{{ __('This project will be permanently deleted!') }}",
+                title: '{{ __('messages.are_you_sure') }}',
+                text: "{{ __('messages.delete_confirm') }}",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: '{{ __('Yes, Delete!') }}',
-                cancelButtonText: '{{ __('Cancel') }}',
+                confirmButtonText: '{{ __('buttons.yes_delete') }}',
+                cancelButtonText: '{{ __('buttons.cancel') }}',
                 reverseButtons: true,
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -146,14 +146,14 @@
                                 toast.show();
                             } else {
                                 $("#toastMessage").text(
-                                    '{{ __('Something went wrong! Please try again.') }}');
+                                    '{{ __('messages.something_wrong') }}');
                                 $("#projectToast").removeClass("bg-success").addClass(
                                     "bg-danger");
                                 toast.show();
                             }
                         },
                         error: function() {
-                            $("#toastMessage").text('{{ __('Something went wrong! Please try again.') }}');
+                            $("#toastMessage").text('{{ __('messages.something_wrong') }}');
                             $("#projectToast").removeClass("bg-success").addClass("bg-danger");
                             toast.show();
                         }

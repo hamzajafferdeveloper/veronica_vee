@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Professional List')
+@section('title', __('ui.professional_list'))
 
 @section('content')
 
     <div class="card basic-data-table">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">All Professionals</h5>
+            <h5 class="card-title mb-0">{{ __('ui.all_professionals') }}</h5>
             {{-- <button data-bs-toggle="modal" data-bs-target="#createProfessionalModal" class="btn btn-primary d-flex gap-2 align-items-center">
                 <iconify-icon icon="icons8:plus"></iconify-icon> Create New
             </button> --}}
@@ -21,7 +21,7 @@
                 {{-- LEFT SIDE: SEARCH --}}
                 <div class="col-12 col-md-4">
                     <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Search professionals..." class="form-control form-control-sm shadow-sm">
+                        placeholder="{{ __('ui.search_professionals') }}" class="form-control form-control-sm shadow-sm">
                 </div>
 
                 {{-- RIGHT SIDE: FILTERS --}}
@@ -33,29 +33,29 @@
                             @foreach ([5, 10, 20, 50, 100] as $size)
                                 <option value="{{ $size }}"
                                     {{ request('per_page', 10) == $size ? 'selected' : '' }}>
-                                    {{ $size }}/page
+                                    {{ $size }}{{ __('ui.per_page') }}
                                 </option>
                             @endforeach
                         </select>
 
                         {{-- Sort By --}}
                         <select name="sort_by" class="custom-select-sm border shadow-sm py-1 px-3">
-                            <option value="ordering" {{ request('sort_by') == 'ordering' ? 'selected' : '' }}>Order</option>
-                            <option value="age" {{ request('sort_by') == 'age' ? 'selected' : '' }}>Age</option>
-                            <option value="gender" {{ request('sort_by') == 'gender' ? 'selected' : '' }}>Gender</option>
-                            <option value="height" {{ request('sort_by') == 'height' ? 'selected' : '' }}>Height</option>
-                            <option value="weight" {{ request('sort_by') == 'weight' ? 'selected' : '' }}>Weight</option>
-                            <option value="location" {{ request('sort_by') == 'location' ? 'selected' : '' }}>Location
+                            <option value="ordering" {{ request('sort_by') == 'ordering' ? 'selected' : '' }}>{{ __('ui.order') }}</option>
+                            <option value="age" {{ request('sort_by') == 'age' ? 'selected' : '' }}>{{ __('ui.age') }}</option>
+                            <option value="gender" {{ request('sort_by') == 'gender' ? 'selected' : '' }}>{{ __('ui.gender') }}</option>
+                            <option value="height" {{ request('sort_by') == 'height' ? 'selected' : '' }}>{{ __('ui.height') }}</option>
+                            <option value="weight" {{ request('sort_by') == 'weight' ? 'selected' : '' }}>{{ __('ui.weight') }}</option>
+                            <option value="location" {{ request('sort_by') == 'location' ? 'selected' : '' }}>{{ __('ui.location') }}
                             </option>
                             <option value="created_at" {{ request('sort_by') == 'created_at' ? 'selected' : '' }}>
-                                Registered On
+                                {{ __('ui.registered_on') }}
                             </option>
                         </select>
 
                         {{-- Sort Direction --}}
                         <select name="sort_direction" class="custom-select-sm border shadow-sm py-1 px-3">
-                            <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>Asc</option>
-                            <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>Desc
+                            <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>{{ __('ui.asc') }}</option>
+                            <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>{{ __('ui.desc') }}
                             </option>
                         </select>
 

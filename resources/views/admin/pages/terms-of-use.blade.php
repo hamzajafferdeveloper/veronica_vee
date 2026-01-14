@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Term of Use Page')
+@section('title', __('ui.terms_of_use_page'))
 
 @section('content')
     <div class="card shadow-sm">
@@ -10,7 +10,7 @@
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">
-                        Term Of Use Content
+                        {{ __('ui.terms_of_use_content') }}
                     </label>
 
                     <textarea id="editor" name="content" rows="10">
@@ -19,7 +19,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary mt-3">
-                    Save Save Term Of Use
+                    {{ __('buttons.save_terms_of_use') }}
                 </button>
             </form>
         </div>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Privacy Policy Page')
+@section('title', __('ui.privacy_policy_page'))
 
 @section('content')
     <div class="card shadow-sm">
@@ -10,7 +10,7 @@
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">
-                        Privacy Policy Content
+                        {{ __('ui.privacy_policy_content') }}
                     </label>
 
                     <textarea id="editor" name="content" rows="10">
@@ -19,7 +19,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary mt-3">
-                    Save Privacy Policy
+                    {{ __('buttons.save_privacy_policy') }}
                 </button>
             </form>
         </div>

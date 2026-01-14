@@ -2,15 +2,15 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Professional</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Height</th>
-            <th>Weight</th>
-            <th>Location</th>
-            <th>Registered On</th>
+            <th>{{ __('ui.professional') }}</th>
+            <th>{{ __('ui.age') }}</th>
+            <th>{{ __('ui.gender') }}</th>
+            <th>{{ __('ui.height') }}</th>
+            <th>{{ __('ui.weight') }}</th>
+            <th>{{ __('ui.location') }}</th>
+            <th>{{ __('ui.registered_on') }}</th>
             {{-- <th>Status</th> --}}
-            <th>Action</th>
+            <th>{{ __('ui.action') }}</th>
         </tr>
     </thead>
 
@@ -64,7 +64,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="7" class="text-center">No professionals found</td>
+                <td colspan="7" class="text-center">{{ __('messages.no_professionals_found') }}</td>
             </tr>
         @endforelse
     </tbody>

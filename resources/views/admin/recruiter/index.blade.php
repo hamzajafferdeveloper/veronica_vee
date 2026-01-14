@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Recruiter List')
+@section('title', __('ui.recruiter_list'))
 
 @section('content')
 
     <div class="card basic-data-table">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">All Professionals</h5>
+            <h5 class="card-title mb-0">{{ __('ui.all_recruiters') }}</h5>
             {{-- <a href="{{ route('recruiter.project.create') }}" class="btn btn-primary d-flex gap-2 align-items-center">
                 <iconify-icon icon="icons8:plus"></iconify-icon> Create New
             </a> --}}
@@ -21,7 +21,7 @@
                 {{-- LEFT SIDE: SEARCH --}}
                 <div class="col-12 col-md-4">
                     <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Search professionals..." class="form-control form-control-sm shadow-sm">
+                        placeholder="{{ __('ui.search_recruiters') }}" class="form-control form-control-sm shadow-sm">
                 </div>
 
                 {{-- RIGHT SIDE: FILTERS --}}
@@ -33,7 +33,7 @@
                             @foreach ([5, 10, 20, 50, 100] as $size)
                                 <option value="{{ $size }}"
                                     {{ request('per_page', 10) == $size ? 'selected' : '' }}>
-                                    {{ $size }}/page
+                                    {{ $size }}{{ __('ui.per_page') }}
                                 </option>
                             @endforeach
                         </select>
@@ -44,14 +44,14 @@
                             <option value="phone" {{ request('sort_by') == 'phone' ? 'selected' : '' }}>Phone</option>
                             <option value="address" {{ request('sort_by') == 'address' ? 'selected' : '' }}>Address</option>
                             <option value="created_at" {{ request('sort_by') == 'created_at' ? 'selected' : '' }}>
-                                Registered On
+                                {{ __('ui.registered_on') }}
                             </option>
                         </select>
 
                         {{-- Sort Direction --}}
                         <select name="sort_direction" class="custom-select-sm border shadow-sm py-1 px-3">
-                            <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>Asc</option>
-                            <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>Desc
+                            <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>{{ __('ui.asc') }}</option>
+                            <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>{{ __('ui.desc') }}
                             </option>
                         </select>
 

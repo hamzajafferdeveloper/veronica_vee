@@ -1,7 +1,7 @@
 @if ($requests->isEmpty())
     <div class="text-center py-5 text-muted">
         <i class="bi bi-inbox fs-1"></i>
-        <p class="mt-2 mb-0">{{ __('No project requests yet') }}</p>
+        <p class="mt-2 mb-0">{{ __('messages.no_requests_yet') }}</p>
     </div>
 @else
     <div class="table-responsive">
@@ -9,11 +9,11 @@
 
             <thead class="table-light">
                 <tr>
-                    <th>{{ __('Project') }}</th>
-                    <th>{{ __('Professional') }}</th>
-                    <th>{{ __('Note') }}</th>
-                    <th>{{ __('Status') }}</th>
-                    <th class="text-end">{{ __('Action') }}</th>
+                    <th>{{ __('ui.project') }}</th>
+                    <th>{{ __('ui.professional') }}</th>
+                    <th>{{ __('ui.note') }}</th>
+                    <th>{{ __('ui.status') }}</th>
+                    <th class="text-end">{{ __('ui.action') }}</th>
                 </tr>
             </thead>
 
@@ -23,7 +23,7 @@
                         <td>
                             <div class="fw-semibold">{{ $request->project->title }}</div>
                             <small class="text-muted">
-                                {{ __('Budget') }}: ${{ number_format($request->project->budget, 2) }}
+                                {{ __('ui.budget') }}: ${{ number_format($request->project->budget, 2) }}
                             </small>
                         </td>
 
@@ -51,7 +51,7 @@
                                 @elseif($request->status === 'hired') bg-success
                                 @elseif($request->status === 'accepted') bg-success
                                 @else bg-danger @endif">
-                                {{ ucfirst(__($request->status)) }}
+                                {{ __("ui." . $request->status) }}
                             </span>
                         </td>
 
@@ -63,7 +63,7 @@
                                     @csrf
                                     <button class="btn btn-sm btn-success rounded-pill">
                                         <i class="bi bi-check-circle"></i>
-                                        {{ __('Accept') }}
+                                        {{ __('buttons.accept') }}
                                     </button>
                                 </form>
 
@@ -73,7 +73,7 @@
                                     @csrf
                                     <button class="btn btn-sm btn-outline-danger rounded-pill">
                                         <i class="bi bi-x-circle"></i>
-                                        {{ __('Reject') }}
+                                        {{ __('buttons.reject') }}
                                     </button>
                                 </form>
                             @else

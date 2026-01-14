@@ -1,6 +1,6 @@
 @extends('layouts.professional')
 
-@section('title', __('My Projects'))
+@section('title', __('ui.my_projects'))
 
 @section('content')
 <div class="">
@@ -11,7 +11,7 @@
             <div class="col-12 col-md-4">
                 <div class="input-group shadow-sm rounded-3 overflow-hidden">
                     <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('Search projects...') }}"
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('ui.search') }}"
                         class="form-control form-control-sm border-start-0 rounded-end-3 rounded-start-0" id="searchInput">
                 </div>
             </div>
@@ -45,7 +45,7 @@
                 $('#projectCards').html(res.html);
             },
             error: function() {
-                alert('{{ __('Failed to load projects. Please try again.') }}');
+                alert('{{ __('messages.failed_to_load_projects') }}');
             }
         });
     }

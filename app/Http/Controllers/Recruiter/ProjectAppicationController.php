@@ -53,7 +53,7 @@ class ProjectAppicationController extends Controller
         $request = ProjectApplication::findOrFail($id);
         $request->update(['status' => 'accepted']);
 
-        return back()->with('success', 'Project request accepted.');
+        return back()->with('success', __('messages.project_request_accepted'));
     }
 
     public function reject($id)
@@ -61,7 +61,7 @@ class ProjectAppicationController extends Controller
         $request = ProjectApplication::findOrFail($id);
         $request->update(['status' => 'rejected']);
 
-        return back()->with('success', 'Project request rejected.');
+        return back()->with('success', __('messages.project_request_rejected'));
     }
 
     public function hire($id)
@@ -78,11 +78,11 @@ class ProjectAppicationController extends Controller
                 'status' => 'active',
             ]);
 
-            return back()->with('success', 'Professional hired for the project.');
+            return back()->with('success', __('messages.professional_hired'));
         } catch (\Exception $e) {
             Log::error('Fail to hire professional: '.$e->getMessage());
 
-            return back()->with('error', 'Fail to hire professional.');
+            return back()->with('error', __('messages.fail_to_hire'));
         }
     }
 }

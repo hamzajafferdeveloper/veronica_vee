@@ -1,12 +1,12 @@
 @extends('layouts.recruiter')
 
-@section('title', __('Project Requests'))
+@section('title', __('ui.project_requests'))
 
 @section('content')
 
     <div class="card shadow-sm border-0">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0 fw-bold">{{ __('Project Requests') }}</h5>
+            <h5 class="mb-0 fw-bold">{{ __('ui.project_requests') }}</h5>
         </div>
 
         <div class="card-body">
@@ -16,21 +16,21 @@
 
                 <!-- Search -->
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">{{ __('Search') }}</label>
+                    <label class="form-label fw-semibold">{{ __('ui.search') }}</label>
                     <div class="input-group">
                         <input type="text" name="search" value="{{ request('search') }}" class="form-control"
-                            placeholder="{{ __('Project title or professional name/email') }}">
+                            placeholder="{{ __('ui.project_request_search_placeholder') }}">
                     </div>
                 </div>
 
                 <!-- Status Filter -->
                 <div class="col-md-3">
-                    <label class="form-label fw-semibold">{{ __('Status') }}</label>
+                    <label class="form-label fw-semibold">{{ __('ui.status') }}</label>
                     <select name="status" class="form-select">
-                        <option value="">{{ __('All Status') }}</option>
+                        <option value="">{{ __('ui.all_status') }}</option>
                         @foreach (['pending', 'accepted', 'hired', 'rejected'] as $status)
                             <option value="{{ $status }}" @selected(request('status') === $status)>
-                                {{ ucfirst(__($status)) }}
+                                {{ __("ui." . $status) }}
                             </option>
                         @endforeach
                     </select>
@@ -39,7 +39,7 @@
                 <!-- Reset Button -->
                 <div class="col-md-3">
                     <button type="button" id="resetFilter" class="btn btn-outline-secondary w-100">
-                        {{ __('Reset') }}
+                        {{ __('buttons.reset') }}
                     </button>
                 </div>
 

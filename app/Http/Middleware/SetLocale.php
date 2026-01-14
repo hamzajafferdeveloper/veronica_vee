@@ -27,6 +27,13 @@ class SetLocale
             App::setLocale($locale);
         }
 
+        // Handle missing translation keys in local environment
+        if (App::environment('local')) {
+            \Illuminate\Support\Facades\Lang::handleMissingKeysUsing(function ($key, $replacements, $locale) {
+                \Illuminate\Support\Facades\Log::warning("Missing translation key: {$key} in locale: {$locale}");
+            });
+        }
+
         return $next($request);
     }
 }

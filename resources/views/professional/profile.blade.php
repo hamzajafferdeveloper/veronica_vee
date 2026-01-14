@@ -1,6 +1,6 @@
 @extends('layouts.professional')
 
-@section('title', __('My Profile'))
+@section('title', __('ui.my_profile'))
 
 @section('content')
     <div class="container py-4">
@@ -27,7 +27,7 @@
 
                             {{-- Avatar Upload --}}
                             <div class="mb-3">
-                                <label class="form-label">{{ __('Avatar') }}</label>
+                                <label class="form-label">{{ __('ui.avatar') }}</label>
                                 <input type="file" name="avatar" class="form-control" id="avatarInput" accept="image/*">
                                 @error('avatar')
                                     <span class="text-danger small">{{ $message }}</span>
@@ -37,7 +37,7 @@
                             {{-- Personal Info --}}
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ __('First Name') }}</label>
+                                    <label class="form-label">{{ __('auth.first_name') }}</label>
                                     <input type="text" name="first_name"
                                         value="{{ old('first_name', $profile->first_name) }}" class="form-control">
                                     @error('first_name')
@@ -45,7 +45,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ __('Last Name') }}</label>
+                                    <label class="form-label">{{ __('auth.last_name') }}</label>
                                     <input type="text" name="last_name"
                                         value="{{ old('last_name', $profile->last_name) }}" class="form-control">
                                     @error('last_name')
@@ -56,7 +56,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ __('Age') }}</label>
+                                    <label class="form-label">{{ __('ui.age') }}</label>
                                     <input type="number" name="age"
                                         value="{{ old('age', $profile->model->age ?? '') }}" class="form-control">
                                     @error('age')
@@ -64,19 +64,19 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ __('Gender') }}</label>
+                                    <label class="form-label">{{ __('ui.gender') }}</label>
                                     <select name="gender" class="form-select">
-                                        <option value="">{{ __('Select Gender') }}</option>
+                                        <option value="">{{ __('ui.select_gender') }}</option>
                                         <option value="male"
                                             {{ old('gender', $profile->model->gender ?? '') == 'male' ? 'selected' : '' }}>
-                                            {{ __('Male') }}</option>
+                                            {{ __('ui.male') }}</option>
                                         <option value="female"
                                             {{ old('gender', $profile->model->gender ?? '') == 'female' ? 'selected' : '' }}>
-                                            {{ __('Female') }}
+                                            {{ __('ui.female') }}
                                         </option>
                                         <option value="other"
                                             {{ old('gender', $profile->model->gender ?? '') == 'other' ? 'selected' : '' }}>
-                                            {{ __('Other') }}</option>
+                                            {{ __('ui.other') }}</option>
                                     </select>
                                     @error('gender')
                                         <span class="text-danger small">{{ $message }}</span>
@@ -86,19 +86,19 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ __('Height') }}</label>
+                                    <label class="form-label">{{ __('ui.height') }}</label>
                                     <input type="text" name="height"
                                         value="{{ old('height', $profile->model->height ?? '') }}" class="form-control"
-                                        placeholder="{{ __('e.g., 5\'9"') }}">
+                                        placeholder="{{ __('ui.height_placeholder') }}">
                                     @error('height')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ __('Weight') }}</label>
+                                    <label class="form-label">{{ __('ui.weight') }}</label>
                                     <input type="text" name="weight"
                                         value="{{ old('weight', $profile->model->weight ?? '') }}" class="form-control"
-                                        placeholder="{{ __('e.g., 70kg') }}">') }}">
+                                        placeholder="{{ __('ui.weight_placeholder') }}">
                                     @error('weight')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
@@ -106,27 +106,27 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">{{ __('Experience') }}</label>
+                                <label class="form-label">{{ __('ui.experience') }}</label>
                                 <input type="text" name="experience"
                                     value="{{ old('experience', $profile->model->experience ?? '') }}" class="form-control"
-                                    placeholder="{{ __('e.g., 3 years modeling') }}">') }}">
+                                    placeholder="{{ __('ui.experience_placeholder') }}">
                                 @error('experience')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">{{ __('Location') }}</label>
+                                <label class="form-label">{{ __('ui.location') }}</label>
                                 <input type="text" name="location"
                                     value="{{ old('location', $profile->model->location ?? '') }}" class="form-control"
-                                    placeholder="{{ __('City, Country') }}">') }}">
+                                    placeholder="{{ __('ui.location_placeholder') }}">
                                 @error('location')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">{{ __('Portfolio URL') }}</label>
+                                <label class="form-label">{{ __('ui.portfolio_url') }}</label>
                                 <input type="url" name="portfolio_url"
                                     value="{{ old('portfolio_url', $profile->model->portfolio_url ?? '') }}"
                                     class="form-control" placeholder="https://portfolio.com">
@@ -136,7 +136,7 @@
                             </div>
 
                             <div class="d-grid mt-4">
-                                <button type="submit" class="btn btn-primary btn-lg">{{ __('Update Profile') }}</button>
+                                <button type="submit" class="btn btn-primary btn-lg">{{ __('ui.my_profile') }}</button>
                             </div>
                         </form>
 

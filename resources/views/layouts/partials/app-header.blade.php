@@ -28,15 +28,15 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
-                                        href="{{ route('home') }}">{{ __('Home') }}</a>
+                                        href="{{ route('home') }}">{{ __('ui.home') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}"
-                                        href="{{ route('about') }}">{{ __('About') }}</a>
+                                        href="{{ route('about') }}">{{ __('ui.about') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('model') ? 'active' : '' }}"
-                                        href="{{ route('model') }}">{{ __('Model') }}</a>
+                                        href="{{ route('model') }}">{{ __('ui.model') }}</a>
                                 </li>
 
                                 @auth
@@ -47,19 +47,19 @@
 
                                         @if ($roles->contains('professional'))
                                             <a class="nav-link {{ request()->routeIs('professional.dashboard') ? 'active' : '' }}"
-                                                href="{{ route('professional.dashboard') }}">{{ __('Dashboard') }}</a>
+                                                href="{{ route('professional.dashboard') }}">{{ __('ui.dashboard') }}</a>
                                         @elseif ($roles->contains('recruiter'))
                                             <a class="nav-link {{ request()->routeIs('recruiter.dashboard') ? 'active' : '' }}"
-                                                href="{{ route('recruiter.dashboard') }}">{{ __('Dashboard') }}</a>
+                                                href="{{ route('recruiter.dashboard') }}">{{ __('ui.dashboard') }}</a>
                                         @elseif ($roles->contains('admin'))
                                             <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-                                                href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
+                                                href="{{ route('admin.dashboard') }}">{{ __('ui.dashboard') }}</a>
                                         @endif
                                     </li>
                                 @else
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->routeIs('loginOrSignup') ? 'active' : '' }}"
-                                            href="{{ route('loginOrSignup') }}">{{ __('Login') }}</a>
+                                            href="{{ route('loginOrSignup') }}">{{ __('ui.login') }}</a>
                                     </li>
                                 @endauth
 
@@ -69,7 +69,7 @@
 
                         <div class="offcanvas-footer p-3 border-top border-secondary d-lg-none fs-12">
 
-                            <p class="mb-0 text-white">Copyright © 2025 VeronicaVee</p>
+                            <p class="mb-0 text-white">{{ __('ui.copyright') }} © 2025 VeronicaVee</p>
 
                         </div><!--/offcanvas-footer-->
 
@@ -99,7 +99,7 @@
                         <div class="dropdown-menu dropdown-menu-end fs-14 p-2" id="search">
                             <div class="input-group border border-dark rounded-pill">
                                 <input type="text" class="form-control bg-transparent border-0 fs-14"
-                                    placeholder="{{ __('Search...') }}">
+                                    placeholder="{{ __('ui.search') }}">
                                 <button type="submit" class="btn btn-link ps-0 pe-3 text-dark"><i
                                         class="bi bi-search"></i></button>
                             </div>

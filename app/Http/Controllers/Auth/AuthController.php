@@ -34,7 +34,7 @@ class AuthController extends Controller
 
                     return response()->json([
                         'success' => false,
-                        'message' => __('Your account has been suspended. Reason: :reason', ['reason' => $user->suspend_reason]),
+                        'message' => __('auth.suspended', ['reason' => $user->suspend_reason]),
                         'redirect' => false,
                     ], 200);
                 }
@@ -64,7 +64,7 @@ class AuthController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'message' => __('Login successful.'),
+                    'message' => __('auth.login_success'),
                     'redirect' => $redirect,
                 ]);
             }
@@ -72,7 +72,7 @@ class AuthController extends Controller
             // return message only, no redirect for failed login
             return response()->json([
                 'success' => false,
-                'message' => __('Invalid credentials.'),
+                'message' => __('auth.invalid_credentials'),
                 'redirect' => false,
             ], 200);
 
@@ -81,7 +81,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => __('Something went wrong. Please try again.'),
+                'message' => __('messages.something_went_wrong'),
                 'redirect' => false,
             ], 500);
         }
@@ -117,7 +117,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => __('Register successful.'),
+                'message' => __('auth.register_success'),
                 'redirect' => $redirect,
             ], 200);
 
@@ -127,7 +127,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => __('Something went wrong. Please try again.'),
+                'message' => __('messages.something_went_wrong'),
                 'redirect' => false,
             ], 500);
         }
@@ -148,13 +148,13 @@ class AuthController extends Controller
             // Optionally return JSON for AJAX requests
             if ($request->wantsJson()) {
                 return response()->json([
-                    'message' => __('Logged out successfully'),
+                    'message' => __('auth.logout_success'),
                     'redirect' => route('login'),
                 ]);
             }
 
             // Redirect to login page
-            return redirect()->route('login')->with('success', __('Logged out successfully'));
+            return redirect()->route('login')->with('success', __('auth.logout_success'));
 
         } catch (Exception $e) {
             Log::error('Failed to logout User: '.$e->getMessage());
@@ -162,11 +162,11 @@ class AuthController extends Controller
             // Handle error response
             if ($request->wantsJson()) {
                 return response()->json([
-                    'message' => __('Failed to logout user'),
+                    'message' => __('auth.failed_logout'),
                 ], 500);
             }
 
-            return redirect()->back()->with('error', __('Failed to logout user'));
+            return redirect()->back()->with('error', __('auth.failed_logout'));
         }
     }
 }

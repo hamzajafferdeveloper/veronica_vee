@@ -8,20 +8,20 @@
                         <button class="nav-link d-flex align-items-center active" id="pills-to-do-list-tab"
                             data-bs-toggle="pill" data-bs-target="#pills-to-do-list" type="button" role="tab"
                             aria-controls="pills-to-do-list" aria-selected="true">
-                            {{ __('Latest Recruiters') }}
+                            {{ __('ui.latest_recruiters') }}
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link d-flex align-items-center" id="pills-recent-leads-tab"
                             data-bs-toggle="pill" data-bs-target="#pills-recent-leads" type="button" role="tab"
                             aria-controls="pills-recent-leads" aria-selected="false" tabindex="-1">
-                            {{ __('Latest Professionals') }}
+                            {{ __('ui.latest_professionals') }}
                         </button>
                     </li>
                 </ul>
                 <a href="javascript:void(0)" id="viewAllBtn"
                     class="text-primary-600 hover-text-primary d-flex align-items-center gap-1">
-                    {{ __('View All') }}
+                    {{ __('ui.view_all') }}
                     <iconify-icon icon="solar:alt-arrow-right-linear" class="icon"></iconify-icon>
                 </a>
             </div>
@@ -33,10 +33,10 @@
                         <table class="table bordered-table sm-table mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col">{{ __('Users') }} </th>
-                                    <th scope="col">{{ __('Registered On') }}</th>
-                                    <th scope="col">{{ __('Phone') }}</th>
-                                    <th scope="col">{{ __('Address') }}</th>
+                                    <th scope="col">{{ __('ui.users') }} </th>
+                                    <th scope="col">{{ __('ui.registered_on') }}</th>
+                                    <th scope="col">{{ __('ui.phone') }}</th>
+                                    <th scope="col">{{ __('ui.address') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,7 +70,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">{{ __('No recruiters found') }}</td>
+                                        <td colspan="4" class="text-center text-muted">{{ __('messages.no_recruiters_found') }}</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -84,10 +84,10 @@
                         <table class="table bordered-table sm-table mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col">{{ __('Users') }} </th>
-                                    <th scope="col">{{ __('Registered On') }}</th>
-                                    <th scope="col">{{ __('Gender') }}</th>
-                                    <th scope="col" class="text-center">{{ __('Address') }}</th>
+                                    <th scope="col">{{ __('ui.users') }} </th>
+                                    <th scope="col">{{ __('ui.registered_on') }}</th>
+                                    <th scope="col">{{ __('ui.gender') }}</th>
+                                    <th scope="col" class="text-center">{{ __('ui.address') }}</th>
                                 </tr>
                             </thead>
                             @forelse ($latestProfessionals as $professional)
@@ -119,7 +119,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center text-muted">{{ __('No professionals found') }}</td>
+                                    <td colspan="4" class="text-center text-muted">{{ __('messages.no_professionals_found') }}</td>
                                 </tr>
                             @endforelse
                         </table>

@@ -17,31 +17,31 @@
 
                     <p class="mb-1">
                         <i class="bi bi-currency-dollar me-1"></i>
-                        <strong>{{ __('Budget') }}:</strong> ${{ number_format($project->budget, 2) }}
+                        <strong>{{ __('ui.budget') }}:</strong> ${{ number_format($project->budget, 2) }}
                     </p>
                     <p class="mb-1">
                         <i class="bi bi-tags me-1"></i>
-                        <strong>{{ __('Category') }}:</strong> {{ $project->category->name ?? '-' }}
+                        <strong>{{ __('ui.category') }}:</strong> {{ $project->category->name ?? '-' }}
                     </p>
                     <p class="mb-2">
                         <i class="bi bi-calendar-event me-1"></i>
-                        <strong>{{ __('Deadline') }}:</strong> {{ \Carbon\Carbon::parse($project->deadline)->format('d M, Y') }}
+                        <strong>{{ __('ui.deadline') }}:</strong> {{ \Carbon\Carbon::parse($project->deadline)->format('d M, Y') }}
                     </p>
 
                     <div class="mt-auto d-flex justify-content-between align-items-center">
                         {{-- Status Badge --}}
                         @if ($project->status == 'pending')
-                            <span class="badge bg-warning text-dark">{{ __('Pending') }}</span>
+                            <span class="badge bg-warning text-dark">{{ __('ui.pending') }}</span>
                         @elseif($project->status == 'in_progress')
-                            <span class="badge bg-primary">{{ __('In Progress') }}</span>
+                            <span class="badge bg-primary">{{ __('ui.in_progress') }}</span>
                         @elseif($project->status == 'completed')
-                            <span class="badge bg-success">{{ __('Completed') }}</span>
+                            <span class="badge bg-success">{{ __('ui.completed') }}</span>
                         @endif
 
                         {{-- Optional: View button --}}
                         <a href="{{ route('professional.project.show', $project->slug) }}"
                             class="btn btn-sm btn-outline-primary">
-                            {{ __('View') }}
+                            {{ __('buttons.view') }}
                         </a>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
     @empty
         <div class="col-12 text-center py-5">
             <i class="bi bi-folder-x text-muted" style="font-size:3rem;"></i>
-            <p class="mt-3 text-muted">{{ __('No projects found.') }}</p>
+            <p class="mt-3 text-muted">{{ __('ui.no_projects_found') }}</p>
         </div>
     @endforelse
 </div>

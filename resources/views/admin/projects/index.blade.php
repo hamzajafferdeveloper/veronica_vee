@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Project List')
+@section('title', __('ui.project_list'))
 
 @section('content')
 
     <div class="card basic-data-table">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">All Projects</h5>
+            <h5 class="card-title mb-0">{{ __('ui.all_projects') }}</h5>
             {{-- <a href="{{ route('recruiter.project.create') }}" class="btn btn-primary d-flex gap-2 align-items-center">
                 <iconify-icon icon="icons8:plus"></iconify-icon> Create New
             </a> --}}
@@ -20,7 +20,7 @@
 
                 {{-- LEFT SIDE: SEARCH --}}
                 <div class="col-12 col-md-4">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search projects..."
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('ui.search_projects') }}"
                         class="form-control form-control-sm shadow-sm">
                 </div>
 
@@ -33,7 +33,7 @@
                             @foreach ([5, 10, 20, 50, 100] as $size)
                                 <option value="{{ $size }}"
                                     {{ request('per_page', 10) == $size ? 'selected' : '' }}>
-                                    {{ $size }}/page
+                                    {{ $size }}{{ __('ui.per_page') }}
                                 </option>
                             @endforeach
                         </select>
@@ -41,16 +41,16 @@
                         {{-- Sort By --}}
                         <select name="sort_by" class="custom-select-sm border shadow-sm py-1 px-3">
                             <option value="id" {{ request('sort_by') == 'id' ? 'selected' : '' }}>ID</option>
-                            <option value="title" {{ request('sort_by') == 'title' ? 'selected' : '' }}>Title</option>
-                            <option value="budget" {{ request('sort_by') == 'budget' ? 'selected' : '' }}>Budget</option>
-                            <option value="deadline" {{ request('sort_by') == 'deadline' ? 'selected' : '' }}>Deadline
+                            <option value="title" {{ request('sort_by') == 'title' ? 'selected' : '' }}>{{ __('ui.title') }}</option>
+                            <option value="budget" {{ request('sort_by') == 'budget' ? 'selected' : '' }}>{{ __('ui.budget') }}</option>
+                            <option value="deadline" {{ request('sort_by') == 'deadline' ? 'selected' : '' }}>{{ __('ui.deadline') }}
                             </option>
                         </select>
 
                         {{-- Sort Direction --}}
                         <select name="sort_direction" class="custom-select-sm border shadow-sm py-1 px-3">
-                            <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>Asc</option>
-                            <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>Desc
+                            <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>{{ __('ui.asc') }}</option>
+                            <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>{{ __('ui.desc') }}
                             </option>
                         </select>
 

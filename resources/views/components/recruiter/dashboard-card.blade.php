@@ -4,7 +4,7 @@
               <div class="card-body p-20">
                   <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                       <div>
-                          <p class="fw-medium text-primary-light mb-1">{{ __('My Total Projects') }}</p>
+                          <p class="fw-medium text-primary-light mb-1">{{ __('ui.my_total_projects') }}</p>
                           <h6 class="mb-0">{{ $myProjectsCount ?? 0 }}</h6>
                       </div>
                       <div
@@ -18,7 +18,7 @@
                           <iconify-icon icon="bxs:{{ $projectStats["direction"] ?? "up" }}-arrow" class="text-xs"></iconify-icon>
                           +{{ $projectStats["current"] ?? 0 }}
                       </span>
-                      {{ __('Last 30 days users') }}
+                      {{ __('ui.last_30_days') }}
                   </p>
               </div>
           </div><!-- card end -->
