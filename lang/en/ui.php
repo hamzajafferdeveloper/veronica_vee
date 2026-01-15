@@ -43,6 +43,7 @@ return [
     'testimonials' => 'Testimonials',
     'privacy' => 'Privacy',
     'privacy_policy' => 'Privacy Policy',
+    'password' => 'Password',
     'terms_of_use' => 'Terms of Use',
     'company' => 'Company',
     'download_app' => 'Download our App',

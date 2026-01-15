@@ -47,12 +47,12 @@
                     <div class="d-flex gap-2 mt-3">
                         @auth
                             <button class="btn btn-primary px-4 js-start-chat" data-user-id="{{ $model->user->id }}">
-                                {{ __('Message') }}
+                                {{ __('buttons.message') }}
                             </button>
                         @else
                             <a href="{{ route('login', ['redirect' => route('frontend.model.profile', $model->id)]) }}"
                                 class="btn btn-primary px-4">
-                                {{ __('Login to Start Messaging') }}
+                                {{ __('buttons.login_to_get_start') }}
                             </a>
                         @endauth
                     </div>

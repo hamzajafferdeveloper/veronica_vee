@@ -30,4 +30,7 @@ return [
     'remove' => 'Eliminar',
     'starting' => 'Iniciando...',
     'sending' => 'Enviando...',
+    'find_talent_and_models' => 'Encontrar talentos y modelos',
+    'login_to_get_start' => 'Inicia sesión para comenzar',
+    'message' => 'Mensaje',
 ];

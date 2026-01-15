@@ -30,6 +30,7 @@ return [
     'select_gender' => 'Seleccionar Género',
     'male' => 'Masculino',
     'female' => 'Femenino',
+    'password' => 'Contraseña',
     'other' => 'Otro',
     'height' => 'Altura',
     'height_placeholder' => 'ej., 1.75m',

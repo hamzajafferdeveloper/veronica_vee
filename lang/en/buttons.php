@@ -31,4 +31,7 @@ return [
     'remove' => 'Remove',
     'starting' => 'Starting...',
     'sending' => 'Sending...',
+    'find_talent_and_models' => 'Find talents and models',
+    'login_to_get_start' => 'Login to get started',
+    'message' => 'Message'
 ];
