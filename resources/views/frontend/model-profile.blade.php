@@ -44,7 +44,7 @@
                     {{-- <p class="text-muted mb-1">{{ $model->user->email ?? '' }}</p> --}}
                     <p class="text-muted small mb-2">{{ $model->experience ?? '' }} </p>
                     <!-- Buttons -->
-                    <div class="d-flex gap-2 mt-3">
+                    {{-- <div class="d-flex gap-2 mt-3">
                         @auth
                             <button class="btn btn-primary px-4 js-start-chat" data-user-id="{{ $model->user->id }}">
                                 {{ __('buttons.message') }}
@@ -55,7 +55,7 @@
                                 {{ __('buttons.login_to_get_start') }}
                             </a>
                         @endauth
-                    </div>
+                    </div> --}}
 
                 </div>
 
