@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\Recruiter\ChatController;
 use App\Http\Controllers\Recruiter\ProjectAppicationController;
+use App\Http\Controllers\Recruiter\ProjectController;
 use App\Http\Controllers\Recruiter\RecruiterProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Recruiter\ProjectController;
 
 Route::prefix('recruiter')->middleware('role:recruiter')->name('recruiter.')->group(function () {
 
@@ -40,8 +40,8 @@ Route::prefix('recruiter')->middleware('role:recruiter')->name('recruiter.')->gr
 
         Route::post('/request/{id}/reject', [ProjectAppicationController::class, 'reject'])
             ->name('request.reject');
-            });
+    });
 
-        Route::post('/request/{id}/hire', [ProjectAppicationController::class, 'hire'])
-            ->name('request.hire');
+    Route::post('/request/{id}/hire', [ProjectAppicationController::class, 'hire'])
+        ->name('request.hire');
 });
