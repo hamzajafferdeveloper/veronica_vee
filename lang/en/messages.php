@@ -36,4 +36,5 @@ return [
     'login_to_start_messaging' => 'Login to Start Messaging',
     'success' => 'Success!',
     'delete_confirm' => 'This project will be permanently deleted!',
+    'no_applications_found' => 'No applications found.',
 ];

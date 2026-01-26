@@ -33,4 +33,5 @@ return [
     'login_to_start_messaging' => 'Inicia sesión para enviar mensajes',
     'success' => '¡Éxito!',
     'delete_confirm' => '¡Este proyecto se eliminará permanentemente!',
+    'no_applications_found' => 'No se encontraron solicitudes.',
 ];

@@ -35,6 +35,8 @@ Route::prefix('admin')->middleware('role:admin')->name('admin.')->group(function
 
     Route::prefix('applications')->name('applications.')->group(function () {
         Route::get('/all', [ApplicationController::class, 'index'])->name('index');
+        Route::get('/{id}', [ApplicationController::class, 'show'])->name('show');
+        Route::delete('/{id}', [ApplicationController::class, 'destroy'])->name('destroy');
     });
 
 });

@@ -190,4 +190,13 @@ return [
     'all_applications' => 'All Applications',
     'application_list' => 'Application List',
     'search_applications' => 'Search Applications...',
+    'all_genders' => 'All Genders',
+    'per_page' => 'Per Page',
+    'first_name' => 'First Name',
+    'last_name' => 'Last Name',
+    'attachments' => 'Attachments',
+    'download' => 'Download',
+    'back' => 'Back',
+    'application_details' => 'Application Details',
+    'user_information' => 'User Information',
 ];

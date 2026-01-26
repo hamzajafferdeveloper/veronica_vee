@@ -190,4 +190,13 @@ return [
     'all_applications' => 'Todas las Solicitudes',
     'application_list' => 'Lista de Solicitudes',
     'search_applications' => 'Buscar Solicitudes',
+    'all_genders' => 'Todos los Géneros',
+    'per_page' => 'Por Página',
+    'first_name' => 'Nombre',
+    'last_name' => 'Apellido',
+    'attachments' => 'Adjuntos',
+    'download' => 'Descargar',
+    'back' => 'Volver',
+    'application_details' => 'Detalles de la Solicitud',
+    'user_information' => 'Información del Usuario',
 ];
