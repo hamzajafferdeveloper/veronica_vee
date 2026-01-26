@@ -203,4 +203,5 @@ return [
     'privacy_policy' => 'Política de Privacidad',
     'terms_of_use' => 'Términos de Uso',
     'frontend_pages' => 'Páginas Frontend',
+    'admin_chat' => 'Chat de Administrador',
 ];

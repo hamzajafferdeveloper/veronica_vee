@@ -203,4 +203,5 @@ return [
     'privacy_policy' => 'Privacy Policy',
     'terms_of_use' => 'Terms of Use',
     'frontend_pages' => 'Frontend Pages',
+    'admin_chat' => 'Admin Chat',
 ];

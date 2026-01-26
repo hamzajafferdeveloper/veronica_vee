@@ -8,6 +8,12 @@
         </a>
     </li>
     <li>
+        <a href="{{ route('admin.chat.index') }}">
+            <iconify-icon icon="solar:chat-line-linear" class="menu-icon"></iconify-icon>
+            <span>{{ __('ui.chat') }}</span>
+        </a>
+    </li>
+    <li>
         <a href="{{ route('admin.projects.index') }}">
             <iconify-icon icon="solar:documents-line-duotone" class="menu-icon"></iconify-icon>
             <span>{{ __('ui.projects') }}</span>

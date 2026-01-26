@@ -1,19 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Professional;
+namespace App\Http\Controllers\Admin;
 
 use App\Events\MessageEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Conversation;
 use App\Models\ConversationParticipant;
 use App\Models\Message;
-use App\Models\ModelProfiles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ChatController extends Controller
 {
+    public function index()
+    {
+        return view('admin.chat.index');
+    }
+
     public function getOrCreateConversation($userId)
     {
         try {
@@ -25,9 +29,9 @@ class ChatController extends Controller
 
             if (!$conversation) {
                 $user = User::findOrFail($userId);
-                $type = 'recruiter_model';
-                if ($user->hasRole('admin')) {
-                    $type = 'admin_model';
+                $type = 'admin_model';
+                if ($user->hasRole('recruiter')) {
+                    $type = 'admin_recruiter';
                 }
 
                 $conversation = Conversation::create([
@@ -69,25 +73,21 @@ class ChatController extends Controller
             return response()->json($messages);
         }
 
-        return view('professional.chat.index');
+        return view('admin.chat.index');
     }
 
-    public function index()
-    {
-        return view('professional.chat.index');
-    }
-
-    public function getRecruiters()
+    public function getUsers()
     {
         try {
+            $users = User::role(['recruiter', 'professional'])
+                ->with(['recruiter', 'model', 'roles'])
+                ->get();
 
-            $recruiters = User::role(['recruiter', 'admin'])->with('recruiter')->get();
+            Log::info('Admin Chat getUsers found: ' . $users->count());
 
-            // dd($recruiters);
-
-            return response()->json($recruiters);
+            return response()->json($users);
         } catch (\Exception $e) {
-            Log::error('Error getting recruiters: ' . $e->getMessage());
+            Log::error('Error getting users: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -95,7 +95,7 @@ class ChatController extends Controller
     public function send(Request $request)
     {
         try {
-            \Log::info('Send request received', $request->all());
+            Log::info('Send request received', $request->all());
 
             $request->validate([
                 'conversation_id' => 'required|exists:conversations,id',
@@ -103,21 +103,11 @@ class ChatController extends Controller
                 'attachment' => 'nullable|file|max:10240',
             ]);
 
-            \Log::info('Request validated');
-
             $attachmentData = null;
 
             if ($request->hasFile('attachment')) {
-                \Log::info('File found in request', [
-                    'file_name' => $request->file('attachment')->getClientOriginalName(),
-                    'file_size' => $request->file('attachment')->getSize(),
-                    'file_type' => $request->file('attachment')->getMimeType(),
-                ]);
-
                 $file = $request->file('attachment');
                 $path = $file->store('attachments', 'public');
-
-                \Log::info('File stored at: ' . $path);
 
                 $attachmentData = [
                     'attachment' => $path,
@@ -138,19 +128,14 @@ class ChatController extends Controller
                 $messageData = array_merge($messageData, $attachmentData);
             }
 
-            \Log::info('Creating message with data:', $messageData);
             $msg = Message::create($messageData);
-
-            \Log::info('Message created:', $msg->toArray());
 
             broadcast(new MessageEvent($msg))->toOthers();
 
             return response()->json(['status' => 'success', 'message' => $msg]);
         } catch (\Exception $e) {
-            \Log::error('Error in ChatController@send: ' . $e->getMessage());
-            \Log::error($e->getTraceAsString());
+            Log::error('Error in ChatController@send: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
 }

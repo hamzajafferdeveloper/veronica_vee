@@ -26,8 +26,14 @@ class ChatController extends Controller
             ->first();
 
         if (!$conversation) {
+            $user = User::findOrFail($userId);
+            $type = 'recruiter_model';
+            if ($user->hasRole('admin')) {
+                $type = 'admin_recruiter';
+            }
+
             $conversation = Conversation::create([
-                'type' => 'recruiter_model',
+                'type' => $type,
                 'created_by' => $authId,
             ]);
 
@@ -77,7 +83,7 @@ class ChatController extends Controller
     {
         try {
             return response()->json(
-                User::role('professional')->with('model')->get()
+                User::role(['professional', 'admin'])->with('model')->get()
             );
         } catch (\Exception $e) {
             Log::error('Error getting professionals: ' . $e->getMessage());
