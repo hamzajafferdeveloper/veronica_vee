@@ -199,4 +199,8 @@ return [
     'back' => 'Volver',
     'application_details' => 'Detalles de la Solicitud',
     'user_information' => 'Información del Usuario',
+    'delete' => 'Eliminar',
+    'privacy_policy' => 'Política de Privacidad',
+    'terms_of_use' => 'Términos de Uso',
+    'frontend_pages' => 'Páginas Frontend',
 ];

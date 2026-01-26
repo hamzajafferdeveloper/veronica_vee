@@ -199,4 +199,8 @@ return [
     'back' => 'Back',
     'application_details' => 'Application Details',
     'user_information' => 'User Information',
+    'delete' => 'Delete',
+    'privacy_policy' => 'Privacy Policy',
+    'terms_of_use' => 'Terms of Use',
+    'frontend_pages' => 'Frontend Pages',
 ];
