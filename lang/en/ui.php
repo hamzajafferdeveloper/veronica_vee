@@ -185,4 +185,9 @@ return [
     'note_to_recruiter' => 'Note to Recruiter',
     'optional' => '(optional)',
     'fit_message' => 'Write a short message explaining why you are a good candidate',
+    'language' => 'language',
+    'applications' => 'Applications',
+    'all_applications' => 'All Applications',
+    'application_list' => 'Application List',
+    'search_applications' => 'Search Applications...',
 ];

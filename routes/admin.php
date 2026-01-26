@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\ProfessionalController;
 use App\Http\Controllers\Admin\ProjectController;
@@ -30,6 +31,10 @@ Route::prefix('admin')->middleware('role:admin')->name('admin.')->group(function
 
     Route::prefix('recruiters')->group(function () {
         Route::get('/all', [RecruiterController::class, 'index'])->name('recruiters.index');
+    });
+
+    Route::prefix('applications')->name('applications.')->group(function () {
+        Route::get('/all', [ApplicationController::class, 'index'])->name('index');
     });
 
 });

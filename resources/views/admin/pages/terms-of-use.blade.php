@@ -5,6 +5,18 @@
 @section('content')
     <div class="card shadow-sm">
         <div class="card-body">
+            <form method="GET" class="mb-3">
+                <label class="form-label fw-bold">
+                    {{ __('ui.language') }}
+                </label>
+                <select name="lang"
+                        class="form-select w-auto"
+                        onchange="this.form.submit()">
+                    <option value="en" {{ $lang === 'en' ? 'selected' : '' }}>English</option>
+                    <option value="es" {{ $lang === 'es' ? 'selected' : '' }}>Español</option>
+                </select>
+            </form>
+
             <form method="POST" action="{{ route('admin.pages.store.term-of-use') }}">
                 @csrf
 
@@ -14,9 +26,10 @@
                     </label>
 
                     <textarea id="editor" name="content" rows="10">
-                        {{ old('content', $termsOfUse->content ?? '') }}
+                        {{ old('content', $translation->content ?? $termsOfUse->content ?? '') }}
                     </textarea>
                 </div>
+
 
                 <button type="submit" class="btn btn-primary mt-3">
                     {{ __('buttons.save_terms_of_use') }}
@@ -31,5 +44,7 @@
         tinymce.init({
             selector: '#editor',
         });
+
+
     </script>
 @endpush

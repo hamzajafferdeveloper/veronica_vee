@@ -42,21 +42,24 @@ class FrontendController extends Controller
         return view('frontend.testimonials');
     }
 
-    public function page(string $slug)
-    {
-        try {
-            $page = FrontendPage::where('slug', operator: $slug)->first();
+public function page(string $slug)
+{
+    $page = FrontendPage::where('slug', $slug)->firstOrFail();
 
-            if ($page) {
-                return view('frontend.page', compact('page'));
-            }
+    $locale = app()->getLocale();
 
-            abort(404);
+    $translation = $page->translations()
+        ->where('locale', $locale)
+        ->first()
+        ?? $page->translations()->where('locale', config('app.fallback_locale'))->first();
 
-        } catch (Exception $e) {
-            abort(404);
-        }
+    if (!$translation) {
+        abort(404);
     }
+
+    return view('frontend.page', compact('page', 'translation'));
+}
+
 
     public function application()
     {

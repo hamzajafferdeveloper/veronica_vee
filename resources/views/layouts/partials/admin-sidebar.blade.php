@@ -46,4 +46,11 @@
             </li>
         </ul>
     </li>
+
+    <li>
+        <a href="{{ route('admin.applications.index') }}">
+            <iconify-icon icon="fluent:form-28-regular" class="menu-icon"></iconify-icon>
+            <span>{{ __('ui.applications') }}</span>
+        </a>
+    </li>
 @endsection

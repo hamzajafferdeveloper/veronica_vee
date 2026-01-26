@@ -6,68 +6,108 @@ use App\Http\Controllers\Controller;
 use App\Models\FrontendPage;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    public function getPrivacyPolicy()
+    public function getPrivacyPolicy(Request $request)
     {
-        $privacyPolicy = FrontendPage::where('slug', 'privacy-policy')->first();
+        $lang = $request->get('lang', 'en');
 
-        return view('admin.pages.privacy-policy', compact('privacyPolicy'));
+        $page = FrontendPage::firstOrCreate(
+            ['slug' => 'privacy-policy'],
+            ['title' => 'Privacy Policy']
+        );
+
+        $translation = $page->translations()
+            ->where('locale', $lang)
+            ->first();
+
+        return view('admin.pages.privacy-policy', [
+            'privacyPolicy' => $page,
+            'translation' => $translation,
+            'lang' => $lang,
+        ]);
     }
 
-    public function getTermOfUse()
+    public function storePrivacyPolicyPage(Request $request)
     {
-        $termsOfUse = FrontendPage::where('slug', 'term-of-use')->first();
+        $request->validate([
+            'content' => 'required',
+            'lang' => 'required|string|max:5',
+        ]);
 
-        return view('admin.pages.terms-of-use', compact('termsOfUse'));
-    }
-
-    public function storePrivacyPolicyPage()
-    {
         try {
-            $privacyPolicy = FrontendPage::where('slug', 'privacy-policy')->first();
+            $page = FrontendPage::firstOrCreate(
+                ['slug' => 'privacy-policy'],
+                ['title' => 'Privacy Policy']
+            );
 
-            if ($privacyPolicy) {
-                $privacyPolicy->content = request('content');
-                $privacyPolicy->save();
-            } else {
-                FrontendPage::create([
+            $page->translations()->updateOrCreate(
+            [
+                'frontend_page_id' => $page->id,
+                'locale' => $request->lang,
+            ],
+                [
                     'title' => 'Privacy Policy',
-                    'slug' => 'privacy-policy',
-                    'content' => request('content'),
-                ]);
-            }
+                    'content' => $request->content,
+                ]
+            );
 
-            return back()->with('success', 'Privacy Policy saved successfully.');
+            return back()->with('success', __('messages.saved_successfully'));
         } catch (Exception $e) {
-            Log::error('Error storing privacy policy page: '.$e->getMessage());
+            Log::error('Error storing privacy policy page: ' . $e->getMessage());
 
-            return back()->with('error', 'Something went wrong.');
+            return back()->with('error', __('messages.something_went_wrong'));
         }
     }
 
-    public function storeTermOfUsePage()
+    public function getTermOfUse(Request $request)
     {
+        $lang = $request->get('lang', 'en');
+
+        $page = FrontendPage::where('slug', 'term-of-use')->firstOrFail();
+
+        $translation = $page->translations()
+            ->where('locale', $lang)
+            ->first();
+
+        return view('admin.pages.terms-of-use', [
+            'termsOfUse' => $page,
+            'translation' => $translation,
+            'lang' => $lang,
+        ]);
+    }
+
+    public function storeTermOfUsePage(Request $request)
+    {
+        $request->validate([
+            'content' => 'required',
+            'lang' => 'required|string|max:5',
+        ]);
+
         try {
-            $privacyPolicy = FrontendPage::where('slug', 'term-of-use')->first();
+            $page = FrontendPage::firstOrCreate(
+                ['slug' => 'term-of-use'],
+                ['title' => 'Term of Use']
+            );
 
-            if ($privacyPolicy) {
-                $privacyPolicy->content = request('content');
-                $privacyPolicy->save();
-            } else {
-                FrontendPage::create([
-                    'title' => 'Term of Use',
-                    'slug' => 'term-of-use',
-                    'content' => request('content'),
-                ]);
-            }
+            $page->translations()->updateOrCreate(
+            [
+                'frontend_page_id' => $page->id,
+                'locale' => $request->lang,
+            ],
+            [
+                'title' => 'Term of Use',
+                'content' => $request->content,
+            ]
+        );
 
-            return back()->with('success', 'Term of Use saved successfully.');
+            return back()->with('success', __('messages.saved_successfully'));
         } catch (Exception $e) {
-            Log::error('Error storing term of use page: '.$e->getMessage());
+            Log::error('Error storing term of use page: ' . $e->getMessage());
 
-            return back()->with('error', 'Something went wrong.');
+            return back()->with('error', __('messages.something_went_wrong'));
         }
     }
 }
