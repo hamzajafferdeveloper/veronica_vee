@@ -17,7 +17,14 @@ class Message extends Model
         'attachment_extension',
         'attachment_type',
         'attachment_size',
+        'type',
+        'offer_id',
     ];
+
+    public function offer()
+    {
+        return $this->belongsTo(Offer::class);
+    }
 
     public function conversation()
     {

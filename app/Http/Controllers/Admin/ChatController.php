@@ -55,13 +55,15 @@ class ChatController extends Controller
     public function messages(Request $request, $conversationId)
     {
         if ($request->ajax()) {
-            $messages = Message::where('conversation_id', $conversationId)
+            $messages = Message::with('offer')->where('conversation_id', $conversationId)
                 ->orderBy('created_at', 'asc')
                 ->get()
                 ->map(fn($msg) => [
                     'id' => $msg->id,
                     'sender_id' => $msg->sender_id,
                     'message' => $msg->message,
+                    'type' => $msg->type,
+                    'offer' => $msg->offer,
                     'attachment' => $msg->attachment,
                     'attachment_name' => $msg->attachment_name,
                     'attachment_extension' => $msg->attachment_extension,

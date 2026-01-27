@@ -13,6 +13,12 @@
             <span>{{ __('ui.chat') }}</span>
         </a>
     </li>
+    <li>
+        <a href="{{ route('recruiter.offers.index') }}" class="{{ request()->routeIs('recruiter.offers.*') ? 'active' : '' }}">
+            <iconify-icon icon="mdi:offer" class="menu-icon"></iconify-icon>
+            <span>My Offers</span>
+        </a>
+    </li>
 
     <li class="sidebar-menu-group-title">{{ __('ui.application') }}</li>
     <li>

@@ -38,7 +38,7 @@
 
                     <!-- Message box -->
                     <textarea name="chatMessage" id="chatMessage" rows="1" placeholder="{{ __('messages.type_message') }}" autocomplete="off"
-                        class="flex-grow-1 pt-1 px-3"
+                        class="grow pt-1 px-3"
                         style="
                         border-radius:4px !important;
                         border:1px solid #d8dadd;
@@ -236,7 +236,38 @@
             }
 
             function addMessageToUI(is_mine, message) {
+                if (!message) return;
+
                 let attachmentHTML = '';
+
+                // Handle Offer Card
+                if (message.type === 'offer' && message.offer) {
+                    const offer = message.offer;
+                    const isPending = offer.status === 'pending';
+                    attachmentHTML += `
+                        <div class="offer-card p-3 mt-2 rounded-4 shadow-sm border-0 position-relative overflow-hidden" 
+                             style="background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%); min-width:240px; color: #333; border-left: 4px solid #0d6efd !important;">
+                            <div style="position:absolute; top:0; left:0; width:4px; height:100%; background:#0d6efd;"></div>
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <iconify-icon icon="solar:bill-list-bold-duotone" class="text-primary" style="font-size:20px;"></iconify-icon>
+                                <span class="text-uppercase tracking-wider" style="font-size: 10px; font-weight:800; color:#0d6efd;">New Offer Received</span>
+                            </div>
+                            <h6 class="mb-1 fw-bold" style="font-size: 15px; color:#1a1a1a;">${offer.title}</h6>
+                            <h5 class="mb-2 text-primary fw-bold" style="font-size: 18px;">$${parseFloat(offer.amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</h5>
+                            <div class="d-flex justify-content-between align-items-center mt-3" id="offer-actions-${offer.id}">
+                                ${!is_mine && isPending ? `
+                                    <button onclick="updateOfferStatus(${offer.id}, 'accepted')" class="btn btn-sm btn-success rounded-pill px-3 shadow-sm border-0" style="font-size: 11px; font-weight:600; background:#198754;">Accept</button>
+                                    <button onclick="updateOfferStatus(${offer.id}, 'rejected')" class="btn btn-sm btn-danger rounded-pill px-3 shadow-sm border-0" style="font-size: 11px; font-weight:600; background:#dc3545;">Reject</button>
+                                ` : `
+                                    <span class="badge rounded-pill" 
+                                          style="font-size: 10px; padding: 4px 10px; background-color: ${offer.status === 'pending' ? '#fff3cd' : (offer.status === 'accepted' ? '#d1e7dd' : '#f8d7da')}; color: ${offer.status === 'pending' ? '#856404' : (offer.status === 'accepted' ? '#0f5132' : '#842029')}">
+                                        ${offer.status.toUpperCase()}
+                                    </span>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                }
 
                 if (message.attachment) {
                     const fileUrl = `/storage/${message.attachment}`;
@@ -244,25 +275,25 @@
                     const fileType = message.attachment_type || '';
 
                     if (fileType.startsWith('image')) {
-                        attachmentHTML = `<div class="mt-1">
+                        attachmentHTML += `<div class="mt-1">
                                     <img src="${fileUrl}" alt="${fileName}" onclick="window.open('${fileUrl}', '_blank')" style="max-width:220px; border-radius:8px; display:block;">
                                 </div>`;
                                         } else if (fileType.startsWith('audio')) {
-                                            attachmentHTML = `<div class="mt-1">
+                                            attachmentHTML += `<div class="mt-1">
                                     <audio controls style="width:100%;">
                                         <source src="${fileUrl}" type="${fileType}">
                                         {{ __('messages.browser_audio_support') }}
                                     </audio>
                                 </div>`;
                                         } else if (fileType.startsWith('video')) {
-                                            attachmentHTML = `<div class="mt-1">
+                                            attachmentHTML += `<div class="mt-1">
                                     <video controls style="max-width:220px; border-radius:8px;">
                                         <source src="${fileUrl}" type="${fileType}">
                                         {{ __('messages.browser_video_support') }}
                                     </video>
                                 </div>`;
                                         } else {
-                                            attachmentHTML = `<div class="d-flex align-items-center mt-1 p-2 rounded" style="border:1px solid #e0e0e0;">
+                                            attachmentHTML += `<div class="d-flex align-items-center mt-1 p-2 rounded" style="border:1px solid #e0e0e0;">
                                     <span style="font-size:20px;margin-right:8px;">
                                         <iconify-icon icon="openmoji:paperclip" style="font-size:26px;"></iconify-icon>
                                     </span>
@@ -276,10 +307,10 @@
                                     const messageHTML = `
                             <div class="chat-single-message d-flex mb-2 ${is_mine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
                                 <div class="chat-message-content p-2 px-3 rounded-3 position-relative" style="max-width:70%; background-color:${is_mine ? '#DCF8C6' : '#F0F0F0'}; color:#2c2c2c; word-break:break-word; box-shadow:0 1px 1px rgba(0,0,0,0.1);">
-                                    ${message.message ? `<p class="mb-1 px-3" style="margin:0; color:#2c2c2c;">${message.message}</p>` : ''}
+                                    ${message.message && message.type !== 'offer' ? `<p class="mb-1 px-3" style="margin:0; color:#2c2c2c;">${message.message}</p>` : ''}
                                     <div class="px-3">${attachmentHTML}</div>
                                     <span class="chat-time px-3 d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
-                                        ${new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase()}
+                                        ${message.created_at ? new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase() : 'NOW'}
                                     </span>
                                 </div>
                             </div>
@@ -338,7 +369,7 @@
                 fetch("{{ route('recruiter.chat.send') }}", {
                         method: 'POST',
                         headers: {
-                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                         },
                         body: formData
                     })
@@ -347,7 +378,7 @@
                         chatInput.value = '';
                         chatAttachment.value = '';
                         selectedImagePreview.textContent = '';
-                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                        addMessageToUI(true, data.message);
                     })
                     .finally(() => {
                         sendButton.disabled = false;
@@ -356,6 +387,36 @@
             });
 
             loadProfessionals();
-        });
-    </script>
-@endpush
+            });
+
+            function updateOfferStatus(offerId, status) {
+                if (!confirm(`Are you sure you want to ${status} this offer?`)) return;
+
+                fetch(`/recruiter/offers/${offerId}/update-status`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            status: status
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            const actionsDiv = document.getElementById(`offer-actions-${offerId}`);
+                            if (actionsDiv) {
+                                actionsDiv.innerHTML = `<span class="badge bg-${status === 'accepted' ? 'success' : 'danger'}" style="font-size: 10px;">${status.toUpperCase()}</span>`;
+                            }
+                        } else {
+                            alert(data.message || 'Error updating offer');
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert('An error occurred while updating the offer');
+                    });
+            }
+        </script>
+    @endpush

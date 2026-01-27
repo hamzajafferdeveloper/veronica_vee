@@ -37,11 +37,15 @@
                         style="width:38px;height:38px;">
                         <iconify-icon icon="openmoji:paperclip" style="font-size:26px;"></iconify-icon>
                     </button>
+                    <button type="button" id="offerBtn" class="btn d-flex align-items-center justify-content-center"
+                        style="width:38px;height:38px; color: #198754;" title="Send Offer">
+                        <iconify-icon icon="mdi:offer" style="font-size:26px;"></iconify-icon>
+                    </button>
                     <input type="file" name="attachment" id="chatAttachment" style="display:none;">
 
                     <!-- Message box -->
                     <textarea name="chatMessage" id="chatMessage" rows="1" placeholder="{{ __('messages.type_message') }}" autocomplete="off"
-                        class="flex-grow-1 pt-1 px-3"
+                        class="grow pt-1 px-3"
                         style="
                             border-radius:4px !important;
                             border:1px solid #d8dadd;
@@ -69,7 +73,37 @@
         </div>
     </div>
 
-
+    <!-- Offer Modal -->
+    <div class="modal fade" id="offerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Offer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="offerForm">
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" id="offerTitle" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea id="offerDescription" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Amount ($)</label>
+                            <input type="number" id="offerAmount" class="form-control" step="0.01" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="sendOfferSubmit" class="btn btn-primary">Send Offer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script')
@@ -247,7 +281,31 @@
             }
 
             function addMessageToUI(is_mine, message) {
+                if (!message) return;
+
                 let attachmentHTML = '';
+
+                // Handle Offer Card
+                if (message.type === 'offer' && message.offer) {
+                    const offer = message.offer;
+                    attachmentHTML += `
+                        <div class="offer-card p-3 mt-2 rounded-4 shadow-sm border-0 position-relative overflow-hidden" 
+                             style="background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%); min-width:240px; color: #333; border-left: 4px solid #0d6efd !important;">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <iconify-icon icon="solar:bill-list-bold-duotone" class="text-primary" style="font-size:20px;"></iconify-icon>
+                                <span class="text-uppercase tracking-wider" style="font-size: 10px; font-weight:800; color:#0d6efd;">Formal Offer</span>
+                            </div>
+                            <h6 class="mb-1 fw-bold" style="font-size: 15px; color:#1a1a1a;">${offer.title}</h6>
+                            <h5 class="mb-2 text-primary fw-bold" style="font-size: 18px;">$${parseFloat(offer.amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</h5>
+                            <div class="mt-2">
+                                <span class="badge rounded-pill" 
+                                      style="font-size: 10px; padding: 4px 10px; background-color: ${offer.status === 'pending' ? '#fff3cd' : (offer.status === 'accepted' ? '#d1e7dd' : '#f8d7da')}; color: ${offer.status === 'pending' ? '#856404' : (offer.status === 'accepted' ? '#0f5132' : '#842029')}">
+                                    ${offer.status.toUpperCase()}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                }
 
                 if (message.attachment) {
                     const fileUrl = `/storage/${message.attachment}`;
@@ -255,13 +313,13 @@
                     const fileType = message.attachment_type || '';
 
                     if (fileType.startsWith('image')) {
-                        attachmentHTML = `
+                        attachmentHTML += `
                         <div class="mt-1">
                             <img src="${fileUrl}" alt="${fileName}" onclick="window.open('${fileUrl}', '_blank')" style="max-width:220px; border-radius:8px; display:block;">
                         </div>
                     `;
                     } else if (fileType.startsWith('audio')) {
-                        attachmentHTML = `
+                        attachmentHTML += `
                         <div class="mt-1">
                             <audio controls style="width:100%;">
                                 <source src="${fileUrl}" type="${fileType}">
@@ -270,7 +328,7 @@
                         </div>
                     `;
                     } else if (fileType.startsWith('video')) {
-                        attachmentHTML = `
+                        attachmentHTML += `
                         <div class="mt-1">
                             <video controls style="max-width:220px; border-radius:8px;">
                                 <source src="${fileUrl}" type="${fileType}">
@@ -279,7 +337,7 @@
                         </div>
                     `;
                     } else {
-                        attachmentHTML = `
+                        attachmentHTML += `
                         <div class="d-flex align-items-center mt-1 p-2 rounded" style="border:1px solid #e0e0e0;">
                             <span style="font-size:20px;margin-right:8px;">
                                 <iconify-icon icon="openmoji:paperclip" style="font-size:26px;"></iconify-icon>
@@ -295,10 +353,10 @@
                 const messageHTML = `
                 <div class="chat-single-message d-flex mb-2 ${is_mine ? 'justify-content-end' : 'justify-content-start'} align-items-end">
                     <div class="chat-message-content p-2 px-3 rounded-3 position-relative" style="max-width:70%; background-color:${is_mine ? '#DCF8C6' : '#F0F0F0'}; color:#2c2c2c; word-break:break-word; box-shadow:0 1px 1px rgba(0,0,0,0.1);">
-                        ${message.message ? `<p class="mb-1 px-3" style="margin:0; color:#2c2c2c;">${message.message}</p>` : ''}
+                        ${message.message && message.type !== 'offer' ? `<p class="mb-1 px-3" style="margin:0; color:#2c2c2c;">${message.message}</p>` : ''}
                         <div class="px-3">${attachmentHTML}</div>
                         <span class="chat-time px-3 d-block text-end mt-1" style="font-size:0.65rem; color: rgba(0,0,0,0.45);">
-                            ${new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase()}
+                            ${message.created_at ? new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase() : 'NOW'}
                         </span>
                     </div>
                 </div>
@@ -338,6 +396,81 @@
                 window.history.pushState({}, '', `/admin/chat/messages/${receiverId}`);
             }
 
+            const offerBtn = document.getElementById('offerBtn');
+            const offerModal = new bootstrap.Modal(document.getElementById('offerModal'));
+            const sendOfferSubmit = document.getElementById('sendOfferSubmit');
+
+            offerBtn.addEventListener('click', () => {
+                if (!activeReceiverId) {
+                    alert('Please select a user first');
+                    return;
+                }
+                // Check if user is recruiter (admin can only send to recruiter)
+                const selectedUser = allUsers.find(u => u.id == activeReceiverId);
+                const isRecruiter = selectedUser.roles && selectedUser.roles.some(role => role.name === 'recruiter');
+                
+                if (!isRecruiter) {
+                    alert('Offers can only be sent to Recruiters');
+                    return;
+                }
+                offerModal.show();
+            });
+
+            sendOfferSubmit.addEventListener('click', () => {
+                const title = document.getElementById('offerTitle').value;
+                const description = document.getElementById('offerDescription').value;
+                const amount = document.getElementById('offerAmount').value;
+
+                if (!title || !amount) {
+                    alert('Title and Amount are required');
+                    return;
+                }
+
+                if (!activeConversationId) {
+                    alert('Please select a user and wait for conversation to load');
+                    return;
+                }
+
+                sendOfferSubmit.disabled = true;
+
+                fetch("{{ route('admin.chat.offer.store') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        conversation_id: activeConversationId,
+                        receiver_id: activeReceiverId,
+                        title: title,
+                        description: description,
+                        amount: amount
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Close modal reliably
+                        const mEle = document.getElementById('offerModal');
+                        let m = bootstrap.Modal.getInstance(mEle);
+                        if (!m) m = new bootstrap.Modal(mEle);
+                        m.hide();
+                        
+                        document.getElementById('offerForm').reset();
+                        addMessageToUI(true, data.data);
+                    } else {
+                        alert(data.message || 'Error sending offer');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('An error occurred while sending the offer');
+                })
+                .finally(() => {
+                    sendOfferSubmit.disabled = false;
+                });
+            });
+
             messageForm.addEventListener('submit', function(e) {
                 e.preventDefault();
 
@@ -359,6 +492,9 @@
 
                 fetch("{{ route('admin.chat.send') }}", {
                         method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
                         body: formData
                     })
                     .then(res => res.json())
@@ -366,9 +502,12 @@
                         chatInput.value = '';
                         chatAttachment.value = '';
                         selectedImagePreview.textContent = '';
-                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                        addMessageToUI(true, data.message);
                     })
-                    .catch(err => console.error(err))
+                    .catch(err => {
+                        console.error(err);
+                        alert('An error occurred while sending the message');
+                    })
                     .finally(() => {
                         sendButton.disabled = false;
                         sendButton.innerHTML = originalContent;

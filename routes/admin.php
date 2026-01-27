@@ -19,6 +19,7 @@ Route::prefix('admin')->middleware('role:admin')->name('admin.')->group(function
         Route::get('/index', [ChatController::class, 'index'])->name('index');
         Route::get('/get-users', [ChatController::class, 'getUsers'])->name('get-users');
         Route::post('/send', [ChatController::class, 'send'])->name('send');
+        Route::post('/offer/store', [App\Http\Controllers\Admin\OfferController::class, 'store'])->name('offer.store');
     });
 
     Route::prefix('pages')->name('pages.')->group(function () {
@@ -40,6 +41,7 @@ Route::prefix('admin')->middleware('role:admin')->name('admin.')->group(function
 
     Route::prefix('recruiters')->group(function () {
         Route::get('/all', [RecruiterController::class, 'index'])->name('recruiters.index');
+        Route::get('/offers', [App\Http\Controllers\Admin\OfferController::class, 'index'])->name('recruiters.offers');
     });
 
     Route::prefix('applications')->name('applications.')->group(function () {

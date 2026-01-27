@@ -19,7 +19,7 @@ Route::prefix('recruiter')->middleware('role:recruiter')->name('recruiter.')->gr
     // Chat Routes
     Route::prefix('/chat')->name('chat.')->group(function () {
         Route::get('/conversation/{userId}', [ChatController::class, 'getOrCreateConversation'])->name('conversation');
-        Route::get('/messages/{conversationId}', [ChatController::class, 'messages'])->name('messages');
+        Route::get('/messages/{receiver_id}', [ChatController::class, 'messages'])->name('messages');
         Route::get('/index', [ChatController::class, 'index'])->name('index');
         Route::get('/get-professional', [ChatController::class, 'getProfessional'])->name('get-professional');
         Route::post('/send', [ChatController::class, 'send'])->name('send');
@@ -44,4 +44,9 @@ Route::prefix('recruiter')->middleware('role:recruiter')->name('recruiter.')->gr
 
     Route::post('/request/{id}/hire', [ProjectAppicationController::class, 'hire'])
         ->name('request.hire');
+
+    Route::prefix('offers')->name('offers.')->controller(App\Http\Controllers\Recruiter\OfferController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/{id}/update-status', 'updateStatus')->name('update-status');
+    });
 });

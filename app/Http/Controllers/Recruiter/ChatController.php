@@ -25,7 +25,7 @@ class ChatController extends Controller
             })
             ->first();
 
-        if (!$conversation) {
+        if (! $conversation) {
             $user = User::findOrFail($userId);
             $type = 'recruiter_model';
             if ($user->hasRole('admin')) {
@@ -44,14 +44,14 @@ class ChatController extends Controller
         }
 
         return response()->json([
-            'conversation_id' => $conversation->id
+            'conversation_id' => $conversation->id,
         ]);
     }
 
     public function messages(Request $request, $conversationId)
     {
         if ($request->ajax()) {
-            $messages = Message::where('conversation_id', $conversationId)
+            $messages = Message::with('offer')->where('conversation_id', $conversationId)
                 ->orderBy('created_at', 'asc')
                 ->get()
                 ->map(function ($msg) {
@@ -59,6 +59,8 @@ class ChatController extends Controller
                         'id' => $msg->id,
                         'sender_id' => $msg->sender_id,
                         'message' => $msg->message,
+                        'type' => $msg->type,
+                        'offer' => $msg->offer,
                         'attachment' => $msg->attachment,
                         'attachment_name' => $msg->attachment_name,
                         'attachment_extension' => $msg->attachment_extension,
@@ -83,10 +85,11 @@ class ChatController extends Controller
     {
         try {
             return response()->json(
-                User::role(['professional', 'admin'])->with('model')->get()
+                User::role(['admin'])->with('model')->get()
             );
         } catch (\Exception $e) {
-            Log::error('Error getting professionals: ' . $e->getMessage());
+            Log::error('Error getting professionals: '.$e->getMessage());
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -116,7 +119,7 @@ class ChatController extends Controller
                 $file = $request->file('attachment');
                 $path = $file->store('attachments', 'public');
 
-                \Log::info('File stored at: ' . $path);
+                \Log::info('File stored at: '.$path);
 
                 $attachmentData = [
                     'attachment' => $path,
@@ -146,10 +149,10 @@ class ChatController extends Controller
 
             return response()->json(['status' => 'success', 'message' => $msg]);
         } catch (\Exception $e) {
-            \Log::error('Error in ChatController@send: ' . $e->getMessage());
+            \Log::error('Error in ChatController@send: '.$e->getMessage());
             \Log::error($e->getTraceAsString());
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
 }

@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Conversation;
 use App\Models\ConversationParticipant;
 use App\Models\Message;
-use App\Models\ModelProfiles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -19,11 +18,11 @@ class ChatController extends Controller
         try {
             $authId = auth()->id();
 
-            $conversation = Conversation::whereHas('participants', fn($q) => $q->where('user_id', $authId))
-                ->whereHas('participants', fn($q) => $q->where('user_id', $userId))
+            $conversation = Conversation::whereHas('participants', fn ($q) => $q->where('user_id', $authId))
+                ->whereHas('participants', fn ($q) => $q->where('user_id', $userId))
                 ->first();
 
-            if (!$conversation) {
+            if (! $conversation) {
                 $user = User::findOrFail($userId);
                 $type = 'recruiter_model';
                 if ($user->hasRole('admin')) {
@@ -44,6 +43,7 @@ class ChatController extends Controller
             return response()->json(['conversation_id' => $conversation->id]);
         } catch (\Exception $e) {
             Log::error($e);
+
             return response()->json(['error' => 'Error creating conversation'], 500);
         }
     }
@@ -54,7 +54,7 @@ class ChatController extends Controller
             $messages = Message::where('conversation_id', $conversationId)
                 ->orderBy('created_at', 'asc')
                 ->get()
-                ->map(fn($msg) => [
+                ->map(fn ($msg) => [
                     'id' => $msg->id,
                     'sender_id' => $msg->sender_id,
                     'message' => $msg->message,
@@ -81,13 +81,14 @@ class ChatController extends Controller
     {
         try {
 
-            $recruiters = User::role(['recruiter', 'admin'])->with('recruiter')->get();
+            $recruiters = User::role(['admin'])->with('recruiter')->get();
 
             // dd($recruiters);
 
             return response()->json($recruiters);
         } catch (\Exception $e) {
-            Log::error('Error getting recruiters: ' . $e->getMessage());
+            Log::error('Error getting recruiters: '.$e->getMessage());
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -117,7 +118,7 @@ class ChatController extends Controller
                 $file = $request->file('attachment');
                 $path = $file->store('attachments', 'public');
 
-                \Log::info('File stored at: ' . $path);
+                \Log::info('File stored at: '.$path);
 
                 $attachmentData = [
                     'attachment' => $path,
@@ -147,10 +148,10 @@ class ChatController extends Controller
 
             return response()->json(['status' => 'success', 'message' => $msg]);
         } catch (\Exception $e) {
-            \Log::error('Error in ChatController@send: ' . $e->getMessage());
+            \Log::error('Error in ChatController@send: '.$e->getMessage());
             \Log::error($e->getTraceAsString());
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
 }

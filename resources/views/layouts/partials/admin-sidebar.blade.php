@@ -31,6 +31,12 @@
             <span>{{ __('ui.recruiters') }}</span>
         </a>
     </li>
+    <li>
+        <a href="{{ route('admin.recruiters.offers') }}">
+            <iconify-icon icon="mdi:offer" class="menu-icon"></iconify-icon>
+            <span>Offer History</span>
+        </a>
+    </li>
 
     <li class="dropdown">
         <a href="javascript:void(0)">

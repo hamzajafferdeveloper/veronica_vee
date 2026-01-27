@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Bootstrap CSS -->
     <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
@@ -17,8 +18,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/country-select-js@2.0.1/build/css/countrySelect.min.css">
 
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}" sizes="16x16">
-    <!-- remix icon font css  -->
-    <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">
     <!-- BootStrap css -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/bootstrap.min.css') }}">
     <!-- Apex Chart css -->

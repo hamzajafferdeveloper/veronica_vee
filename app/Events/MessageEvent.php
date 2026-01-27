@@ -39,6 +39,8 @@ class MessageEvent implements ShouldBroadcastNow
      */
     public function broadcastWith(): array
     {
-        return $this->message->toArray();
+        return array_merge($this->message->toArray(), [
+            'offer' => $this->message->offer ? $this->message->offer->toArray() : null
+        ]);
     }
 }
