@@ -14067,11 +14067,11 @@ td.fc-header-center {
     width: 90%;
   }
 }
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   .chat-single-message {
     width: 60%;
   }
-}
+} */
 .chat-single-message.left .chat-message-content {
   background-color: var(--input-bg);
   border-radius: 16px 16px 16px 0;

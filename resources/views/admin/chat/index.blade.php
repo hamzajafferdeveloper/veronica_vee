@@ -53,6 +53,7 @@
                             outline:none;
                             font-size:14px;
                             overflow-y:auto;
+                            width: 100%;
                         "></textarea>
 
                     <!-- Send -->
@@ -457,7 +458,7 @@
                         m.hide();
                         
                         document.getElementById('offerForm').reset();
-                        addMessageToUI(true, data.data);
+                        // addMessageToUI(true, data.data);
                     } else {
                         alert(data.message || 'Error sending offer');
                     }
@@ -502,7 +503,6 @@
                         chatInput.value = '';
                         chatAttachment.value = '';
                         selectedImagePreview.textContent = '';
-                        addMessageToUI(true, data.message);
                     })
                     .catch(err => {
                         console.error(err);

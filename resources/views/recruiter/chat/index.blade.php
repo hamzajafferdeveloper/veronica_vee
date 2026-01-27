@@ -46,6 +46,7 @@
                         outline:none;
                         font-size:14px;
                         overflow-y:auto;
+                        width: 100% !important;
                     "></textarea>
 
                     <!-- Send -->
@@ -378,7 +379,6 @@
                         chatInput.value = '';
                         chatAttachment.value = '';
                         selectedImagePreview.textContent = '';
-                        addMessageToUI(true, data.message);
                     })
                     .finally(() => {
                         sendButton.disabled = false;
